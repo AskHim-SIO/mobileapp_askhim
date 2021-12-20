@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/Screens/Login/login_screen.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
 import "package:flutter/material.dart";
@@ -11,42 +12,38 @@ class Body extends StatelessWidget {
     return Background(
       child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Besoin d'aide ?",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
+            const Text(
+              "Besoin d'aide ?",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset("assets/images/logo.png", width: size.width * 0.6),
-              ],
+            Image.asset("assets/images/logo.png", width: size.width * 0.6),
+            SizedBox(height: size.height * 0.05),
+            RoundedButton(
+              text: "Connexion",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                );
+              },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundedButton(
-                  text: "Connexion",
-                  press: () {},
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundedButton(
-                  text: "Inscription",
-                  color: kPrimaryLightColor,
-                  textColor: Colors.black,
-                  press: () {},
-                ),
-              ],
+            RoundedButton(
+              text: "Inscription",
+              color: kPrimaryLightColor,
+              textColor: Colors.black,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                );
+              },
             ),
           ],
         ),
