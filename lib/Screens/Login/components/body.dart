@@ -36,7 +36,6 @@ class _Body extends State<Body> {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: <Widget>[
-            SizedBox(height: size.width * 0.1),
             const Center(
               child: Text(
                 "Se connecter",
@@ -47,7 +46,7 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
-            SizedBox(height: size.width * 0.2),
+            SizedBox(height: size.width * 0.25),
             const InputFormMail(
               hintText: 'Email',
               labelText: 'Email',
@@ -60,7 +59,7 @@ class _Body extends State<Body> {
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.24),
+            SizedBox(height: size.width * 0.14),
             RoundedButton(
               text: 'Se connecter',
               sizeButton: 0.8,
