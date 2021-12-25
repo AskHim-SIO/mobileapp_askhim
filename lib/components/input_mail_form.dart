@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -14,16 +15,22 @@ class InputFormMail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       decoration: InputDecoration(
         filled: true,
         fillColor: greyInput,
         hintText: hintText,
         labelText: labelText,
-        //prefixIcon: Icon(Icons.mail),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
       ),
+      validator: (v) {
+        if (v!.isValidEmail) {
+          return null;
+        } else {
+          return 'Please enter a valid email';
+        }
+      },
       keyboardType: TextInputType.emailAddress,
     );
   }

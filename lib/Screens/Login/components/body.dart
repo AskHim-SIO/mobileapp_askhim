@@ -1,6 +1,6 @@
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/components/input_mail_form.dart';
-import 'package:ap4_askhim/components/input_password_form.dart';
+import 'package:ap4_askhim/Screens/Welcome/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 
 import 'package:flutter/gestures.dart';
@@ -16,6 +16,7 @@ class Body extends StatefulWidget {
 class _Body extends State<Body> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -30,6 +31,7 @@ class _Body extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Form(
+      key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -63,25 +65,13 @@ class _Body extends State<Body> {
               text: 'Se connecter',
               sizeButton: 0.8,
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WelcomeScreen(),
-                  ),
-                );
+                if (_formKey.currentState!.validate()) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                }
               },
             ),
             SizedBox(height: size.width * 0.01),
-            const Center(
-              child: Text(
-                "Mot de passe oublié ?",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: 15),
-              ),
-            ),
             const Spacer(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,

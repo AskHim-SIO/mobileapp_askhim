@@ -1,6 +1,7 @@
+import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../constants.dart';
+import '../../../constants.dart';
 
 class InputFormPassword extends StatefulWidget {
   final TextEditingController controller;
@@ -40,12 +41,16 @@ class _InputFormPasswordState extends State<InputFormPassword> {
             onPressed: togglePasswordVisibility,
           ),
         ),
+        validator: (v) {
+          if (v!.isRightPassword) {
+            return null;
+          } else {
+            return 'Le mot de passe fourni est incorrect';
+          }
+        },
         keyboardType: TextInputType.visiblePassword,
         autofillHints: [AutofillHints.password],
         onEditingComplete: () => TextInput.finishAutofillContext(),
-        validator: (password) => password != null && password.length < 5
-            ? 'Enter min. 5 characters'
-            : null,
       );
 
   void togglePasswordVisibility() => setState(() => isHidden = !isHidden);
