@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class InputFormMail extends StatelessWidget {
   final String hintText, labelText;
   final double borderRadius;
@@ -14,6 +16,8 @@ class InputFormMail extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
+        filled: true,
+        fillColor: greyInput,
         hintText: hintText,
         labelText: labelText,
         //prefixIcon: Icon(Icons.mail),

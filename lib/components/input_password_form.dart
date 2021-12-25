@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../constants.dart';
 
 class InputFormPassword extends StatefulWidget {
   final TextEditingController controller;
@@ -19,13 +20,15 @@ class InputFormPassword extends StatefulWidget {
 }
 
 class _InputFormPasswordState extends State<InputFormPassword> {
-  bool isHidden = false;
+  bool isHidden = true;
 
   @override
   Widget build(BuildContext context) => TextFormField(
         controller: widget.controller,
         obscureText: isHidden,
         decoration: InputDecoration(
+          fillColor: greyInput,
+          filled: true,
           hintText: widget.hintText,
           labelText: widget.labelText,
           border: OutlineInputBorder(
