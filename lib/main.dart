@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import "package:ap4_askhim/constants.dart";
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // avoid rotation screen
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  //
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

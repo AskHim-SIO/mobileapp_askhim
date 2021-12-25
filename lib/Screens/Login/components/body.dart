@@ -3,6 +3,7 @@ import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -31,9 +32,9 @@ class _Body extends State<Body> {
     return Form(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: ListView(
+        child: Column(
           children: <Widget>[
-            SizedBox(height: size.width * 0.05),
+            SizedBox(height: size.width * 0.1),
             const Center(
               child: Text(
                 "Se connecter",
@@ -60,6 +61,7 @@ class _Body extends State<Body> {
             SizedBox(height: size.width * 0.24),
             RoundedButton(
               text: 'Se connecter',
+              sizeButton: 0.8,
               press: () {
                 Navigator.push(
                   context,
@@ -80,17 +82,33 @@ class _Body extends State<Body> {
                     fontSize: 15),
               ),
             ),
-            SizedBox(height: size.width * 0.35),
-            const Center(
-              child: Text(
-                "Vous n'avez pas encore de compte ? Inscrivez-vous",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontFamily: 'Inter-SemiBold',
-                    fontSize: 13),
-              ),
-            ),
+            const Spacer(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Vous n\'avez pas encore de compte ?',
+                  style: TextStyle(color: Colors.black),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WelcomeScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Inscrivez-vous',
+                    style: TextStyle(
+                      color: Color(0xFF2B6CF2),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
