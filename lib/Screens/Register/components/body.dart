@@ -1,5 +1,7 @@
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
+import 'package:ap4_askhim/components/input_basic_form.dart';
+import 'package:ap4_askhim/components/input_date_form.dart';
 import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
@@ -34,12 +36,12 @@ class _Body extends State<Body> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
         child: ListView(
           children: <Widget>[
             const Center(
               child: Text(
-                "Se connecter",
+                "S'inscrire",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -47,22 +49,41 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
-            SizedBox(height: size.width * 0.25),
+            SizedBox(height: size.width * 0.10),
+            const InputBasicForm(
+              hintText: 'Nom',
+              labelText: 'Nom',
+              borderRadius: 11,
+            ),
+            SizedBox(height: size.width * 0.02),
+            const InputBasicForm(
+              hintText: 'Prénom',
+              labelText: 'Prénom',
+              borderRadius: 11,
+            ),
+            SizedBox(height: size.width * 0.02),
+            MyWidget(
+              hintText: 'Date de naissance (jj / mm / aaaa)',
+              labelText: 'Date de naissance',
+              borderRadius: 11,
+            ),
+            SizedBox(height: size.width * 0.02),
             const InputFormMail(
               hintText: 'Email',
               labelText: 'Email',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.04),
+            SizedBox(height: size.width * 0.02),
             InputFormPassword(
               controller: emailController,
               hintText: 'Mot de passe',
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
+            SizedBox(height: size.width * 0.02),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
-              text: 'Se connecter',
+              text: 'S\'inscrire',
               sizeButton: 0.8,
               press: () {
                 if (_formKey.currentState!.validate()) {
@@ -72,11 +93,12 @@ class _Body extends State<Body> {
               },
             ),
             SizedBox(height: size.width * 0.01),
+            const Spacer(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text(
-                  'Vous n\'avez pas encore de compte ?',
+                  'Vous avez déjà un compte ?',
                   style: TextStyle(color: Colors.black),
                 ),
                 GestureDetector(
@@ -89,7 +111,7 @@ class _Body extends State<Body> {
                     );
                   },
                   child: const Text(
-                    'Inscrivez-vous',
+                    'Connectez-vous',
                     style: TextStyle(
                       color: Color(0xFF2B6CF2),
                       fontWeight: FontWeight.bold,

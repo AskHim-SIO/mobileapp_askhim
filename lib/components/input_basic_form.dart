@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class InputFormMail extends StatelessWidget {
+class InputBasicForm extends StatelessWidget {
   final String hintText, labelText;
   final double borderRadius;
-  const InputFormMail({
+  const InputBasicForm({
     Key? key,
     required this.hintText,
     required this.labelText,
@@ -39,13 +39,12 @@ class InputFormMail extends StatelessWidget {
         ),
       ),
       validator: (v) {
-        if (v!.isValidEmail) {
+        if (v!.isValidName) {
           return null;
         } else {
-          return 'Veuillez entrer un email valide';
+          return 'Veuillez entrer des informations valides';
         }
       },
-      keyboardType: TextInputType.emailAddress,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ap4_askhim/Screens/Login/login_screen.dart';
+import 'package:ap4_askhim/Screens/Register/register_screen.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
 import "package:flutter/material.dart";
@@ -42,7 +43,7 @@ class Body extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
+                    builder: (context) => RegisterScreen(),
                   ),
                 );
               },

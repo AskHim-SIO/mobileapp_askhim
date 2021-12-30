@@ -1,7 +1,7 @@
 import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../constants.dart';
+import '../constants.dart';
 
 class InputFormPassword extends StatefulWidget {
   final TextEditingController controller;
@@ -32,8 +32,21 @@ class _InputFormPasswordState extends State<InputFormPassword> {
           filled: true,
           hintText: widget.hintText,
           labelText: widget.labelText,
-          border: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
           ),
           suffixIcon: IconButton(
             icon:

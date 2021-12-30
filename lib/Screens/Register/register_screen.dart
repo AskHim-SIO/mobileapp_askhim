@@ -1,15 +1,17 @@
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:flutter/material.dart';
-
-import "package:ap4_askhim/Screens/Login/components/body.dart";
 import 'package:flutter/services.dart';
 
-class LoginScreen extends StatelessWidget {
+import 'components/body.dart';
+
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true, //appbar transparent
+        resizeToAvoidBottomInset:
+            true, //permet de remonter les input quand le clavier apparait
         backgroundColor: Colors.white,
         body: NestedScrollView(
           // permet de cacher l'appbar quand la page descend
