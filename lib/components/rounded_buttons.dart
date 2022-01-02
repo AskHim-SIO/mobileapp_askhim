@@ -1,4 +1,4 @@
-import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/components/constants.dart';
 
 import 'package:flutter/material.dart';
 

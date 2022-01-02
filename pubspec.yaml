@@ -47,7 +47,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   date_format: ^2.0.4
-  bottom_navy_bar: ^6.0.0
+  custom_navigator: ^0.3.0
   
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

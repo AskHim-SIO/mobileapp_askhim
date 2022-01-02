@@ -1,9 +1,9 @@
 import 'package:ap4_askhim/components/appbar.dart';
 import 'package:flutter/material.dart';
 
-import "package:ap4_askhim/Screens/Welcome/components/body.dart";
+import "package:ap4_askhim/Screens/Message/components/body.dart";
 
-class WelcomeScreen extends StatelessWidget {
+class MessageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

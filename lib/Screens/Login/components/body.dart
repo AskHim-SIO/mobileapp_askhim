@@ -1,5 +1,7 @@
+import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
-import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
+import 'package:ap4_askhim/Screens/Home/home_screen.dart';
+import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
@@ -7,7 +9,7 @@ import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../components/constants.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -66,8 +68,8 @@ class _Body extends State<Body> {
               sizeButton: 0.8,
               press: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => appBar()));
                 }
               },
             ),

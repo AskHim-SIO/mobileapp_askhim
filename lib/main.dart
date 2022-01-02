@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
-import "package:ap4_askhim/constants.dart";
+import 'package:ap4_askhim/components/constants.dart';
 import 'package:flutter/services.dart';
+
+import 'components/appbar.dart';
 
 void main() {
   // avoid rotation screen
@@ -18,7 +20,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.black,
