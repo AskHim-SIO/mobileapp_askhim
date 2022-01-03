@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -10,33 +8,171 @@ class Body extends StatefulWidget {
 
 class _HomePageState extends State<Body> {
   static const historyLength = 5;
-  final List<String> _searchHistory = ['1', "20", '2', 'new'];
 
-  List<String>? filteredSearchHistory;
+  List<String> _searchHistory = [
+    'fuchsia',
+    'flutter',
+    'widgets',
+    'resocoder',
+  ];
+
+  List<String> filteredSearchHistory = ['test'];
 
   String? selectedTerm;
 
-  List<String>? filteredSearchTerm({
-    @required String? filter,
+  List<String> filterSearchTerms({
+    required String filter,
   }) {
     if (filter != null && filter.isNotEmpty) {
       return _searchHistory.reversed
           .where((term) => term.startsWith(filter))
           .toList();
+    } else {
+      return _searchHistory.reversed.toList();
     }
   }
-  // TODO: Add search history here
+
+  void addSearchTerm(String term) {
+    if (_searchHistory.contains(term)) {
+      putSearchTermFirst(term);
+      return;
+    }
+
+    _searchHistory.add(term);
+    if (_searchHistory.length > historyLength) {
+      _searchHistory.removeRange(0, _searchHistory.length - historyLength);
+    }
+
+    filteredSearchHistory = filterSearchTerms(filter: '');
+  }
+
+  void deleteSearchTerm(String term) {
+    _searchHistory.removeWhere((t) => t == term);
+    filteredSearchHistory = filterSearchTerms(filter: '');
+  }
+
+  void putSearchTermFirst(String term) {
+    deleteSearchTerm(term);
+    addSearchTerm(term);
+  }
+
+  FloatingSearchBarController? controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = FloatingSearchBarController();
+    filteredSearchHistory = filterSearchTerms(filter: '');
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
     return Scaffold(
       backgroundColor: Colors.white,
-
-      // TODO: Add the FloatingSearchBar here
-      // ignore: prefer_const_constructors
-      body: SearchResultsListView(
-        searchTerm: null,
+      body: FloatingSearchBar(
+        controller: controller,
+        body: FloatingSearchBarScrollNotifier(
+          child: SearchResultsListView(
+            searchTerm: selectedTerm,
+          ),
+        ),
+        transition: CircularFloatingSearchBarTransition(),
+        physics: BouncingScrollPhysics(),
+        title: Text(
+          selectedTerm ?? 'Rechercher',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        hint: 'Taper ici pour chercher..',
+        actions: [
+          FloatingSearchBarAction.searchToClear(),
+        ],
+        onQueryChanged: (query) {
+          setState(() {
+            filteredSearchHistory = filterSearchTerms(filter: query);
+          });
+        },
+        onSubmitted: (query) {
+          setState(() {
+            addSearchTerm(query);
+            selectedTerm = query;
+          });
+          controller?.close();
+        },
+        builder: (context, transition) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Material(
+              color: Colors.white,
+              elevation: 4,
+              child: Builder(
+                builder: (context) {
+                  if (filteredSearchHistory.isEmpty &&
+                      controller!.query.isEmpty) {
+                    return Container(
+                      height: 56,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Start searching',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    );
+                  } else if (filteredSearchHistory.isEmpty) {
+                    return ListTile(
+                      title: Text(controller!.query),
+                      onTap: () {
+                        setState(() {
+                          addSearchTerm(controller!.query);
+                          selectedTerm = controller!.query;
+                        });
+                        controller?.close();
+                      },
+                    );
+                  } else {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: filteredSearchHistory
+                          .map(
+                            (term) => ListTile(
+                              title: Text(
+                                term,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              leading: const Icon(Icons.history),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  setState(() {
+                                    deleteSearchTerm(term);
+                                  });
+                                },
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  putSearchTermFirst(term);
+                                  selectedTerm = term;
+                                });
+                                controller?.close();
+                              },
+                            ),
+                          )
+                          .toList(),
+                    );
+                  }
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -56,12 +192,24 @@ class SearchResultsListView extends StatelessWidget {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [Text('Acceuil', style: TextStyle(fontSize: 60))],
+          children: [
+            Icon(
+              Icons.search,
+              size: 64,
+            ),
+            Text(
+              'Start searching',
+              style: Theme.of(context).textTheme.headline5,
+            )
+          ],
         ),
       );
     }
 
+    final fsb = FloatingSearchBar.of(context);
+
     return ListView(
+      padding: EdgeInsets.all(10),
       children: List.generate(
         50,
         (index) => ListTile(
