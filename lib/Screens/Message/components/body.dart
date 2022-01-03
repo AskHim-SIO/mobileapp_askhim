@@ -7,7 +7,7 @@ class Body extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Text(
-          'Messages',
+          'Message',
           style: TextStyle(fontSize: 60),
         ),
       ),
