@@ -1,7 +1,7 @@
 import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class InputFormPassword extends StatefulWidget {
   final TextEditingController controller;

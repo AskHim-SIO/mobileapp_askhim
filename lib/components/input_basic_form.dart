@@ -1,7 +1,7 @@
 import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class InputBasicForm extends StatelessWidget {
   final String hintText, labelText;

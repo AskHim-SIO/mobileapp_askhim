@@ -2,7 +2,7 @@ import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class MyWidget extends StatefulWidget {
   final String hintText, labelText;

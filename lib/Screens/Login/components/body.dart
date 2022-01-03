@@ -9,7 +9,7 @@ import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/constants.dart';
+import '../../../constants.dart';
 
 class Body extends StatefulWidget {
   @override

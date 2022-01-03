@@ -3,10 +3,10 @@ import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/Screens/Search/search_screen.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
-import 'package:ap4_askhim/components/constants.dart';
+import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class appBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -15,7 +15,7 @@ class appBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _appBar extends State<appBar> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   final screens = [
     HomeScreen(),

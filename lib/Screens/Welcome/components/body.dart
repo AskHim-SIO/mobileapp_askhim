@@ -1,7 +1,7 @@
 import 'package:ap4_askhim/Screens/Login/login_screen.dart';
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
-import 'package:ap4_askhim/components/constants.dart';
+import 'package:ap4_askhim/constants.dart';
 import "package:flutter/material.dart";
 
 import "package:ap4_askhim/Screens/Welcome/components/background.dart";

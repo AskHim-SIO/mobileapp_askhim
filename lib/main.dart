@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
-import 'package:ap4_askhim/components/constants.dart';
+import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/services.dart';
 
 import 'components/appbar.dart';
