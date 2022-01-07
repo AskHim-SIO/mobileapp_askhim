@@ -40,12 +40,15 @@ class _BodyState extends State<Body> {
                           scrollDirection: Axis.horizontal,
                           itemCount: 10,
                           itemBuilder: (context, index) => buildCard())),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Catégories",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Catégories",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   buildCard(),
@@ -72,32 +75,44 @@ class _BodyState extends State<Body> {
   }
 }
 
-Widget buildCard() => Container(
-      width: 150,
-      height: 150,
-      child: Column(
-        children: [
-          Container(
-            child: AspectRatio(
+Widget buildCard() => Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: 150,
+        height: 150,
+        child: Column(
+          children: [
+            AspectRatio(
               aspectRatio: 4 / 3,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  child: Image.asset(
-                    'assets/images/background_welcome.png',
-                  ),
-                ),
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            const SizedBox(height: 2),
+            const Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Nom du service un peui plus logn que da',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    )),
               ),
             ),
-          ),
-          const SizedBox(height: 2),
-          const Expanded(
-            child: Text('Nom du service service service',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-          ),
-          const Expanded(
+            const Expanded(
+                child: Align(
+              alignment: Alignment.centerLeft,
               child: Text('Prix',
-                  style: TextStyle(fontSize: 15, color: Colors.black))),
-        ],
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  )),
+            )),
+          ],
+        ),
       ),
     );
