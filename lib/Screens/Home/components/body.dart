@@ -1,4 +1,6 @@
 import 'package:ap4_askhim/Screens/Home/home_screen.dart';
+import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
+import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +10,14 @@ class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
 }
+
+List<IconData> category_list = [
+  Icons.add,
+  Icons.delete,
+  Icons.add,
+  Icons.delete,
+  Icons.add,
+];
 
 class _BodyState extends State<Body> {
   @override
@@ -39,9 +49,18 @@ class _BodyState extends State<Body> {
                           separatorBuilder: (context, _) => SizedBox(width: 8),
                           scrollDirection: Axis.horizontal,
                           itemCount: 10,
-                          itemBuilder: (context, index) => buildCard())),
+                          itemBuilder: (context, index) => buildCard(
+                              borderRadius: 15,
+                              width: 150,
+                              height: 150,
+                              linkImage:
+                                  'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                              titleCard: 'Nom du service lambda',
+                              subtitleCard: 'Prix',
+                              sizeTitle: 15,
+                              sizeSubtitle: 15))),
                   const Padding(
-                    padding: EdgeInsets.only(top: 15.0),
+                    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -51,7 +70,23 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                   ),
-                  buildCard(),
+                  Container(
+                      height: 150,
+                      child: ListView.separated(
+                          separatorBuilder: (context, _) => SizedBox(width: 8),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: category_list.length,
+                          itemBuilder: (context, index) => buildCardRounded(
+                              borderRadius: 15,
+                              width: 150,
+                              height: 150,
+                              linkImage:
+                                  'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                              titleCard: 'Nom du service lambda',
+                              subtitleCard: 'Prix',
+                              sizeTitle: 15,
+                              sizeSubtitle: 15,
+                              icon: Icon(category_list[index])))),
                   const Padding(
                     padding: EdgeInsets.only(top: 15, bottom: 15),
                     child: Align(
@@ -63,7 +98,17 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                   ),
-                  buildCard(),
+                  buildCard(
+                    borderRadius: 15,
+                    width: 150,
+                    height: 150,
+                    linkImage:
+                        'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                    titleCard: 'Nom du service lambda',
+                    subtitleCard: 'Prix',
+                    sizeTitle: 15,
+                    sizeSubtitle: 15,
+                  ),
                 ],
               ),
               SearchBar(),
@@ -74,45 +119,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
-Widget buildCard() => Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        width: 150,
-        height: 150,
-        child: Column(
-          children: [
-            AspectRatio(
-              aspectRatio: 4 / 3,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                    fit: BoxFit.cover,
-                  )),
-            ),
-            const SizedBox(height: 2),
-            const Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Nom du service un peui plus logn que da',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-            ),
-            const Expanded(
-                child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Prix',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black,
-                  )),
-            )),
-          ],
-        ),
-      ),
-    );
