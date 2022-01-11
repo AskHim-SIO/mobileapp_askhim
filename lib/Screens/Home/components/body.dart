@@ -44,21 +44,23 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   Container(
-                      height: 150,
-                      child: ListView.separated(
-                          separatorBuilder: (context, _) => SizedBox(width: 8),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (context, index) => buildCard(
-                              borderRadius: 15,
-                              width: 150,
-                              height: 150,
-                              linkImage:
-                                  'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                              titleCard: 'Nom du service lambda',
-                              subtitleCard: 'Prix',
-                              sizeTitle: 15,
-                              sizeSubtitle: 15))),
+                    height: 150,
+                    child: ListView.separated(
+                      separatorBuilder: (context, _) => SizedBox(width: 8),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (context, index) => buildCard(
+                          borderRadius: 15,
+                          width: 150,
+                          height: 150,
+                          linkImage:
+                              'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                          titleCard: 'Nom du service lambda',
+                          subtitleCard: 'Prix',
+                          sizeTitle: 15,
+                          sizeSubtitle: 15),
+                    ),
+                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                     child: Align(
@@ -71,24 +73,26 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   Container(
-                      height: 150,
-                      child: ListView.separated(
-                          separatorBuilder: (context, _) => SizedBox(width: 8),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: category_list.length,
-                          itemBuilder: (context, index) => buildCardRounded(
-                              borderRadius: 15,
-                              width: 150,
-                              height: 150,
-                              linkImage:
-                                  'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                              titleCard: 'Nom du service lambda',
-                              subtitleCard: 'Prix',
-                              sizeTitle: 15,
-                              sizeSubtitle: 15,
-                              icon: Icon(category_list[index])))),
+                    height: 150,
+                    child: ListView.separated(
+                      separatorBuilder: (context, _) => SizedBox(width: 8),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: category_list.length,
+                      itemBuilder: (context, index) => buildCardRounded(
+                        borderRadius: 15,
+                        width: 150,
+                        height: 150,
+                        linkImage:
+                            'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                        titleCard: 'Nom du service lambda',
+                        sizeTitle: 15,
+                        sizeSubtitle: 15,
+                        icon: Icon(category_list[index]),
+                      ),
+                    ),
+                  ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 15),
+                    padding: EdgeInsets.only(bottom: 15),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -98,16 +102,35 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                   ),
-                  buildCard(
-                    borderRadius: 15,
-                    width: 150,
-                    height: 150,
-                    linkImage:
-                        'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                    titleCard: 'Nom du service lambda',
-                    subtitleCard: 'Prix',
-                    sizeTitle: 15,
-                    sizeSubtitle: 15,
+                  //TODO add infinite scroll
+                  Container(
+                    height: size.width * 5.05,
+                    child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            itemCount: 20,
+                            itemBuilder: (context, index) => buildCard(
+                                borderRadius: 15,
+                                width: double.infinity,
+                                height: double.infinity,
+                                linkImage:
+                                    'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                                titleCard: 'Nom du service lambda',
+                                subtitleCard: 'Prix',
+                                sizeTitle: 15,
+                                sizeSubtitle: 15),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 10,
+                              crossAxisCount: 2,
+                            ),
+                          ),
+                        ]),
                   ),
                 ],
               ),

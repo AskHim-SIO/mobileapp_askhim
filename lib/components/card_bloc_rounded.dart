@@ -4,16 +4,15 @@ import '../constants.dart';
 
 class buildCardRounded extends StatelessWidget {
   final double borderRadius, width, height, sizeTitle, sizeSubtitle;
-  final String linkImage, titleCard, subtitleCard;
+  final String linkImage, titleCard;
   final Icon icon;
-  buildCardRounded({
+  const buildCardRounded({
     Key? key,
     required this.borderRadius,
     required this.height,
     required this.width,
     required this.linkImage,
     required this.titleCard,
-    required this.subtitleCard,
     required this.sizeTitle,
     required this.sizeSubtitle,
     required this.icon,
@@ -21,44 +20,29 @@ class buildCardRounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        width: width,
-        height: height,
-        child: Align(
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundColor: greyInput,
-                radius: 30,
-                child: icon,
-              ),
-              const SizedBox(height: 2),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(titleCard,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: sizeTitle,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
-              ),
-              Expanded(
-                  child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(subtitleCard,
-                    style: TextStyle(
-                      fontSize: sizeSubtitle,
-                      color: Colors.black,
-                    )),
-              )),
-            ],
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: width,
+      height: height,
+      child: Column(
+        children: [
+          SizedBox(height: size.width * 0.07),
+          CircleAvatar(
+            backgroundColor: greyInput,
+            radius: 30,
+            child: icon,
           ),
-        ),
+          SizedBox(height: size.width * 0.04),
+          Expanded(
+            child: Text(titleCard,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: sizeTitle,
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+        ],
       ),
     );
   }
