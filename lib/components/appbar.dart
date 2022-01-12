@@ -18,12 +18,24 @@ class _appBar extends State<appBar> {
   int _selectedIndex = 0;
 
   final screens = [
-    HomeScreen(),
-    SearchScreen(),
-    AddScreen(),
-    MessageScreen(),
-    ProfileScreen(),
+    HomeScreen(
+      key: PageStorageKey('Home page'),
+    ),
+    SearchScreen(
+      key: PageStorageKey('Search page'),
+    ),
+    AddScreen(
+      key: PageStorageKey('Add page'),
+    ),
+    MessageScreen(
+      key: PageStorageKey('Message page'),
+    ),
+    ProfileScreen(
+      key: PageStorageKey('Profile page'),
+    ),
   ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
 
   void _onItemTapped(int index) {
     setState(() {
@@ -35,7 +47,7 @@ class _appBar extends State<appBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: screens[_selectedIndex],
+      body: PageStorage(child: screens[_selectedIndex], bucket: bucket),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
