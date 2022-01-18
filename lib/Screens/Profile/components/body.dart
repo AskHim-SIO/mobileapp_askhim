@@ -10,7 +10,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-var selectedIndex = 0;
+var selected_Index = 0;
 
 class _BodyState extends State<Body> {
   bool visibilityService = true;
@@ -140,11 +140,13 @@ class _BodyState extends State<Body> {
             inactiveFgColor: greyInputText,
             borderColor: [greyInput],
             borderWidth: 2,
-            initialLabelIndex: 1,
+            initialLabelIndex: selected_Index,
             totalSwitches: 2,
             labels: ['Services', 'Evaluation'],
             radiusStyle: true,
-            onToggle: (index) {},
+            onToggle: (index) {
+              _changed(index);
+            },
           ),
           visibilityService ? Text('Services') : Text('Evaluation')
         ],
