@@ -31,9 +31,9 @@ class _BodyState extends State<Body> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.15),
+                  SizedBox(height: size.height * 0.13),
                   const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -62,7 +62,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                    padding: EdgeInsets.only(top: 15.0, bottom: 6.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -75,16 +75,16 @@ class _BodyState extends State<Body> {
                   Container(
                     height: 150,
                     child: ListView.separated(
-                      separatorBuilder: (context, _) => SizedBox(width: 8),
+                      separatorBuilder: (context, _) => SizedBox(width: 1),
                       scrollDirection: Axis.horizontal,
                       itemCount: category_list.length,
                       itemBuilder: (context, index) => buildCardRounded(
                         borderRadius: 15,
-                        width: 150,
-                        height: 150,
+                        width: 110,
+                        height: 110,
                         linkImage:
                             'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                        titleCard: 'Nom du service lambda',
+                        titleCard: 'Service',
                         sizeTitle: 15,
                         sizeSubtitle: 15,
                         icon: Icon(category_list[index]),
@@ -92,7 +92,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: 15, top: 6),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
