@@ -1,7 +1,10 @@
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
 import 'chat_input_filed.dart';
+import 'message.dart';
+import 'text_message.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -9,8 +12,13 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) => Text("yo tout le monde !"),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: ListView.builder(
+              itemCount: demeChatMessages.length,
+              itemBuilder: (context, index) =>
+                  Message(message: demeChatMessages[index]),
+            ),
           ),
         ),
         ChatInputField(),
