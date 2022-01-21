@@ -9,13 +9,13 @@ import 'Screens/Login/login_screen.dart';
 import 'components/appbar.dart';
 import 'model/token_models.dart';
 
-void main() {
+void main() async {
   // avoid rotation screen
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   //
-  Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter(TokenModelAdapter());
 
   runApp(MyApp());
@@ -33,16 +33,8 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder<Box>(
         future: Hive.openBox('tokenBox'),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else {
-              if (snapshot.data?.get('Token') != null) {
-                return appBar();
-              } else {
-                return LoginScreen();
-              }
-            }
+          if (snapshot.data?.get('Token') != null) {
+            return appBar();
           } else {
             return WelcomeScreen();
           }

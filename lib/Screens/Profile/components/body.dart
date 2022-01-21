@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -13,6 +14,12 @@ class Body extends StatelessWidget {
             sizeButton: 0.8,
             press: () {
               Hive.box('tokenBox').clear();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WelcomeScreen(),
+                ),
+              );
             }),
       ),
     );
