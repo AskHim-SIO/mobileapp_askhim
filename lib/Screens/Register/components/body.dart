@@ -68,18 +68,18 @@ class _Body extends State<Body> {
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.02),
-            const InputFormMail(
-              hintText: 'Email',
-              labelText: 'Email',
-              borderRadius: 11,
-            ),
+            // const InputFormMail(
+            //   hintText: 'Email',
+            //   labelText: 'Email',
+            //   borderRadius: 11,
+            // ),
             SizedBox(height: size.width * 0.02),
-            InputFormPassword(
-              controller: emailController,
-              hintText: 'Mot de passe',
-              labelText: 'Mot de passe',
-              borderRadius: 11,
-            ),
+            // InputFormPassword(
+            //   controller: emailController,
+            //   hintText: 'Mot de passe',
+            //   labelText: 'Mot de passe',
+            //   borderRadius: 11,
+            // ),
             SizedBox(height: size.width * 0.02),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
