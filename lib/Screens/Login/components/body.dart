@@ -1,15 +1,13 @@
 import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
-import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
+import 'package:ap4_askhim/services/auth_service.dart';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import '../../../constants.dart';
+import 'package:hive/hive.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -20,6 +18,7 @@ class _Body extends State<Body> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  var box = Hive.openBox('tokenBox');
 
   @override
   void dispose() {
@@ -49,30 +48,45 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
+            Center(child: Text('hello')),
             SizedBox(height: size.width * 0.25),
-            const InputFormMail(
+            InputFormMail(
+              controller: emailController,
               hintText: 'Email',
               labelText: 'Email',
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.04),
             InputFormPassword(
-              controller: emailController,
+              controller: passwordController,
               hintText: 'Mot de passe',
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
-              text: 'Se connecter',
-              sizeButton: 0.8,
-              press: () {
-                if (_formKey.currentState!.validate()) {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => appBar()));
-                }
-              },
-            ),
+                text: 'Se connecter',
+                sizeButton: 0.8,
+                press: () {
+                  if (_formKey.currentState!.validate()) {
+                    AuthService.authenticate(
+                            emailController.text, passwordController.text)
+                        .then((val) {
+                      if (val == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => appBar(),
+                          ),
+                        );
+                        //TODO add mesage error
+                      } else {
+                        print('erreur');
+                      }
+                    });
+                  }
+                  ;
+                }),
             SizedBox(height: size.width * 0.01),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
