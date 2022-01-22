@@ -55,10 +55,10 @@ class _InputFormPasswordState extends State<InputFormPassword> {
           ),
         ),
         validator: (v) {
-          if (v!.isRightPassword) {
+          if (v!.isNotEmpty) {
             return null;
           } else {
-            return 'Le mot de passe fourni est incorrect';
+            return 'Veuillez renseignez un mot de passe valide';
           }
         },
         keyboardType: TextInputType.visiblePassword,

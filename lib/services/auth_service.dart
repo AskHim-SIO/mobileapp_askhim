@@ -28,19 +28,24 @@ class AuthService extends BaseService {
     }
   }
 
-  static Future<bool?> signUp(var payload) async {
+  static Future<bool?> signUp(String dateNaiss, String email, String firstname,
+      String name, String password) async {
+    var payload = json.encode({
+      'dateNaiss': dateNaiss,
+      'email': email,
+      'firstname': firstname,
+      'name': name,
+      'password': password
+    });
+    print(payload);
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/user/create-user',
         method: 'POST',
         body: payload);
-
-    if (response?.statusCode == 200) {
+    print(response!.body);
+    if (response.statusCode == 201) {
       return await authenticate(
           json.decode(payload)['email'], json.decode(payload)['password']);
-    } else {
-      Map<String, dynamic> responseMap = json.decode(response!.body);
-      print(responseMap);
-      throw (responseMap['message']);
     }
   }
 
