@@ -6,16 +6,19 @@ import '../constants.dart';
 class InputBasicForm extends StatelessWidget {
   final String hintText, labelText;
   final double borderRadius;
-  const InputBasicForm({
+  final TextEditingController controller;
+  InputBasicForm({
     Key? key,
     required this.hintText,
     required this.labelText,
+    required this.controller,
     required this.borderRadius,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: greyInput,
@@ -39,7 +42,7 @@ class InputBasicForm extends StatelessWidget {
         ),
       ),
       validator: (v) {
-        if (v!.isValidName) {
+        if (v!.isNotEmpty) {
           return null;
         } else {
           return 'Veuillez entrer des informations valides';
