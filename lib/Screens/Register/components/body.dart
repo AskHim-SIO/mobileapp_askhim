@@ -83,10 +83,10 @@ class _Body extends State<Body> {
                     minTime: DateTime(1980, 1, 1),
                     maxTime: DateTime(2022, 12, 31), onChanged: (date) {
                   dateController.text =
-                      '${date.year}-${date.day}-${date.month}';
+                      '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
                 }, onConfirm: (date) {
                   dateController.text =
-                      '${date.year}-${date.day}-${date.month}';
+                      '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
                 }, currentTime: DateTime.now(), locale: LocaleType.fr);
               },
               decoration: InputDecoration(
