@@ -1,13 +1,18 @@
+import 'package:ap4_askhim/Screens/Login/login_screen.dart';
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
+import 'package:ap4_askhim/components/appbar.dart';
+import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:ap4_askhim/components/input_basic_form.dart';
 import 'package:ap4_askhim/components/input_date_form.dart';
 import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
+import 'package:ap4_askhim/services/auth_service.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../../constants.dart';
 
@@ -19,7 +24,11 @@ class Body extends StatefulWidget {
 class _Body extends State<Body> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final dateController = TextEditingController();
+  final nameController = TextEditingController();
+  final subNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  var mailAlreadyToken = false;
 
   @override
   void dispose() {
@@ -50,45 +59,128 @@ class _Body extends State<Body> {
               ),
             ),
             SizedBox(height: size.width * 0.10),
-            const InputBasicForm(
+            InputBasicForm(
+              controller: nameController,
               hintText: 'Nom',
               labelText: 'Nom',
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.02),
-            const InputBasicForm(
+            InputBasicForm(
+              controller: subNameController,
               hintText: 'Prénom',
               labelText: 'Prénom',
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.02),
-            MyWidget(
-              hintText: 'Date de naissance (jj / mm / aaaa)',
-              labelText: 'Date de naissance',
-              borderRadius: 11,
+            TextFormField(
+              controller: dateController,
+              enableInteractiveSelection: false,
+              onTap: () {
+                // Below line stops keyboard from appearing
+                FocusScope.of(context).requestFocus(new FocusNode());
+
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(1980, 1, 1),
+                    maxTime: DateTime(2022, 12, 31), onChanged: (date) {
+                  dateController.text =
+                      '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                }, onConfirm: (date) {
+                  dateController.text =
+                      '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                }, currentTime: DateTime.now(), locale: LocaleType.fr);
+              },
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: greyInput,
+                hintText: "Date de naissance",
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(11),
+                  borderSide: const BorderSide(color: greyInputBorder),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(11),
+                  borderSide: const BorderSide(color: greyInputBorder),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(11),
+                  borderSide: const BorderSide(color: greyInputBorder),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(11),
+                  borderSide: const BorderSide(color: greyInputBorder),
+                ),
+              ),
+              validator: (v) {
+                if (v!.isNotEmpty) {
+                  return null;
+                } else {
+                  return 'Veuillez renseignez votre date de naissance';
+                }
+              },
             ),
             SizedBox(height: size.width * 0.02),
-            const InputFormMail(
+            InputFormMail(
+              controller: emailController,
               hintText: 'Email',
               labelText: 'Email',
               borderRadius: 11,
             ),
             SizedBox(height: size.width * 0.02),
             InputFormPassword(
-              controller: emailController,
+              controller: passwordController,
               hintText: 'Mot de passe',
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.width * 0.04),
+            Center(
+              child: Visibility(
+                visible: mailAlreadyToken,
+                child: Text('Cet email est déjà pris, veuillez vous connecter',
+                    style: TextStyle(color: Colors.red)),
+              ),
+            ),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
               text: 'S\'inscrire',
               sizeButton: 0.8,
               press: () {
+                if (emailController.text.isEmpty ||
+                    passwordController.text.isEmpty ||
+                    dateController.text.isEmpty ||
+                    nameController.text.isEmpty ||
+                    subNameController.text.isEmpty) {
+                  setState(() {
+                    mailAlreadyToken = false;
+                  });
+                }
                 if (_formKey.currentState!.validate()) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                  AuthService.signUp(
+                    dateController.text,
+                    emailController.text,
+                    nameController.text,
+                    subNameController.text,
+                    passwordController.text,
+                  ).then(
+                    (val) {
+                      print(val);
+                      if (val == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => appBar(),
+                          ),
+                        );
+                      } else if (val == false) {
+                        setState(() {
+                          mailAlreadyToken = true;
+                        });
+                      }
+                      ;
+                    },
+                  );
                 }
               },
             ),
@@ -106,7 +198,7 @@ class _Body extends State<Body> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RegisterScreen(),
+                        builder: (context) => LoginScreen(),
                       ),
                     );
                   },

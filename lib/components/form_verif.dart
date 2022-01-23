@@ -26,7 +26,7 @@ extension extString on String {
   }
 
   bool get isRightPassword {
-    final password = RegExp('test123');
+    final password = RegExp('');
     return password.hasMatch(this);
   }
 }
