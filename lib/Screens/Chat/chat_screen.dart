@@ -1,7 +1,7 @@
+import 'package:ap4_askhim/Screens/Chat/components/body.dart';
 import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
-import 'components/body.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);

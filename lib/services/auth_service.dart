@@ -23,7 +23,7 @@ class AuthService extends BaseService {
       var u = box.get('Token');
       print(u.token);
       return true;
-    } else {
+    } else if (response.statusCode == 401) {
       return false;
     }
   }
@@ -46,6 +46,8 @@ class AuthService extends BaseService {
     if (response.statusCode == 201) {
       return await authenticate(
           json.decode(payload)['email'], json.decode(payload)['password']);
+    } else if (response.statusCode == 409) {
+      return false;
     }
   }
 

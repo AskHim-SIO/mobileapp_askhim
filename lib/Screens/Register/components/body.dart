@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/Screens/Login/login_screen.dart';
 import 'package:ap4_askhim/Screens/Register/register_screen.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/components/appbar.dart';
@@ -27,6 +28,7 @@ class _Body extends State<Body> {
   final nameController = TextEditingController();
   final subNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  var mailAlreadyToken = false;
 
   @override
   void dispose() {
@@ -132,12 +134,28 @@ class _Body extends State<Body> {
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.width * 0.04),
+            Center(
+              child: Visibility(
+                visible: mailAlreadyToken,
+                child: Text('Cet email est déjà pris, veuillez vous connecter',
+                    style: TextStyle(color: Colors.red)),
+              ),
+            ),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
               text: 'S\'inscrire',
               sizeButton: 0.8,
               press: () {
+                if (emailController.text.isEmpty ||
+                    passwordController.text.isEmpty ||
+                    dateController.text.isEmpty ||
+                    nameController.text.isEmpty ||
+                    subNameController.text.isEmpty) {
+                  setState(() {
+                    mailAlreadyToken = false;
+                  });
+                }
                 if (_formKey.currentState!.validate()) {
                   AuthService.signUp(
                     dateController.text,
@@ -145,16 +163,24 @@ class _Body extends State<Body> {
                     nameController.text,
                     subNameController.text,
                     passwordController.text,
-                  ).then((val) {
-                    if (val == true) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => appBar(),
-                        ),
-                      );
-                    }
-                  });
+                  ).then(
+                    (val) {
+                      print(val);
+                      if (val == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => appBar(),
+                          ),
+                        );
+                      } else if (val == false) {
+                        setState(() {
+                          mailAlreadyToken = true;
+                        });
+                      }
+                      ;
+                    },
+                  );
                 }
               },
             ),
@@ -172,7 +198,7 @@ class _Body extends State<Body> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RegisterScreen(),
+                        builder: (context) => LoginScreen(),
                       ),
                     );
                   },

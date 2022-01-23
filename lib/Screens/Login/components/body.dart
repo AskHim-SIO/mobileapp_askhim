@@ -19,6 +19,7 @@ class _Body extends State<Body> {
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   var box = Hive.openBox('tokenBox');
+  var incorrect = false;
 
   @override
   void dispose() {
@@ -48,7 +49,6 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
-            Center(child: Text('hello')),
             SizedBox(height: size.width * 0.25),
             InputFormMail(
               controller: emailController,
@@ -63,11 +63,25 @@ class _Body extends State<Body> {
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
+            SizedBox(height: size.width * 0.02),
+            Center(
+              child: Visibility(
+                visible: incorrect,
+                child: Text('Email ou mot de passe incorrect',
+                    style: TextStyle(color: Colors.red)),
+              ),
+            ),
             SizedBox(height: size.width * 0.14),
             RoundedButton(
                 text: 'Se connecter',
                 sizeButton: 0.8,
                 press: () {
+                  if (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty) {
+                    setState(() {
+                      incorrect = false;
+                    });
+                  }
                   if (_formKey.currentState!.validate()) {
                     AuthService.authenticate(
                             emailController.text, passwordController.text)
@@ -81,7 +95,9 @@ class _Body extends State<Body> {
                         );
                         //TODO add mesage error
                       } else {
-                        print('erreur');
+                        setState(() {
+                          incorrect = true;
+                        });
                       }
                     });
                   }

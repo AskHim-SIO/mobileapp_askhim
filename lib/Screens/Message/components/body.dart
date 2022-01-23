@@ -1,28 +1,36 @@
+import 'package:ap4_askhim/Screens/Chat/chat_screen.dart';
+import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/constants.dart';
-import 'package:ap4_askhim/models/ChatMessage.dart';
+import 'package:ap4_askhim/models/message.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'chat_input_filed.dart';
-import 'message.dart';
-import 'text_message.dart';
+import 'message_card.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+          child: Row(
+        children: [
+          Expanded(
             child: ListView.builder(
-              itemCount: demeChatMessages.length,
-              itemBuilder: (context, index) =>
-                  Message(message: demeChatMessages[index]),
+              itemCount: chatsData.length,
+              itemBuilder: (context, index) => ChatCard(
+                message: chatsData[index],
+                press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(),
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-        ChatInputField(),
-      ],
+        ],
+      ),),
     );
   }
 }

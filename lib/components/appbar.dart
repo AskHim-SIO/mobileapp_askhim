@@ -1,4 +1,5 @@
 import 'package:ap4_askhim/Screens/Add/add_screen.dart';
+import 'package:ap4_askhim/Screens/Chat/chat_screen.dart';
 import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/Screens/Search/search_screen.dart';
