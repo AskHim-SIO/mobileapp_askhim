@@ -1,5 +1,7 @@
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
+import 'package:ap4_askhim/models/userInfo.dart';
+import 'package:ap4_askhim/services/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:hive/hive.dart';
@@ -17,6 +19,13 @@ var selected_Index = 0;
 class _BodyState extends State<Body> {
   bool visibilityService = true;
   bool visibilityEvaluation = false;
+  Future<Map<String, dynamic>>? _userInfo;
+
+  @override
+  initState() {
+    _userInfo = ProfileService.getUserInfo();
+    super.initState();
+  }
 
   //methode pour afficher selon la toggle bar
   void _changed(int index) {
@@ -111,23 +120,48 @@ class _BodyState extends State<Body> {
                     child: CircleAvatar(
                       radius: size.width * 0.21,
                       backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: size.width * 0.2,
-                        backgroundColor: Colors.white,
-                        backgroundImage: const NetworkImage(
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80'),
-                      ),
+                      child: FutureBuilder<Map<String, dynamic>>(
+                          future: _userInfo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!['profilPicture'] == null) {
+                                return CircleAvatar(
+                                  radius: size.width * 0.2,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: const NetworkImage(
+                                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
+                                );
+                              } else {
+                                return CircleAvatar(
+                                    radius: size.width * 0.2,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: NetworkImage(
+                                        snapshot.data!['profilPicture']));
+                              }
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          }),
                     ),
                   ),
                 ),
               ],
             ),
-            const Padding(
+            Padding(
               padding: const EdgeInsets.only(top: 80),
-              child: Text(
-                'Victoria Robertson',
-                style: (TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-              ),
+              child: FutureBuilder<Map<String, dynamic>>(
+                  future: _userInfo,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data!['name']} ${snapshot.data!['firstname']}',
+                        style: (TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold)),
+                      );
+                    } else {
+                      return Text('t');
+                    }
+                  }),
             ),
             SizedBox(height: size.width * 0.05),
             ToggleSwitch(
@@ -147,7 +181,7 @@ class _BodyState extends State<Body> {
               labels: ['Services', 'Evaluation'],
               radiusStyle: true,
               onToggle: (index) {
-                _changed(index);
+                _changed(index!);
               },
             ),
             visibilityService
