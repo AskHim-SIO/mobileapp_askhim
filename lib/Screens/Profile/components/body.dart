@@ -159,7 +159,7 @@ class _BodyState extends State<Body> {
                             fontSize: 30, fontWeight: FontWeight.bold)),
                       );
                     } else {
-                      return Text('t');
+                      return Text('');
                     }
                   }),
             ),
