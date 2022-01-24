@@ -56,6 +56,7 @@ dev_dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.2
   fluttertoast: ^8.0.8
+  liquid_pull_to_refresh: ^3.0.1
   path_provider: ^2.0.8
 
 
