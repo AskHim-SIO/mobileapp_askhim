@@ -2,6 +2,7 @@ import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
+import 'package:ap4_askhim/models/homeCategorieService.dart';
 import 'package:ap4_askhim/models/homeRecentService.dart';
 import 'package:ap4_askhim/models/homeShuffleService.dart';
 import 'package:ap4_askhim/services/home_service.dart';
@@ -15,21 +16,23 @@ class Body extends StatefulWidget {
 }
 
 List<IconData> category_list = [
-  Icons.add,
-  Icons.delete,
-  Icons.add,
-  Icons.delete,
-  Icons.add,
+  Icons.airport_shuttle,
+  Icons.shopping_bag,
+  Icons.auto_stories,
+  Icons.sports_football,
+  Icons.cleaning_services
 ];
 
 class _BodyState extends State<Body> {
   Future<List<RecentServices?>?>? _recentServices;
   Future<List<ShuffleService?>?>? _shuffleServices;
+  Future<List<CategorieService?>?>? _categorieServices;
 
   @override
   initState() {
     _recentServices = HomeService.getRecentService();
     _shuffleServices = HomeService.getShuffleService();
+    _categorieServices = HomeService.getCategoriesServices();
     super.initState();
   }
 
@@ -99,21 +102,34 @@ class _BodyState extends State<Body> {
                   ),
                   Container(
                     height: 150,
-                    child: ListView.separated(
-                      separatorBuilder: (context, _) => SizedBox(width: 8),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: category_list.length,
-                      itemBuilder: (context, index) => buildCardRounded(
-                        borderRadius: 15,
-                        width: 150,
-                        height: 150,
-                        linkImage:
-                            'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                        titleCard: 'Nom de categorie lambda',
-                        sizeTitle: 15,
-                        sizeSubtitle: 15,
-                        icon: Icon(category_list[index]),
-                      ),
+                    child: FutureBuilder<List<CategorieService?>?>(
+                      future: _categorieServices,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.separated(
+                              separatorBuilder: (context, _) =>
+                                  SizedBox(width: 8),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                var categories = snapshot.data![index];
+
+                                return buildCardRounded(
+                                  borderRadius: 15,
+                                  width: 100,
+                                  height: 100,
+                                  linkImage:
+                                      'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                                  titleCard: '${categories!.libelle}',
+                                  sizeTitle: 15,
+                                  sizeSubtitle: 15,
+                                  icon: Icon(category_list[index]),
+                                );
+                              });
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
                     ),
                   ),
                   const Padding(
@@ -166,7 +182,8 @@ class _BodyState extends State<Body> {
                                     ),
                                   );
                                 } else {
-                                  return CircularProgressIndicator();
+                                  return Center(
+                                      child: CircularProgressIndicator());
                                 }
                               })
                         ]),
