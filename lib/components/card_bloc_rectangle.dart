@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class buildCard extends StatelessWidget {
   final double borderRadius, width, height, sizeTitle, sizeSubtitle;
-  final String linkImage, titleCard, subtitleCard;
+  final String linkImage, titleCard, prix;
   buildCard({
     Key? key,
     required this.borderRadius,
@@ -10,7 +10,7 @@ class buildCard extends StatelessWidget {
     required this.width,
     required this.linkImage,
     required this.titleCard,
-    required this.subtitleCard,
+    required this.prix,
     required this.sizeTitle,
     required this.sizeSubtitle,
   }) : super(key: key);
@@ -48,7 +48,7 @@ class buildCard extends StatelessWidget {
             Expanded(
                 child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(subtitleCard,
+              child: Text(prix,
                   style: TextStyle(
                     fontSize: sizeSubtitle,
                     color: Colors.black,

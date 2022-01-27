@@ -12,6 +12,7 @@ class AuthService extends BaseService {
 
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/auth/login',
+        method: 'POST',
         body: payload);
 
     if (response!.statusCode == 200 && response.body != '') {
