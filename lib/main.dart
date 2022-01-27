@@ -1,4 +1,3 @@
-import 'package:ap4_askhim/model/search_history_models.dart';
 import 'package:flutter/material.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/constants.dart';
@@ -15,8 +14,6 @@ void main() async {
   //
   await Hive.initFlutter();
   Hive.registerAdapter(TokenModelAdapter());
-  Hive.registerAdapter(SearchHistoryModelAdapter());
-  Hive.openBox('searchBox');
   runApp(MyApp());
 }
 
