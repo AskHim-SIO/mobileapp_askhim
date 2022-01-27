@@ -1,12 +1,5 @@
-import 'package:ap4_askhim/model/search_history_models.dart';
-
-import 'package:ap4_askhim/model/token_models.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-
-import 'package:hive/hive.dart';
 
 import '../constants.dart';
 
@@ -18,7 +11,12 @@ class SearchBar extends StatefulWidget {
 class _HomePageState extends State<SearchBar> {
   static const historyLength = 5;
 
-  final List<String> _searchHistory = [];
+  List<String> _searchHistory = [
+    'fuchsia',
+    'flutter',
+    'widgets',
+    'resocoder',
+  ];
 
   List<String> filteredSearchHistory = [];
 
@@ -36,23 +34,15 @@ class _HomePageState extends State<SearchBar> {
     }
   }
 
-  void addSearchTerm(String term) async {
+  void addSearchTerm(String term) {
     if (_searchHistory.contains(term)) {
       putSearchTermFirst(term);
-
       return;
     }
 
+    _searchHistory.add(term);
     if (_searchHistory.length > historyLength) {
       _searchHistory.removeRange(0, _searchHistory.length - historyLength);
-    } else {
-      _searchHistory.add(term);
-
-      var box = await Hive.openBox('searchBox');
-
-      addToList(box, _searchHistory);
-
-      fillList();
     }
 
     filteredSearchHistory = filterSearchTerms(filter: null);
@@ -60,47 +50,26 @@ class _HomePageState extends State<SearchBar> {
 
   void deleteSearchTerm(String term) {
     _searchHistory.removeWhere((t) => t == term);
-
     filteredSearchHistory = filterSearchTerms(filter: null);
-  }
-
-  Future<void> fillList() async {
-    var box = await Hive.openBox('searchBox');
-
-    print(box.get('keyWord').searchWord);
-
-    _searchHistory.add(box.get('keyWord').searchWord);
-  }
-
-  void addToList(Box<dynamic> box, List<String> searchTerms) {
-    var keyWord = SearchHistoryModel(searchWord: searchTerms);
-
-    _searchHistory.add(box.get('keyWord').searchWord[0]);
-
-//print('keyword ${keyWord.searchWord}');
   }
 
   void putSearchTermFirst(String term) {
     deleteSearchTerm(term);
-
     addSearchTerm(term);
   }
 
   FloatingSearchBarController? controller;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-
     controller = FloatingSearchBarController();
-
     filteredSearchHistory = filterSearchTerms(filter: null);
   }
 
   @override
   void dispose() {
     controller?.dispose();
-
     super.dispose();
   }
 
@@ -138,10 +107,8 @@ class _HomePageState extends State<SearchBar> {
         onSubmitted: (query) {
           setState(() {
             addSearchTerm(query);
-
             selectedTerm = query;
           });
-
           controller?.close();
         },
         builder: (context, transition) {
@@ -170,10 +137,8 @@ class _HomePageState extends State<SearchBar> {
                       onTap: () {
                         setState(() {
                           addSearchTerm(controller!.query);
-
                           selectedTerm = controller!.query;
                         });
-
                         controller?.close();
                       },
                     );
@@ -200,10 +165,8 @@ class _HomePageState extends State<SearchBar> {
                               onTap: () {
                                 setState(() {
                                   putSearchTermFirst(term);
-
                                   selectedTerm = term;
                                 });
-
                                 controller?.close();
                               },
                             ),
@@ -211,7 +174,6 @@ class _HomePageState extends State<SearchBar> {
                           .toList(),
                     );
                   }
-                  ;
                 },
               ),
             ),
@@ -253,6 +215,5 @@ class SearchResultsListView extends StatelessWidget {
         ),
       );
     }
-    ;
   }
 }
