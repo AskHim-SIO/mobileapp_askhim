@@ -575,7 +575,7 @@ packages:
     source: hosted
     version: "1.0.0"
   toggle_switch:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: toggle_switch
       url: "https://pub.dartlang.org"

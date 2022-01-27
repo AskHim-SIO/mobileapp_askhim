@@ -1,5 +1,6 @@
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
+import 'package:ap4_askhim/models/serviceByUser.dart';
 import 'package:ap4_askhim/models/userInfo.dart';
 import 'package:ap4_askhim/services/profile_service.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,12 @@ class _BodyState extends State<Body> {
   bool visibilityService = true;
   bool visibilityEvaluation = false;
   Future<Map<String, dynamic>>? _userInfo;
+  Future<List<ServiceByUser?>?>? _servicesByUser;
 
   @override
   initState() {
     _userInfo = ProfileService.getUserInfo();
+    _servicesByUser = ProfileService.getServicesByUser();
     super.initState();
   }
 
@@ -191,78 +194,101 @@ class _BodyState extends State<Body> {
                         physics: const NeverScrollableScrollPhysics(), // new
 
                         children: [
-                          ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const Divider(
-                              indent:
-                                  50, // empty space to the leading edge of divider.
-                              endIndent: 30,
-                            ),
-                            physics:
-                                const NeverScrollableScrollPhysics(), // new
+                          FutureBuilder<List<ServiceByUser?>?>(
+                            future: _servicesByUser,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return ListView.separated(
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const Divider(
+                                              indent:
+                                                  50, // empty space to the leading edge of divider.
+                                              endIndent: 30,
+                                            ),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(), // new
 
-                            shrinkWrap: true,
-                            itemCount: 20,
-                            itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 15.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Container(
-                                    width: size.width * 0.9,
-                                    height: size.height * 0.09,
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                            'assets/images/background_welcome.png',
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, top: 2, bottom: 2.0),
-                                          child: Container(
-                                            width: size.width * 0.75,
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'Nom du service',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      var service = snapshot.data![index];
+                                      return Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Container(
+                                              width: size.width * 0.9,
+                                              height: size.height * 0.09,
+                                              child: Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundImage: AssetImage(
+                                                      'assets/images/background_welcome.png',
                                                     ),
-                                                    Spacer(),
-                                                    Text(
-                                                      'Date',
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: greyInputText),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0,
+                                                            top: 2,
+                                                            bottom: 2.0),
+                                                    child: Container(
+                                                      width: size.width * 0.75,
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                '${service!.name}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Spacer(),
+                                                              Text(
+                                                                '${service.lieu.ville}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color:
+                                                                        greyInputText),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Spacer(),
+                                                          Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Text(
+                                                                  'some text some text some text some text some text',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12))),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                                Spacer(),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                        'some text some text some text some text some text',
-                                                        style: TextStyle(
-                                                            fontSize: 12))),
-                                              ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                                      );
+                                    });
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
                           ),
                         ]),
                   )
