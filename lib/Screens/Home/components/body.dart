@@ -1,4 +1,3 @@
-import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
@@ -39,7 +38,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       child: ListView(
         children: <Widget>[
           Stack(
@@ -76,15 +75,16 @@ class _BodyState extends State<Body> {
                                   width: 150,
                                   height: 150,
                                   linkImage:
-                                      'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                                  titleCard: service!.name,
+                                      service!.photos[0].libelle.toString(),
+                                  titleCard: service.name,
                                   prix: "${service.price}€",
                                   sizeTitle: 15,
                                   sizeSubtitle: 15);
                             },
                           );
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ),
@@ -120,14 +120,15 @@ class _BodyState extends State<Body> {
                                   height: 100,
                                   linkImage:
                                       'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                                  titleCard: '${categories!.libelle}',
+                                  titleCard: categories!.libelle,
                                   sizeTitle: 15,
                                   sizeSubtitle: 15,
                                   icon: Icon(category_list[index]),
                                 );
                               });
                         } else {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ),
@@ -166,9 +167,9 @@ class _BodyState extends State<Body> {
                                         borderRadius: 15,
                                         width: double.infinity,
                                         height: double.infinity,
-                                        linkImage:
-                                            'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                                        titleCard: service!.name,
+                                        linkImage: service!.photos[0].libelle
+                                            .toString(),
+                                        titleCard: service.name,
                                         prix: '${service.price}€',
                                         sizeTitle: 15,
                                         sizeSubtitle: 15,
@@ -182,7 +183,7 @@ class _BodyState extends State<Body> {
                                     ),
                                   );
                                 } else {
-                                  return Center(
+                                  return const Center(
                                       child: CircularProgressIndicator());
                                 }
                               })

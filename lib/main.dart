@@ -1,11 +1,9 @@
+import 'package:ap4_askhim/model/search_history_models.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'Screens/Home/home_screen.dart';
-import 'Screens/Login/login_screen.dart';
 import 'components/appbar.dart';
 import 'model/token_models.dart';
 
@@ -17,7 +15,8 @@ void main() async {
   //
   await Hive.initFlutter();
   Hive.registerAdapter(TokenModelAdapter());
-
+  Hive.registerAdapter(SearchHistoryModelAdapter());
+  Hive.openBox('searchBox');
   runApp(MyApp());
 }
 
