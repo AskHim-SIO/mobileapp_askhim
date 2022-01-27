@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
@@ -114,16 +115,27 @@ class _BodyState extends State<Body> {
                               itemBuilder: (context, index) {
                                 var categories = snapshot.data![index];
 
-                                return buildCardRounded(
-                                  borderRadius: 15,
-                                  width: 100,
-                                  height: 100,
-                                  linkImage:
-                                      'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
-                                  titleCard: categories!.libelle,
-                                  sizeTitle: 15,
-                                  sizeSubtitle: 15,
-                                  icon: Icon(category_list[index]),
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => CategoriePage(
+                                            id: categories!.id,
+                                            nom: categories.libelle),
+                                      ),
+                                    );
+                                  },
+                                  child: buildCardRounded(
+                                    borderRadius: 15,
+                                    width: 100,
+                                    height: 100,
+                                    linkImage:
+                                        'https://images.unsplash.com/photo-1641550435860-1370d80c36e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1705&q=80',
+                                    titleCard: categories!.libelle,
+                                    sizeTitle: 15,
+                                    sizeSubtitle: 15,
+                                    icon: Icon(category_list[index]),
+                                  ),
                                 );
                               });
                         } else {
