@@ -3,8 +3,10 @@ import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/Screens/Search/search_screen.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
+import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import '../constants.dart';
 
@@ -42,10 +44,20 @@ class _appBar extends State<appBar> {
 
   final PageStorageBucket bucket = PageStorageBucket();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _onItemTapped(int index) async {
+    var box = await Hive.openBox('tokenBox');
+    if (box.get('Token') == null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WelcomeScreen(),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
