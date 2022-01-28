@@ -1,5 +1,4 @@
 import 'package:ap4_askhim/Screens/Add/add_screen.dart';
-import 'package:ap4_askhim/Screens/Chat/chat_screen.dart';
 import 'package:ap4_askhim/Screens/Home/home_screen.dart';
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/Screens/Search/search_screen.dart';
@@ -11,29 +10,34 @@ import 'package:hive/hive.dart';
 
 import '../constants.dart';
 
+// ignore: camel_case_types
 class appBar extends StatefulWidget implements PreferredSizeWidget {
+  const appBar({Key? key}) : super(key: key);
+
   @override
   Size get preferredSize => const Size.fromHeight(1000);
+  @override
   _appBar createState() => _appBar();
 }
 
+// ignore: camel_case_types
 class _appBar extends State<appBar> {
   int _selectedIndex = 0;
 
   final screens = [
-    HomeScreen(
+    const HomeScreen(
       key: PageStorageKey('Home page'),
     ),
-    SearchScreen(
+    const SearchScreen(
       key: PageStorageKey('Search page'),
     ),
-    AddScreen(
+    const AddScreen(
       key: PageStorageKey('Add page'),
     ),
-    MessageScreen(
+    const MessageScreen(
       key: PageStorageKey('Message page'),
     ),
-    ProfileScreen(
+    const ProfileScreen(
       key: PageStorageKey('Profile page'),
     ),
   ];
