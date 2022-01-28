@@ -1,4 +1,6 @@
 import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
+import 'package:ap4_askhim/Screens/servicePage/components/product_data.dart';
+import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
@@ -71,16 +73,33 @@ class _BodyState extends State<Body> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               var service = snapshot.data![index];
-                              return buildCard(
-                                  borderRadius: 15,
-                                  width: 150,
-                                  height: 150,
-                                  linkImage:
-                                      service!.photos[0].libelle.toString(),
-                                  titleCard: service.name,
-                                  prix: "${service.price}€",
-                                  sizeTitle: 15,
-                                  sizeSubtitle: 15);
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => servicePage(
+                                                id: products[index]['id']
+                                                    .toString(),
+                                                name: products[index]['name'],
+                                                img: products[index]['img'],
+                                                price: products[index]['price'],
+                                                mulImg: products[index]
+                                                    ['mul_img'],
+                                                sizes: products[index]['sizes'],
+                                              )));
+                                },
+                                child: buildCard(
+                                    borderRadius: 15,
+                                    width: 150,
+                                    height: 150,
+                                    linkImage:
+                                        service!.photos[0].libelle.toString(),
+                                    titleCard: service.name,
+                                    prix: "${service.price}€",
+                                    sizeTitle: 15,
+                                    sizeSubtitle: 15),
+                              );
                             },
                           );
                         } else {
