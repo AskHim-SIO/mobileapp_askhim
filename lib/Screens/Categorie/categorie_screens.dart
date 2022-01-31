@@ -3,13 +3,14 @@ import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:auto_route/annotations.dart';
 
 class CategoriePage extends StatefulWidget {
   final int id;
   final String nom;
   CategoriePage({
     Key? key,
-    required this.id,
+    @PathParam() required this.id,
     required this.nom,
   }) : super(key: key);
 
