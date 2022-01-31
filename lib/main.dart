@@ -1,9 +1,9 @@
+import 'package:ap4_askhim/routes/router.dart';
+import 'package:ap4_askhim/routes/router.gr.dart';
 import 'package:flutter/material.dart';
-import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'components/appbar.dart';
 import 'model/token_models.dart';
 
 void main() async {
@@ -11,31 +11,26 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  //
   await Hive.initFlutter();
   Hive.registerAdapter(TokenModelAdapter());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final _appRouter = AppRouter(authGuard: AuthGuard());
+
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.black,
           fontFamily: 'Inter'),
-      home: FutureBuilder<Box>(
-        future: Hive.openBox('tokenBox'),
-        builder: (BuildContext context, snapshot) {
-          if (snapshot.data?.get('Token') != null) {
-            return appBar();
-          } else {
-            return WelcomeScreen();
-          }
-        },
-      ),
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
