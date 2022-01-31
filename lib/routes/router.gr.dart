@@ -16,22 +16,17 @@ import 'package:flutter/material.dart' as _i12;
 import '../components/appbar.dart' as _i1;
 import '../Screens/Add/add_screen.dart' as _i10;
 import '../Screens/Categorie/categorie_screens.dart' as _i8;
+import '../Screens/Chat/chat_screen.dart' as _i11;
 import '../Screens/Home/home_screen.dart' as _i7;
 import '../Screens/Login/login_screen.dart' as _i4;
-import '../Screens/Message/message_screen.dart' as _i11;
 import '../Screens/Profile/profile_screen.dart' as _i6;
 import '../Screens/Register/register_screen.dart' as _i3;
 import '../Screens/Search/search_screen.dart' as _i9;
 import '../Screens/Welcome/welcome_screens.dart' as _i2;
-import 'router.dart' as _i13;
 
 class AppRouter extends _i5.RootStackRouter {
-  AppRouter(
-      {_i12.GlobalKey<_i12.NavigatorState>? navigatorKey,
-      required this.authGuard})
+  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
       : super(navigatorKey);
-
-  final _i13.AuthGuard authGuard;
 
   @override
   final Map<String, _i5.PageFactory> pagesMap = {
@@ -89,9 +84,9 @@ class AppRouter extends _i5.RootStackRouter {
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i10.AddScreen());
     },
-    MessageScreen.name: (routeData) {
+    ChatScreen.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.MessageScreen());
+          routeData: routeData, child: const _i11.ChatScreen());
     },
     WelcomeScreen.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
@@ -101,9 +96,12 @@ class AppRouter extends _i5.RootStackRouter {
 
   @override
   List<_i5.RouteConfig> get routes => [
-        _i5.RouteConfig(AppBar.name, path: '/', guards: [
-          authGuard
-        ], children: [
+        _i5.RouteConfig(AppBar.name, path: '/', children: [
+          _i5.RouteConfig(WelcomeRouter.name,
+              path: 'welcome', parent: AppBar.name),
+          _i5.RouteConfig(RegisterRouter.name,
+              path: 'register', parent: AppBar.name),
+          _i5.RouteConfig(LoginRouter.name, path: 'login', parent: AppBar.name),
           _i5.RouteConfig(HomeRouter.name,
               path: 'home',
               parent: AppBar.name,
@@ -133,7 +131,7 @@ class AppRouter extends _i5.RootStackRouter {
               path: 'message',
               parent: AppBar.name,
               children: [
-                _i5.RouteConfig(MessageScreen.name,
+                _i5.RouteConfig(ChatScreen.name,
                     path: '', parent: MessageRouter.name)
               ]),
           _i5.RouteConfig(ProfileRouter.name,
@@ -143,10 +141,7 @@ class AppRouter extends _i5.RootStackRouter {
                 _i5.RouteConfig(WelcomeScreen.name,
                     path: 'welcome', parent: ProfileRouter.name)
               ])
-        ]),
-        _i5.RouteConfig(WelcomeRouter.name, path: 'welcome'),
-        _i5.RouteConfig(RegisterRouter.name, path: 'register'),
-        _i5.RouteConfig(LoginRouter.name, path: 'login')
+        ])
       ];
 }
 
@@ -280,11 +275,11 @@ class AddScreen extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.MessageScreen]
-class MessageScreen extends _i5.PageRouteInfo<void> {
-  const MessageScreen() : super(MessageScreen.name, path: '');
+/// [_i11.ChatScreen]
+class ChatScreen extends _i5.PageRouteInfo<void> {
+  const ChatScreen() : super(ChatScreen.name, path: '');
 
-  static const String name = 'MessageScreen';
+  static const String name = 'ChatScreen';
 }
 
 /// generated route for

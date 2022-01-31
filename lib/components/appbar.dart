@@ -1,9 +1,7 @@
 import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/routes/router.gr.dart';
-import 'package:ap4_askhim/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart' as welcome;
 
 class appBar extends StatelessWidget {
   const appBar({Key? key}) : super(key: key);
@@ -11,7 +9,7 @@ class appBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-        routes: [
+        routes: const [
           HomeRouter(),
           SearchRouter(),
           AddRouter(),
