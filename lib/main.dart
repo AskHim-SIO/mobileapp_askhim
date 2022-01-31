@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/routes/router.dart';
 import 'package:ap4_askhim/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:ap4_askhim/constants.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _appRouter = AppRouter();
+    final _appRouter = AppRouter(authGuard: AuthGuard());
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

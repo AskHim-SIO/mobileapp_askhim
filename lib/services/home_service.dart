@@ -14,8 +14,8 @@ class HomeService extends BaseService {
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/service/get-recent-services',
         method: 'GET');
-    print(response!.body);
-    if (response.statusCode == 200) {
+    //print(response!.body);
+    if (response!.statusCode == 200) {
       var jsonList = json.decode(response.body);
       for (var service in jsonList) {
         recentServices.add(RecentServices.fromJson(service));
@@ -48,8 +48,8 @@ class HomeService extends BaseService {
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/type/get-types',
         method: 'GET');
-    print(response!.body);
-    if (response.statusCode == 200) {
+    //print(response!.body);
+    if (response!.statusCode == 200) {
       var jsonList = json.decode(response.body);
       for (var service in jsonList) {
         categorieServices.add(CategorieService.fromJson(service));
