@@ -196,131 +196,123 @@ class _BodyState extends State<Body> {
                         physics: const NeverScrollableScrollPhysics(), // new
                         children: [
                           FutureBuilder<List<ServiceByUser?>?>(
-                              future: _servicesByUser,
-                              builder: (context, snapshot) {
+                            future: _servicesByUser,
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
                                 if (snapshot.hasData) {
-                                  if (snapshot.data!.isNotEmpty) {
-                                    return ListView.separated(
-                                        separatorBuilder:
-                                            (BuildContext context, int index) =>
-                                                const Divider(
-                                                  indent:
-                                                      50, // empty space to the leading edge of divider.
-                                                  endIndent: 30,
-                                                ),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(), // new
+                                  return ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              const Divider(
+                                                indent:
+                                                    50, // empty space to the leading edge of divider.
+                                                endIndent: 30,
+                                              ),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(), // new
 
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          var service = snapshot.data![index];
-                                          return Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: Container(
-                                                  width: size.width * 0.9,
-                                                  height: size.height * 0.09,
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                          service!
-                                                              .photos[0].libelle
-                                                              .toString(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, index) {
+                                        var service = snapshot.data![index];
+                                        return Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 15.0),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: Container(
+                                                width: size.width * 0.9,
+                                                height: size.height * 0.09,
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        service!
+                                                            .photos[0].libelle
+                                                            .toString(),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              top: 2,
+                                                              bottom: 2.0),
+                                                      child: Container(
+                                                        width:
+                                                            size.width * 0.75,
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  service.name,
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                const Spacer(),
+                                                                Text(
+                                                                  '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
+                                                                  ' '
+                                                                  '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color:
+                                                                          greyInputText),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const Spacer(),
+                                                            Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Text(
+                                                                    'some text some text some text some text some text',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            12))),
+                                                          ],
                                                         ),
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 8.0,
-                                                                top: 2,
-                                                                bottom: 2.0),
-                                                        child: Container(
-                                                          width:
-                                                              size.width * 0.75,
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  Text(
-                                                                    service
-                                                                        .name,
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                  const Spacer(),
-                                                                  Text(
-                                                                    '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
-                                                                    ' '
-                                                                    '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            12,
-                                                                        color:
-                                                                            greyInputText),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              const Spacer(),
-                                                              Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerLeft,
-                                                                  child: Text(
-                                                                      service
-                                                                          .description,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12))),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
-                                          );
-                                        });
-                                  } else {
-                                    return Center(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 38.0),
-                                        child: Container(
-                                            child: Text(
-                                                'Vous n\'avez encore posté aucun service',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                      ),
-                                    );
-                                  }
+                                          ),
+                                        );
+                                      });
                                 } else {
                                   return Container(
-                                    child: Column(
-                                      children: <Widget>[
-                                        SizedBox(height: size.width * 0.3),
-                                        Center(
-                                            child: CircularProgressIndicator())
-                                      ],
-                                    ),
-                                  );
+                                      child: Column(children: <Widget>[
+                                    SizedBox(height: size.width * 0.3),
+                                    Center(child: CircularProgressIndicator())
+                                  ]));
                                 }
-                              })
+                              } else {
+                                return Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 38.0),
+                                    child: Container(
+                                        child: Text(
+                                            'Vous n\'avez encore posté aucun service',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold))),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ]),
                   )
                 : Padding(
