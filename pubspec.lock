@@ -542,6 +542,7 @@ packages:
     source: hosted
     version: "2.0.5"
 <<<<<<< HEAD
+<<<<<<< HEAD
   pedantic:
     dependency: transitive
     description:
@@ -556,6 +557,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+=======
+>>>>>>> c12d379 (some change)
 =======
 >>>>>>> c12d379 (some change)
   platform:
