@@ -3,7 +3,6 @@ import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/models/homeCategorieService.dart';
 import 'package:ap4_askhim/services/home_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Body extends StatefulWidget {
   @override
