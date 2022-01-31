@@ -198,8 +198,8 @@ class _BodyState extends State<Body> {
                           FutureBuilder<List<ServiceByUser?>?>(
                               future: _servicesByUser,
                               builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  if (snapshot.hasData) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.isNotEmpty) {
                                     return ListView.separated(
                                         separatorBuilder:
                                             (BuildContext context, int index) =>
@@ -295,23 +295,28 @@ class _BodyState extends State<Body> {
                                           );
                                         });
                                   } else {
-                                    return Container(
-                                        child: Column(children: <Widget>[
-                                      SizedBox(height: size.width * 0.3),
-                                      Center(child: CircularProgressIndicator())
-                                    ]));
+                                    return Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 38.0),
+                                        child: Container(
+                                            child: Text(
+                                                'Vous n\'avez encore posté aucun service',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      ),
+                                    );
                                   }
                                 } else {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 38.0),
-                                      child: Container(
-                                          child: Text(
-                                              'Vous n\'avez encore posté aucun service',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
+                                  return Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: size.width * 0.3),
+                                        Center(
+                                            child: CircularProgressIndicator())
+                                      ],
                                     ),
                                   );
                                 }
