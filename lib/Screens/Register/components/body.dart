@@ -9,6 +9,7 @@ import 'package:ap4_askhim/components/input_mail_form.dart';
 import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/services/auth_service.dart';
+import 'package:auto_route/src/router/auto_router_x.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -167,12 +168,7 @@ class _Body extends State<Body> {
                     (val) {
                       print(val);
                       if (val == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => appBar(),
-                          ),
-                        );
+                        context.router.pushNamed('/');
                       } else if (val == false) {
                         setState(() {
                           mailAlreadyToken = true;
