@@ -17,12 +17,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final _appRouter = AppRouter(authGuard: AuthGuard());
 
   @override
   Widget build(BuildContext context) {
-    final _appRouter = AppRouter(authGuard: AuthGuard());
-
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
