@@ -10,13 +10,15 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  File? image;
-  Future pickImage() async {
+  final ImagePicker imagePicker = ImagePicker();
+  List<XFile>? images = [];
+
+  void pickImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+      final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
+      if (selectedImages!.isNotEmpty) {
+        images!.addAll(selectedImages);
+      }
     } on PlatformException catch (e) {
       print('failed to pick image $e');
     }
@@ -27,7 +29,7 @@ class _BodyState extends State<Body> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-          child: ListView(children: [
+          child: ListView(shrinkWrap: true, children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -39,6 +41,18 @@ class _BodyState extends State<Body> {
                       color: kPrimaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
+                ),
+                Expanded(
+                  child: GridView.builder(
+                      scrollDirection: Axis.horizontal,
+                      //shrinkWrap: true,
+                      itemCount: images!.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Image.file(File(images![index].path),
+                            fit: BoxFit.cover, width: 100, height: 100);
+                      }),
                 ),
                 SizedBox(
                   height: size.width * 0.05,
@@ -53,9 +67,6 @@ class _BodyState extends State<Body> {
                           pickImage();
                         },
                         child: const Text('image')),
-                    image != null
-                        ? Image.file(image!, width: 100, height: 100)
-                        : Text('pas d\'image')
                   ]),
                 ),
                 SizedBox(
