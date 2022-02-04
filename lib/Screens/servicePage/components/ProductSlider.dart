@@ -82,9 +82,10 @@ class _ProductSliderState extends State<ProductSlider> {
                     return Stack(
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Image(
-                            image: AssetImage("assets/images/" + item),
+                          height: 900,
+                          width: 700,
+                          child: new Image.network(
+                            "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=971&q=80",
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -95,11 +96,13 @@ class _ProductSliderState extends State<ProductSlider> {
               }).toList(),
             ),
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(widget.items.length, (idx) {
-                return activeIndex == idx ? ActiveDot() : InactiveDot();
-              }))
+          Container(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(widget.items.length, (idx) {
+                  return activeIndex == idx ? ActiveDot() : InactiveDot();
+                })),
+          )
         ],
       ),
     );
