@@ -5,15 +5,18 @@ import '../constants.dart';
 
 class InputBasicForm extends StatelessWidget {
   final String hintText, labelText;
+
+  Color? fillcolor;
   final double borderRadius;
   final TextEditingController controller;
-  InputBasicForm({
-    Key? key,
-    required this.hintText,
-    required this.labelText,
-    required this.controller,
-    required this.borderRadius,
-  }) : super(key: key);
+  InputBasicForm(
+      {Key? key,
+      required this.hintText,
+      required this.labelText,
+      required this.controller,
+      required this.borderRadius,
+      this.fillcolor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class InputBasicForm extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         filled: true,
-        fillColor: greyInput,
+        fillColor: fillcolor,
         hintText: hintText,
         labelText: labelText,
         enabledBorder: OutlineInputBorder(
