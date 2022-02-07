@@ -1,30 +1,35 @@
 import 'dart:io';
+import 'package:ap4_askhim/Screens/Add/components/dynamic_card.dart';
 import 'package:ap4_askhim/components/input_basic_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/models/homeCategorieService.dart';
+import 'package:ap4_askhim/services/home_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
   @override
   State<Body> createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
   final titleController = TextEditingController();
+  Future<List<CategorieService?>?>? _categorieServices;
 
   final ImagePicker imagePicker = ImagePicker();
   List<XFile>? images = [];
-  final items = [
-    'Service 1',
-    'Service 1',
-    'Service 1',
-    'Service 1',
-    'Service 1'
-  ];
   String? value;
+
+  @override
+  initState() {
+    _categorieServices = HomeService.getCategoriesServices();
+    super.initState();
+  }
+
   void pickImage() async {
     final XFile? selected =
         await imagePicker.pickImage(source: ImageSource.gallery);
@@ -69,24 +74,48 @@ class _BodyState extends State<Body> {
                       Row(
                         children: [
                           const Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: const Text(
-                              'Type de service :',
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'Type :',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16),
                             ),
                           ),
-                          Spacer(flex: 1),
-                          DropdownButton<String>(
-                            value: value,
-                            items: items.map(buildMenuItem).toList(),
-                            onChanged: (value) => setState(
-                              () {
-                                this.value = value;
-                              },
-                            ),
+                          const Spacer(flex: 8),
+                          FutureBuilder<List<CategorieService?>?>(
+                            future: _categorieServices,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                print(snapshot.data);
+
+                                return DropdownButton(
+                                  hint: Text('Choisir un type de service'),
+                                  value: value,
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  iconSize: 30,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  onChanged: (value) => setState(
+                                    () {
+                                      this.value = value.toString();
+                                    },
+                                  ),
+                                  items: snapshot.data!
+                                      .map<DropdownMenuItem<String>>((value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value!.id.toString(),
+                                      child: Text(value.libelle),
+                                    );
+                                  }).toList(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              print('error');
+                              return CircularProgressIndicator();
+                            },
                           ),
                           Spacer(flex: 1),
                         ],
@@ -128,10 +157,14 @@ class _BodyState extends State<Body> {
                   height: size.width * 0.05,
                 ),
                 Container(
-                  height: size.width * 0.5,
-                  color: greyInput,
-                  width: double.infinity,
-                ),
+                    height: size.width * 0.5,
+                    color: greyInput,
+                    width: double.infinity,
+                    child: value != null
+                        ? DynamicCard(id: int.parse(value!))
+                        : Center(
+                            child:
+                                Text('Veuillez choisir un type de service'))),
                 SizedBox(
                   height: size.width * 0.05,
                 ),
@@ -253,11 +286,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
-DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-      value: item,
-      child: Text(
-        item,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
