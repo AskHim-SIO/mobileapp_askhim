@@ -6,21 +6,27 @@ import 'package:ap4_askhim/Screens/servicePage/components/ProductSlider.dart';
 import 'package:ap4_askhim/Screens/servicePage/components/carousel.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/models/serviceDetails.dart';
+import 'package:ap4_askhim/services/serviceDetails.dart';
 import 'package:flutter/material.dart';
 
-class Body extends StatelessWidget {
-  final String id, name, img, price;
-  final List<String> mulImg;
-  final List sizes;
-  Body(
-      {Key? key,
-      required this.id,
-      required this.sizes,
-      required this.name,
-      required this.img,
-      required this.price,
-      required this.mulImg})
-      : super(key: key);
+class Body extends StatefulWidget {
+  final int id;
+  Body({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  Future<Map<String, dynamic>?>? _service_details;
+  initState() {
+    _service_details = serviceDetails.getServiceDetails(widget.id.toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class Body extends StatelessWidget {
                 ]),
           ),
           SizedBox(height: size.width * 0.1),
-          carousel(),
+          carousel(id: widget.id),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -76,80 +82,120 @@ class Body extends StatelessWidget {
                     top: 15,
                     bottom: 15,
                   ),
-                  child: Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://i1.sndcdn.com/avatars-TxTlTnjuRCVM5loh-wkUE7A-t500x500.jpg"),
-                      ),
-                      const SizedBox(width: kDefaultPadding * 0.50),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "ROMAIN MAHOT",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: FutureBuilder<Map<String, dynamic>?>(
+                      future: _service_details,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          print(snapshot.data!['user']['profilPicture']);
+                          return Row(
+                            children: [
+                              snapshot.data!['user']['profilPicture'] == null
+                                  ? CircleAvatar(
+                                      radius: size.width * 0.2,
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: const NetworkImage(
+                                          'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png%27'),
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage: NetworkImage(snapshot
+                                          .data!['user']['profilPicture'])),
+                              SizedBox(width: kDefaultPadding * 0.50),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data!['user']['firstname'] +
+                                        " " +
+                                        snapshot.data!['user']['name'],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 8),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 25, right: 25),
-            child: Text(
-              name,
-              style: const TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
-            ),
+          FutureBuilder<Map<String, dynamic>?>(
+            future: _service_details,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 25, right: 25),
+                  child: Text(
+                    snapshot.data!['name'],
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.w600),
+                  ),
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+              ;
+            },
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 15, right: 215),
             child: Text(
               "Description :",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
-          Column(
-            children: const [
-              Padding(
-                padding: EdgeInsets.only(top: 15, left: 15),
-                child: Text(
-                  "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ",
-                  style: TextStyle(fontSize: 13, height: 1.0),
-                ),
-              ),
-            ],
+          FutureBuilder<Map<String, dynamic>?>(
+            future: _service_details,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, left: 15),
+                      child: Text(
+                        snapshot.data!['description'],
+                        style: TextStyle(fontSize: 13, height: 1.0),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
           ),
           SizedBox(
-              height: 105,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 35, right: 35, top: 15, bottom: 15),
-                child: RoundedButton(
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MessageScreen(),
-                      ),
-                    );
-                  },
-                  sizeButton: 17,
-                  text: 'Envoyer un Message',
-                ),
-              ))
+            height: 105,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 35, right: 35, top: 15, bottom: 15),
+              child: RoundedButton(
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MessageScreen(),
+                    ),
+                  );
+                },
+                sizeButton: 17,
+                text: 'Envoyer un Message',
+              ),
+            ),
+          )
         ],
       ),
     );

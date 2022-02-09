@@ -26,7 +26,7 @@ List<IconData> category_list = [
 ];
 
 class _BodyState extends State<Body> {
-  Future<List<RecentServices?>?>? _recentServices;
+  Future<List<RecentService?>?>? _recentServices;
   Future<List<ShuffleService?>?>? _shuffleServices;
   Future<List<CategorieService?>?>? _categorieServices;
 
@@ -62,7 +62,7 @@ class _BodyState extends State<Body> {
                   ),
                   Container(
                     height: 150,
-                    child: FutureBuilder<List<RecentServices?>?>(
+                    child: FutureBuilder<List<RecentService?>?>(
                       future: _recentServices,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
@@ -79,22 +79,14 @@ class _BodyState extends State<Body> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) => servicePage(
-                                                id: products[index]['id']
-                                                    .toString(),
-                                                name: products[index]['name'],
-                                                img: products[index]['img'],
-                                                price: products[index]['price'],
-                                                mulImg: products[index]
-                                                    ['mul_img'],
-                                                sizes: products[index]['sizes'],
+                                                id: service!.id,
                                               )));
                                 },
                                 child: buildCard(
                                     borderRadius: 15,
                                     width: 150,
                                     height: 150,
-                                    linkImage:
-                                        service!.photos[0].libelle.toString(),
+                                    linkImage: service!.type.defaultPhoto,
                                     titleCard: service.name,
                                     prix: "${service.price}€",
                                     sizeTitle: 15,

@@ -5,19 +5,12 @@ import 'components/body.dart';
 
 // ignore: camel_case_types
 class servicePage extends StatefulWidget {
-  const servicePage(
-      {Key? key,
-      required this.id,
-      required this.sizes,
-      required this.name,
-      required this.img,
-      required this.price,
-      required this.mulImg})
-      : super(key: key);
+  const servicePage({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
-  final String id, name, img, price;
-  final List<String> mulImg;
-  final List sizes;
+  final int id;
 
   @override
   State<servicePage> createState() => _servicePageState();
@@ -30,12 +23,8 @@ class _servicePageState extends State<servicePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Body(
-          id: widget.id,
-          img: widget.img,
-          mulImg: widget.mulImg,
-          price: widget.price,
-          sizes: widget.sizes,
-          name: widget.name),
+        id: widget.id,
+      ),
     );
   }
 }

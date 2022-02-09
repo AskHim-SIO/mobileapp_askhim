@@ -1,28 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ap4_askhim/models/serviceDetails.dart';
+import 'package:ap4_askhim/services/serviceDetails.dart';
 
 // ignore: camel_case_types
-class carousel extends StatelessWidget {
-  const carousel({Key? key}) : super(key: key);
+class carousel extends StatefulWidget {
+  final int id;
+  const carousel({Key? key, required this.id}) : super(key: key);
+
+  @override
+  State<carousel> createState() => _carouselState();
+}
+
+class _carouselState extends State<carousel> {
+  Future<Map<String, dynamic>?>? _service_details;
+  initState() {
+    _service_details = serviceDetails.getServiceDetails(widget.id.toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 400.0,
+        height: 300.0,
         enlargeCenterPage: true,
       ),
       items: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: const DecorationImage(
-              image: NetworkImage(
-                  'https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=971&q=80'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        )
+        FutureBuilder<Map<String, dynamic>?>(
+          future: _service_details,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  image: DecorationImage(
+                    image: NetworkImage(snapshot.data!['photos'].length == 0
+                        ? snapshot.data!["type"]["defaultPhoto"]
+                        : snapshot.data!["photos"]["libelle"]),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ],
     );
   }
