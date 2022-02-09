@@ -20,9 +20,6 @@ class Message extends StatelessWidget {
         case ChatMessageType.text:
           return TextMessage(message: message);
           break;
-        case ChatMessageType.audio:
-          return AudioMessage(message: message);
-          break;
         default:
           return SizedBox();
       }
