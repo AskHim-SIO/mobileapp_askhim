@@ -5,6 +5,7 @@ import '../constants.dart';
 
 class InputBasicForm extends StatelessWidget {
   final String hintText, labelText;
+  TextInputType? textInputType = TextInputType.text;
 
   Color? fillcolor;
   final double borderRadius;
@@ -15,12 +16,14 @@ class InputBasicForm extends StatelessWidget {
       required this.labelText,
       required this.controller,
       required this.borderRadius,
+      this.textInputType,
       this.fillcolor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: textInputType,
       controller: controller,
       decoration: InputDecoration(
         filled: true,

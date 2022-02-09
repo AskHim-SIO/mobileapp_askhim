@@ -1,18 +1,33 @@
+import 'package:ap4_askhim/Screens/Add/components/boolean_choice_input.dart';
+import 'package:ap4_askhim/Screens/Add/components/course.dart';
+import 'package:ap4_askhim/Screens/Add/components/input.dart';
+import 'package:ap4_askhim/Screens/Add/components/transport.dart';
+import 'package:ap4_askhim/components/input_basic_form.dart';
+import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 
-class DynamicCard extends StatelessWidget {
+class DynamicCard extends StatefulWidget {
   final int id;
-  const DynamicCard({Key? key, required this.id}) : super(key: key);
+  final titleController = TextEditingController();
+
+  DynamicCard({Key? key, required this.id}) : super(key: key);
+
+  @override
+  State<DynamicCard> createState() => _DynamicCardState();
+}
+
+class _DynamicCardState extends State<DynamicCard> {
+  final titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     Widget getIdInfos() {
-      switch (id) {
+      switch (widget.id) {
         case 1:
-          return Container(child: Text('Transport'));
+          return TransportCard();
         case 2:
-          return Container(child: Text('Course'));
-
+          return CourseCard();
         case 3:
           return Container(child: Text('Formation'));
 
