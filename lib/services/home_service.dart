@@ -9,8 +9,8 @@ import 'base_service.dart';
 import 'package:http/http.dart' as http;
 
 class HomeService extends BaseService {
-  static Future<List<RecentServices?>?> getRecentService() async {
-    List<RecentServices> recentServices = [];
+  static Future<List<RecentService?>?> getRecentService() async {
+    List<RecentService> recentServices = [];
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/service/get-recent-services',
         method: 'GET');
@@ -18,7 +18,7 @@ class HomeService extends BaseService {
     if (response!.statusCode == 200) {
       var jsonList = json.decode(response.body);
       for (var service in jsonList) {
-        recentServices.add(RecentServices.fromJson(service));
+        recentServices.add(RecentService.fromJson(service));
       }
       return recentServices;
     } else {
