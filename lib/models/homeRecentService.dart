@@ -1,20 +1,23 @@
 // To parse this JSON data, do
 //
-//     final recentServices = recentServicesFromJson(jsonString);
+//     final recentService = recentServiceFromJson(jsonString);
 
 import 'dart:convert';
 
-List<RecentServices> recentServicesFromJson(String str) =>
-    List<RecentServices>.from(
-        json.decode(str).map((x) => RecentServices.fromJson(x)));
+List<RecentService> recentServiceFromJson(String str) =>
+    List<RecentService>.from(
+        json.decode(str).map((x) => RecentService.fromJson(x)));
 
-String recentServicesToJson(List<RecentServices> data) =>
+String recentServiceToJson(List<RecentService> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class RecentServices {
-  RecentServices({
+class RecentService {
+  RecentService({
     required this.id,
     required this.name,
+    required this.description,
+    required this.dateStart,
+    required this.dateEnd,
     required this.price,
     required this.postDate,
     required this.lieu,
@@ -24,15 +27,21 @@ class RecentServices {
 
   int id;
   String name;
+  String description;
+  int dateStart;
+  int dateEnd;
   int price;
   int postDate;
   Lieu lieu;
   Type type;
   List<Photo> photos;
 
-  factory RecentServices.fromJson(Map<String, dynamic> json) => RecentServices(
+  factory RecentService.fromJson(Map<String, dynamic> json) => RecentService(
         id: json["id"],
         name: json["name"],
+        description: json["description"],
+        dateStart: json["dateStart"],
+        dateEnd: json["dateEnd"],
         price: json["price"],
         postDate: json["postDate"],
         lieu: Lieu.fromJson(json["lieu"]),
@@ -43,6 +52,9 @@ class RecentServices {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "description": description,
+        "dateStart": dateStart,
+        "dateEnd": dateEnd,
         "price": price,
         "postDate": postDate,
         "lieu": lieu.toJson(),
@@ -95,45 +107,30 @@ class Type {
   Type({
     required this.id,
     required this.libelle,
+    required this.defaultPhoto,
+    required this.defaultPhotoMobile,
     required this.prefer,
   });
 
   int id;
-  Libelle? libelle;
+  String libelle;
+  String defaultPhoto;
+  String defaultPhotoMobile;
   List<dynamic> prefer;
 
   factory Type.fromJson(Map<String, dynamic> json) => Type(
         id: json["id"],
-        libelle: libelleValues.map[json["libelle"]],
+        libelle: json["libelle"],
+        defaultPhoto: json["defaultPhoto"],
+        defaultPhotoMobile: json["defaultPhotoMobile"],
         prefer: List<dynamic>.from(json["prefer"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "libelle": libelleValues.reverse[libelle],
+        "libelle": libelle,
+        "defaultPhoto": defaultPhoto,
+        "defaultPhotoMobile": defaultPhotoMobile,
         "prefer": List<dynamic>.from(prefer.map((x) => x)),
       };
-}
-
-enum Libelle { LOISIR, FORMATION, COURSE, TRANSPORT }
-
-final libelleValues = EnumValues({
-  "Course": Libelle.COURSE,
-  "Formation": Libelle.FORMATION,
-  "Loisir": Libelle.LOISIR,
-  "Transport": Libelle.TRANSPORT
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }
