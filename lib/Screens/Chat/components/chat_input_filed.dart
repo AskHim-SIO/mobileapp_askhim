@@ -62,7 +62,7 @@ class ChatInputField extends StatelessWidget {
                   ),
                   SizedBox(width: kDefaultPadding / 4),
                   Icon(
-                    Icons.camera_alt_outlined,
+                    Icons.send_rounded,
                     color: Theme.of(context)
                         .textTheme
                         .bodyText1
