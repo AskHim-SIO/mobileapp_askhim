@@ -1,5 +1,4 @@
 import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
-import 'package:ap4_askhim/Screens/servicePage/components/product_data.dart';
 import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
@@ -73,14 +72,17 @@ class _BodyState extends State<Body> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               var service = snapshot.data![index];
+                              print(service);
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => servicePage(
-                                                id: service!.id,
-                                              )));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => servicePage(
+                                        id: service!.id,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: buildCard(
                                     borderRadius: 15,

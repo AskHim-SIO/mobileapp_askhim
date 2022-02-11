@@ -37,7 +37,7 @@ class _carouselState extends State<carousel> {
                   image: DecorationImage(
                     image: NetworkImage(snapshot.data!['photos'].length == 0
                         ? snapshot.data!["type"]["defaultPhoto"]
-                        : snapshot.data!["photos"]["libelle"]),
+                        : snapshot.data!["photos"][0]["libelle"]),
                     fit: BoxFit.cover,
                   ),
                 ),
