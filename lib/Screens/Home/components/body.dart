@@ -47,9 +47,9 @@ class _BodyState extends State<Body> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.15),
+                  SizedBox(height: size.height * 0.13),
                   const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: 15, top: 15),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -72,6 +72,7 @@ class _BodyState extends State<Body> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               var service = snapshot.data![index];
+
                               print(service);
                               return GestureDetector(
                                 onTap: () {
@@ -94,6 +95,7 @@ class _BodyState extends State<Body> {
                                     sizeTitle: 15,
                                     sizeSubtitle: 15),
                               );
+
                             },
                           );
                         } else {
@@ -104,7 +106,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                    padding: EdgeInsets.only(top: 15.0, bottom: 6.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -159,7 +161,7 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.only(bottom: 15, top: 6),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class AuthService extends BaseService {
   static Future<bool?> authenticate(String email, String password) async {
     var payload = json.encode({'email': email, 'password': password});
-    print(payload);
+    //print(payload);
 
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/auth/login',
@@ -22,7 +22,7 @@ class AuthService extends BaseService {
       box.add(token);
       await box.put("Token", TokenModel(token: tokenstring));
       var u = box.get('Token');
-      print(u.token);
+      //print(u.token);
       return true;
     } else if (response.statusCode == 401) {
       return false;
@@ -38,13 +38,13 @@ class AuthService extends BaseService {
       'name': name,
       'password': password
     });
-    print(payload);
+    // print(payload);
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/user/create-user',
         method: 'POST',
         body: payload);
-    print(response!.body);
-    if (response.statusCode == 201) {
+    //print(response!.body);
+    if (response!.statusCode == 201) {
       return await authenticate(
           json.decode(payload)['email'], json.decode(payload)['password']);
     } else if (response.statusCode == 409) {
@@ -54,5 +54,15 @@ class AuthService extends BaseService {
 
   static clearAuth() async {
     Hive.box<TokenModel?>('userBox').put('User', null);
+  }
+
+  static gettAuth() async {
+    var box = await Hive.openBox('tokenBox');
+    var token = box.get('Token');
+    if (token == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

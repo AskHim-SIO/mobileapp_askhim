@@ -29,7 +29,7 @@ class _BodyState extends State<Body> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(14.0),
         child: Container(
           height: size.width * 5.05,
           child: ListView(
