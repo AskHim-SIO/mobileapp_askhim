@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class InputBasicForm extends StatelessWidget {
+class BigInput extends StatelessWidget {
   final String hintText, labelText;
   TextInputType? textInputType = TextInputType.text;
 
   Color? fillcolor;
   final double borderRadius;
   final TextEditingController controller;
-  InputBasicForm(
+  BigInput(
       {Key? key,
       required this.hintText,
       required this.labelText,
@@ -23,8 +23,10 @@ class InputBasicForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: 1,
-      keyboardType: textInputType,
+      keyboardType: TextInputType.multiline,
+      minLines: 1,
+      maxLines: 20,
+      maxLength: 1000,
       controller: controller,
       decoration: InputDecoration(
         filled: true,
