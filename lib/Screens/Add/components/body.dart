@@ -23,7 +23,11 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final List<bool> _selections = [true, false];
+
   final titleController = TextEditingController();
+  final typeLieuController = TextEditingController();
+  bool accompagnement = true;
   final descriptionController = TextEditingController();
   final adresseController = TextEditingController();
   final priceController = TextEditingController();
@@ -34,6 +38,7 @@ class _BodyState extends State<Body> {
   final arriveeController = TextEditingController();
   final vehiculeController = TextEditingController();
   final nbPlacesController = TextEditingController();
+  final listeCourseController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Future<List<CategorieService?>?>? _categorieServices;
@@ -78,7 +83,6 @@ class _BodyState extends State<Body> {
                   int.parse(priceController.text),
                   vehiculeController.text);
             }
-            print('ok');
           },
         );
       case 2:
@@ -87,20 +91,17 @@ class _BodyState extends State<Body> {
           sizeButton: 12,
           press: () {
             if (_formKey.currentState!.validate()) {
-              AddService.insertTransport(
-                  dateStartController.text,
+              AddService.insertCourse(
                   dateEndController.text,
+                  dateStartController.text,
+                  accompagnement.toString(),
                   descriptionController.text,
                   adresseController.text,
-                  motifController.text,
+                  listeCourseController.text,
+                  typeLieuController.text,
                   titleController.text,
-                  int.parse(nbPlacesController.text),
-                  arriveeController.text,
-                  departController.text,
-                  int.parse(priceController.text),
-                  vehiculeController.text);
+                  int.parse(priceController.text));
             }
-            print('ok');
           },
         );
       case 3:
@@ -113,6 +114,12 @@ class _BodyState extends State<Body> {
         break;
       default:
     }
+  }
+
+  getBool() {
+    setState(() {
+      accompagnement = _selections[0];
+    });
   }
 
   void deleteImage(int index) async {
@@ -480,7 +487,9 @@ class _BodyState extends State<Body> {
                             motifController: motifController,
                             vehiculeController: vehiculeController,
                             nbPlacesController: nbPlacesController,
-                            departController: departController)
+                            departController: departController,
+                            typeLieuController: typeLieuController,
+                            accompagnement: accompagnement)
                         : Container(
                             height: size.width * 0.15,
                             color: greyInput,
@@ -490,6 +499,91 @@ class _BodyState extends State<Body> {
                                   Text('Veuillez choisir un type de service'),
                             ),
                           ),
+                    value != null
+                        ? int.parse(value!) == 1
+                            ? Container()
+                            : Container(
+                                color: greyInput,
+                                child: Column(
+                                  children: [
+                                    Row(children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 8.0, top: 8, bottom: 12),
+                                        child: Text(
+                                          'Accompagnement :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, right: 8.0, bottom: 12),
+                                        child: Container(
+                                          height: size.width * 0.12,
+                                          width: size.width * 0.4,
+                                          child: ToggleButtons(
+                                            children: [
+                                              Text('Oui'),
+                                              Text('Non')
+                                            ],
+                                            isSelected: _selections,
+                                            selectedColor: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            fillColor: kPrimaryColor,
+                                            onPressed: (int index) {
+                                              setState(
+                                                () {
+                                                  for (int i = 0;
+                                                      i < _selections.length;
+                                                      i++) {
+                                                    _selections[i] = i == index;
+                                                  }
+                                                  getBool();
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                                    accompagnement
+                                        ? Container()
+                                        : Column(children: [
+                                            const Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8.0,
+                                                  right: 8,
+                                                  left: 8),
+                                              child: Text(
+                                                'Renseigner votre liste',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: BigInput(
+                                                  controller:
+                                                      listeCourseController,
+                                                  hintText:
+                                                      'Votre liste de course',
+                                                  labelText: 'Liste de courses',
+                                                  borderRadius: 10,
+                                                  fillcolor: Colors.white),
+                                            )
+                                          ])
+                                  ],
+                                ),
+                              )
+                        : Container(),
                     value == null
                         ? Container()
                         : Container(

@@ -68,4 +68,47 @@ class AddService extends BaseService {
       throw Exception('Erreur');
     }
   }
+
+  static Future<bool> insertCourse(
+    String dateEnd,
+    String dateStart,
+    String accompagnement,
+    String description,
+    String adresseComplete,
+    String listeCourse,
+    String typeLieu,
+    String name,
+    int price,
+  ) async {
+    final adresse = await getAdressesByQuery(adresseComplete);
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+    var payload = json.encode({
+      'accompagnement': accompagnement,
+      'dateEnd': dateEnd,
+      'dateStart': dateStart,
+      'description': description,
+      'lieuAdresse': adresse.features[0].properties.name,
+      'lieuCodePostal': int.parse(adresse.features[0].properties.citycode),
+      'lieuVille': adresse.features[0].properties.city,
+      'listeCourse': listeCourse,
+      'name': name,
+      'price': price,
+      'typeLieu': typeLieu,
+      'userToken': token.toString(),
+    });
+
+    http.Response? response = await BaseService.makeRequest(
+        BaseService.baseUri + '/service/create-course-service',
+        method: 'POST',
+        body: payload);
+
+    if (response!.statusCode == 201 || response.statusCode == 200) {
+      print(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

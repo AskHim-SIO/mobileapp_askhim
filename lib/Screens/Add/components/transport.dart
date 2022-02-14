@@ -1,5 +1,4 @@
 import 'package:ap4_askhim/Screens/Add/components/adresse_container.dart';
-import 'package:ap4_askhim/Screens/Add/components/boolean_choice_input.dart';
 import 'package:ap4_askhim/Screens/Add/components/input.dart';
 import 'package:ap4_askhim/components/big_input.dart';
 import 'package:ap4_askhim/constants.dart';

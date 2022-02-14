@@ -1,9 +1,5 @@
-import 'package:ap4_askhim/Screens/Add/components/boolean_choice_input.dart';
 import 'package:ap4_askhim/Screens/Add/components/course.dart';
-import 'package:ap4_askhim/Screens/Add/components/input.dart';
 import 'package:ap4_askhim/Screens/Add/components/transport.dart';
-import 'package:ap4_askhim/components/input_basic_form.dart';
-import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 
 class DynamicCard extends StatefulWidget {
@@ -13,16 +9,20 @@ class DynamicCard extends StatefulWidget {
   final TextEditingController arriveeController;
   final TextEditingController vehiculeController;
   final TextEditingController nbPlacesController;
+  final TextEditingController typeLieuController;
+  final bool accompagnement;
 
-  DynamicCard({
-    Key? key,
-    required this.id,
-    required this.motifController,
-    required this.departController,
-    required this.arriveeController,
-    required this.vehiculeController,
-    required this.nbPlacesController,
-  }) : super(key: key);
+  DynamicCard(
+      {Key? key,
+      required this.id,
+      required this.motifController,
+      required this.departController,
+      required this.arriveeController,
+      required this.vehiculeController,
+      required this.nbPlacesController,
+      required this.typeLieuController,
+      required this.accompagnement})
+      : super(key: key);
 
   @override
   State<DynamicCard> createState() => _DynamicCardState();
@@ -44,7 +44,9 @@ class _DynamicCardState extends State<DynamicCard> {
               nbPlacesController: widget.nbPlacesController,
               departController: widget.departController);
         case 2:
-          return CourseCard();
+          return CourseCard(
+              typeLieuController: widget.typeLieuController,
+              value: widget.accompagnement);
         case 3:
           return Container(child: Text('Formation'));
 
