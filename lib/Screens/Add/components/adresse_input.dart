@@ -7,6 +7,7 @@ class InputAdress extends StatefulWidget {
   final String hintText, labelText;
   TextInputType? textInputType = TextInputType.streetAddress;
   final Function(String)? onChanged;
+  String finalAdresse;
 
   Color? fillcolor;
   final double borderRadius;
@@ -17,6 +18,7 @@ class InputAdress extends StatefulWidget {
       required this.labelText,
       required this.controller,
       required this.borderRadius,
+      required this.finalAdresse,
       this.onChanged,
       this.textInputType,
       this.fillcolor})
@@ -45,11 +47,11 @@ class _InputAdressState extends State<InputAdress> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
+          borderSide: const BorderSide(color: Colors.red),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
+          borderSide: const BorderSide(color: Colors.red),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -57,7 +59,8 @@ class _InputAdressState extends State<InputAdress> {
         ),
       ),
       validator: (v) {
-        if (v!.isNotEmpty) {
+        if (widget.finalAdresse.isNotEmpty) {
+          print(widget.finalAdresse);
           return null;
         } else {
           return 'Veuillez entrer des informations valides';

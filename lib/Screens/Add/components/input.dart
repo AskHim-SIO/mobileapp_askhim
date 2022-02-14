@@ -39,7 +39,7 @@ class _InputState extends State<Input> {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Container(
-              height: size.width * 0.12,
+              //height: size.width * 0.12,
               width: size.width * 0.5,
               child: InputBasicForm(
                 fillcolor: Colors.white,

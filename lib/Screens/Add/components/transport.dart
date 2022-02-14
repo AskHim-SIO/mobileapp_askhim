@@ -1,22 +1,36 @@
+import 'package:ap4_askhim/Screens/Add/components/adresse_container.dart';
 import 'package:ap4_askhim/Screens/Add/components/boolean_choice_input.dart';
 import 'package:ap4_askhim/Screens/Add/components/input.dart';
 import 'package:ap4_askhim/components/big_input.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 
-class TransportCard extends StatelessWidget {
-  TransportCard({Key? key}) : super(key: key);
-  final motifController = TextEditingController();
-  final departController = TextEditingController();
-  final arriveeController = TextEditingController();
-  final vehiculeController = TextEditingController();
-  final nbPlacesController = TextEditingController();
+class TransportCard extends StatefulWidget {
+  final TextEditingController motifController;
+  final TextEditingController departController;
+  final TextEditingController arriveeController;
+  final TextEditingController vehiculeController;
+  final TextEditingController nbPlacesController;
 
+  TransportCard(
+      {Key? key,
+      required this.motifController,
+      required this.departController,
+      required this.arriveeController,
+      required this.vehiculeController,
+      required this.nbPlacesController})
+      : super(key: key);
+
+  @override
+  State<TransportCard> createState() => _TransportCardState();
+}
+
+class _TransportCardState extends State<TransportCard> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.width * 1.055,
+      //height: size.width * 1.5,
       color: greyInput,
       width: double.infinity,
       child: Padding(
@@ -26,25 +40,30 @@ class TransportCard extends StatelessWidget {
             Wrap(
               runSpacing: 10,
               children: [
-                Input(
-                  libelle: 'Point de départ :',
-                  controller: departController,
-                  inputHint: 'Départ',
+                AdressContainer(
+                  hintText: 'Point de départ',
+                  controller: widget.departController,
+                  isText: true,
+                  labeltext: 'Point de départ',
                 ),
-                Input(
-                  libelle: 'Point d\'arrivée :',
-                  controller: arriveeController,
-                  inputHint: 'Arivée',
+                AdressContainer(
+                  hintText: 'Point d\'arrivée',
+                  controller: widget.arriveeController,
+                  isText: false,
+                  labeltext: 'Point d\'arrivée',
                 ),
+                SizedBox(
+                    height: size.width * 0.02,
+                    child: Container(color: Colors.white)),
                 Input(
                     libelle: 'Nombre de place :',
-                    controller: nbPlacesController,
+                    controller: widget.nbPlacesController,
                     inputHint: '5 places',
                     textInputType: TextInputType.number),
                 Input(
                   libelle: 'Votre Véhicule :',
-                  controller: vehiculeController,
-                  inputHint: 'Nom du Véhicule',
+                  controller: widget.vehiculeController,
+                  inputHint: 'Marque du véhicule',
                 ),
                 Container(
                   color: greyInput,
@@ -70,7 +89,7 @@ class TransportCard extends StatelessWidget {
                             fillcolor: Colors.white,
                             labelText: 'Votre raison',
                             borderRadius: 15,
-                            controller: motifController,
+                            controller: widget.motifController,
                             hintText: 'Votre titre',
                           ),
                         ),

@@ -1,9 +1,10 @@
 import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constants.dart';
 
-class InputBasicForm extends StatelessWidget {
+class InputBasicForm extends StatefulWidget {
   final String hintText, labelText;
   TextInputType? textInputType = TextInputType.text;
 
@@ -21,30 +22,38 @@ class InputBasicForm extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<InputBasicForm> createState() => _InputBasicFormState();
+}
+
+class _InputBasicFormState extends State<InputBasicForm> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(50),
+      ],
       maxLines: 1,
-      keyboardType: textInputType,
-      controller: controller,
+      keyboardType: widget.textInputType,
+      controller: widget.controller,
       decoration: InputDecoration(
         filled: true,
-        fillColor: fillcolor,
-        hintText: hintText,
-        labelText: labelText,
+        fillColor: widget.fillcolor,
+        hintText: widget.hintText,
+        labelText: widget.labelText,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
           borderSide: const BorderSide(color: greyInputBorder),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderSide: const BorderSide(color: Colors.red),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderSide: const BorderSide(color: Colors.red),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
           borderSide: const BorderSide(color: greyInputBorder),
         ),
       ),

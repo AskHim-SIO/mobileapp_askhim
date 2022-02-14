@@ -8,9 +8,21 @@ import 'package:flutter/material.dart';
 
 class DynamicCard extends StatefulWidget {
   final int id;
-  final titleController = TextEditingController();
+  final TextEditingController motifController;
+  final TextEditingController departController;
+  final TextEditingController arriveeController;
+  final TextEditingController vehiculeController;
+  final TextEditingController nbPlacesController;
 
-  DynamicCard({Key? key, required this.id}) : super(key: key);
+  DynamicCard({
+    Key? key,
+    required this.id,
+    required this.motifController,
+    required this.departController,
+    required this.arriveeController,
+    required this.vehiculeController,
+    required this.nbPlacesController,
+  }) : super(key: key);
 
   @override
   State<DynamicCard> createState() => _DynamicCardState();
@@ -25,7 +37,12 @@ class _DynamicCardState extends State<DynamicCard> {
     Widget getIdInfos() {
       switch (widget.id) {
         case 1:
-          return TransportCard();
+          return TransportCard(
+              arriveeController: widget.arriveeController,
+              motifController: widget.motifController,
+              vehiculeController: widget.vehiculeController,
+              nbPlacesController: widget.nbPlacesController,
+              departController: widget.departController);
         case 2:
           return CourseCard();
         case 3:

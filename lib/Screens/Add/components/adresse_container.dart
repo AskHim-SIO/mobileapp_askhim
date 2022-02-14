@@ -7,9 +7,17 @@ import 'package:ap4_askhim/services/add_service.dart';
 import 'package:flutter/material.dart';
 
 class AdressContainer extends StatefulWidget {
-  final controller;
+  var controller;
+  bool isText = true;
+  String labeltext = '3 rue des lilas', hintText;
 
-  const AdressContainer({Key? key, required this.controller}) : super(key: key);
+  AdressContainer(
+      {Key? key,
+      required this.controller,
+      required this.isText,
+      required this.labeltext,
+      required this.hintText})
+      : super(key: key);
 
   @override
   _AdressContainerState createState() => _AdressContainerState();
@@ -18,7 +26,7 @@ class AdressContainer extends StatefulWidget {
 class _AdressContainerState extends State<AdressContainer> {
   Future<Adresse>? _adresses;
 
-  String? finalAdresse;
+  String finalAdresse = "";
   Timer? _debounce;
   String? userTappedText;
   int? number = 5;
@@ -27,6 +35,12 @@ class _AdressContainerState extends State<AdressContainer> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void changeFinalAdresse() {
+    setState(() {
+      finalAdresse = widget.controller.text;
+    });
   }
 
   void dispose() {
@@ -42,7 +56,6 @@ class _AdressContainerState extends State<AdressContainer> {
           setState(() {});
         });
       }
-      print(_adresses);
     }
   }
 
@@ -52,54 +65,59 @@ class _AdressContainerState extends State<AdressContainer> {
       //margin: EdgeInsets.all(10),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: Text(
-              'Renseigner votre adresse ',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-            ),
-          ),
+          widget.isText
+              ? const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'Renseigner votre adresse ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                )
+              : Container(),
           Padding(
             padding: EdgeInsets.all(8),
             child: InputAdress(
+              finalAdresse: finalAdresse,
               onChanged: (text) {
                 userTappedText = text;
                 fillAdresses();
               },
               fillcolor: Colors.white,
-              labelText: 'Exemple : 3 rue des lilas',
+              labelText: widget.labeltext.toString(),
               borderRadius: 15,
               controller: widget.controller,
-              hintText: 'Votre titre',
+              hintText: widget.hintText,
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 50,
-            child: GridView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisExtent: 150, crossAxisCount: 1, mainAxisSpacing: 4),
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Container(
-                    color: Colors.transparent,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              height: 50,
+              child: GridView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisExtent: 150, crossAxisCount: 1, mainAxisSpacing: 4),
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
                     child: Container(
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: greyInputBorder, width: 0.5),
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.0))),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: FutureBuilder<Adresse>(
+                      color: Colors.transparent,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: greyInputBorder, width: 0.5),
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: FutureBuilder<Adresse>(
                               future: _adresses,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
@@ -107,11 +125,19 @@ class _AdressContainerState extends State<AdressContainer> {
                                   if (adresses!.features.isEmpty) {
                                     return Text('Pas de resultat');
                                   } else if (adresses.features.length > 0) {
-                                    return Text(
-                                      adresses.features[index].properties.label,
-                                      style: TextStyle(
-                                          color: kPrimaryColor, fontSize: 11),
-                                      textAlign: TextAlign.center,
+                                    return GestureDetector(
+                                      onTap: () {
+                                        widget.controller.text = adresses
+                                            .features[index].properties.label;
+                                        changeFinalAdresse();
+                                      },
+                                      child: Text(
+                                        adresses
+                                            .features[index].properties.label,
+                                        style: TextStyle(
+                                            color: kPrimaryColor, fontSize: 11),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     );
                                   } else {
                                     return const Center(
@@ -119,15 +145,18 @@ class _AdressContainerState extends State<AdressContainer> {
                                   }
                                 } else {
                                   return const Center(
-                                      child: CircularProgressIndicator());
+                                      child: Text(
+                                          'Veuillez entrer des informations'));
                                 }
-                              }),
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],
