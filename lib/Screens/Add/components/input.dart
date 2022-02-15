@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class Input extends StatefulWidget {
   final TextEditingController controller;
   final String libelle, inputHint;
+  num size = 0.5;
   TextInputType? textInputType = TextInputType.text;
 
   Input(
@@ -11,6 +12,7 @@ class Input extends StatefulWidget {
       required this.controller,
       required this.libelle,
       required this.inputHint,
+      required this.size,
       this.textInputType})
       : super(key: key);
 
@@ -40,7 +42,7 @@ class _InputState extends State<Input> {
             padding: const EdgeInsets.only(right: 8.0),
             child: Container(
               //height: size.width * 0.12,
-              width: size.width * 0.5,
+              width: size.width * widget.size,
               child: InputBasicForm(
                 fillcolor: Colors.white,
                 labelText: widget.inputHint,

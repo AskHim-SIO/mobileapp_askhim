@@ -1,4 +1,6 @@
 import 'package:ap4_askhim/Screens/Add/components/card_by_services/course.dart';
+import 'package:ap4_askhim/Screens/Add/components/card_by_services/loisir.dart';
+import 'package:ap4_askhim/Screens/Add/components/card_by_services/tachemenagere.dart';
 import 'package:ap4_askhim/Screens/Add/components/card_by_services/transport.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +14,15 @@ class DynamicCard extends StatefulWidget {
   final TextEditingController vehiculeController;
   final TextEditingController nbPlacesController;
   final TextEditingController typeLieuController;
+  final TextEditingController materielMenage;
+  final TextEditingController nbHeureMenageController;
+  final TextEditingController typeTacheController;
+
   final bool accompagnement;
   final TextEditingController competenceController;
   final TextEditingController materielController;
+  final TextEditingController nbPersonnesController;
+  final TextEditingController loisirToDoController;
 
   final TextEditingController nbHeuresController;
 
@@ -22,15 +30,20 @@ class DynamicCard extends StatefulWidget {
       {Key? key,
       required this.id,
       required this.motifController,
+      required this.typeTacheController,
       required this.departController,
       required this.arriveeController,
       required this.vehiculeController,
       required this.nbPlacesController,
       required this.typeLieuController,
       required this.competenceController,
+      required this.loisirToDoController,
       required this.accompagnement,
       required this.materielController,
-      required this.nbHeuresController})
+      required this.nbPersonnesController,
+      required this.nbHeuresController,
+      required this.nbHeureMenageController,
+      required this.materielMenage})
       : super(key: key);
 
   @override
@@ -63,10 +76,16 @@ class _DynamicCardState extends State<DynamicCard> {
               materielController: widget.materielController);
 
         case 4:
-          return Container(child: Text('Loisir'));
+          return LoisirCard(
+              nbPersonnesController: widget.nbPersonnesController,
+              loisirToDoController: widget.loisirToDoController);
 
         case 5:
-          return Container(child: Text('Tâche Ménagère'));
+          return TacheMenagere(
+            materielController: widget.materielMenage,
+            nbHeureMenageController: widget.nbHeureMenageController,
+            typeTacheController: widget.typeTacheController,
+          );
 
           break;
         default:

@@ -99,7 +99,7 @@ class _AdressContainerState extends State<AdressContainer> {
               height: 50,
               child: GridView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 3,
+                itemCount: 2,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisExtent: 150, crossAxisCount: 1, mainAxisSpacing: 4),
                 itemBuilder: (BuildContext context, int index) {

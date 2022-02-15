@@ -23,11 +23,14 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final List<bool> _accompagnement = [true, false];
+  final List<bool> _accompagnementAnimal = [false, true];
+
   final List<bool> mode = [true, false];
 
   final titleController = TextEditingController();
   final typeLieuController = TextEditingController();
   bool accompagnement = true;
+  bool accompagnementAnimal = false;
   String modeFinal = 'Presentiel';
   final descriptionController = TextEditingController();
   final adresseController = TextEditingController();
@@ -36,6 +39,8 @@ class _BodyState extends State<Body> {
   final dateEndController = TextEditingController();
   final motifController = TextEditingController();
   final departController = TextEditingController();
+  final nbHeuresMenagesController = TextEditingController();
+  final typeTacheController = TextEditingController();
   final arriveeController = TextEditingController();
   final vehiculeController = TextEditingController();
   final nbPlacesController = TextEditingController();
@@ -43,8 +48,10 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   final competenceController = TextEditingController();
   final materielController = TextEditingController();
-
+  final loisirToDoController = TextEditingController();
+  final nbPersonnesController = TextEditingController();
   final nbHeuresController = TextEditingController();
+  final materielMenage = TextEditingController();
 
   Future<List<CategorieService?>?>? _categorieServices;
 
@@ -130,9 +137,43 @@ class _BodyState extends State<Body> {
           },
         );
       case 4:
-        return Text('loisir');
+        return RoundedButton(
+          text: 'Ajouter la demande',
+          sizeButton: 12,
+          press: () {
+            if (_formKey.currentState!.validate()) {
+              AddService.insertLoisir(
+                  accompagnementAnimal,
+                  dateEndController.text,
+                  dateStartController.text,
+                  descriptionController.text,
+                  loisirToDoController.text,
+                  adresseController.text,
+                  titleController.text,
+                  int.parse(nbPersonnesController.text),
+                  int.parse(priceController.text));
+            }
+          },
+        );
       case 5:
-        return Text('menage');
+        return RoundedButton(
+          text: 'Ajouter la demande',
+          sizeButton: 12,
+          press: () {
+            if (_formKey.currentState!.validate()) {
+              AddService.insertMenage(
+                  dateEndController.text,
+                  dateStartController.text,
+                  descriptionController.text,
+                  typeTacheController.text,
+                  adresseController.text,
+                  materielMenage.text,
+                  titleController.text,
+                  int.parse(nbHeuresMenagesController.text),
+                  int.parse(priceController.text));
+            }
+          },
+        );
 
         break;
       default:
@@ -142,6 +183,13 @@ class _BodyState extends State<Body> {
   getBool() {
     setState(() {
       accompagnement = _accompagnement[0];
+    });
+  }
+
+  getBoolAnimal() {
+    setState(() {
+      accompagnementAnimal = _accompagnement[0];
+      print(accompagnementAnimal);
     });
   }
 
@@ -292,17 +340,17 @@ class _BodyState extends State<Body> {
                                           libelle: 'Prix :',
                                           controller: priceController,
                                           inputHint: '5 AskCoins',
-                                          textInputType: TextInputType.number),
+                                          textInputType: TextInputType.number,
+                                          size: 0.5),
                                     ),
                                   ),
                                   SizedBox(height: size.width * 0.02),
 
                                   Row(
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: const Text(
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Text(
                                           'Date de Depart : ',
                                           style: TextStyle(
                                               color: Colors.black,
@@ -518,6 +566,9 @@ class _BodyState extends State<Body> {
                     value != null
                         ? DynamicCard(
                             id: int.parse(value!),
+                            typeTacheController: typeTacheController,
+                            nbHeureMenageController: nbHeuresMenagesController,
+                            materielMenage: materielMenage,
                             arriveeController: arriveeController,
                             motifController: motifController,
                             vehiculeController: vehiculeController,
@@ -528,6 +579,8 @@ class _BodyState extends State<Body> {
                             competenceController: competenceController,
                             nbHeuresController: nbHeuresController,
                             materielController: materielController,
+                            nbPersonnesController: nbPersonnesController,
+                            loisirToDoController: loisirToDoController,
                           )
                         : Container(
                             height: size.width * 0.15,
@@ -624,6 +677,59 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                               )
+                            : Container()
+                        : Container(),
+                    value != null
+                        ? int.parse(value!) == 4
+                            ? Container(
+                                color: greyInput,
+                                child: Column(children: [
+                                  Row(children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 8.0, top: 8, bottom: 12),
+                                      child: Text(
+                                        'Présence d\'un animal :',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, right: 8.0, bottom: 12),
+                                      child: Container(
+                                        height: size.width * 0.12,
+                                        width: size.width * 0.4,
+                                        child: ToggleButtons(
+                                          children: [Text('Oui'), Text('Non')],
+                                          isSelected: _accompagnementAnimal,
+                                          selectedColor: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          fillColor: kPrimaryColor,
+                                          onPressed: (int index) {
+                                            setState(
+                                              () {
+                                                for (int i = 0;
+                                                    i <
+                                                        _accompagnementAnimal
+                                                            .length;
+                                                    i++) {
+                                                  _accompagnementAnimal[i] =
+                                                      i == index;
+                                                }
+                                                getBoolAnimal();
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ])
+                                ]))
                             : Container()
                         : Container(),
                     value != null

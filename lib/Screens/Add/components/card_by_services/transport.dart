@@ -58,12 +58,13 @@ class _TransportCardState extends State<TransportCard> {
                     libelle: 'Nombre de place :',
                     controller: widget.nbPlacesController,
                     inputHint: '5 places',
-                    textInputType: TextInputType.number),
+                    textInputType: TextInputType.number,
+                    size: 0.5),
                 Input(
-                  libelle: 'Votre Véhicule :',
-                  controller: widget.vehiculeController,
-                  inputHint: 'Marque du véhicule',
-                ),
+                    libelle: 'Votre Véhicule :',
+                    controller: widget.vehiculeController,
+                    inputHint: 'Marque du véhicule',
+                    size: 0.5),
                 Container(
                   color: greyInput,
                   child: Column(

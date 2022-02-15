@@ -1,10 +1,6 @@
 import 'dart:convert';
-import 'package:ap4_askhim/models/add_models/getAdresseDetail.dart';
-import 'package:ap4_askhim/models/add_models/transport_add.dart';
 import 'package:ap4_askhim/models/adresse.dart';
 import 'package:hive/hive.dart';
-import 'package:ap4_askhim/model/token_models.dart';
-
 import 'base_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -146,6 +142,94 @@ class AddService extends BaseService {
 
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/service/create-formation-service',
+        method: 'POST',
+        body: payload);
+
+    if (response!.statusCode == 201 || response.statusCode == 200) {
+      print(response.body);
+      return true;
+    } else {
+      print('erreur');
+      return false;
+    }
+  }
+
+  static Future<bool> insertLoisir(
+    bool animal,
+    String dateEnd,
+    String dateStart,
+    String description,
+    String jeu,
+    String adresseComplete,
+    String name,
+    int nbPersonne,
+    int price,
+  ) async {
+    final adresse = await getAdressesByQuery(adresseComplete);
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+    var payload = json.encode({
+      'animal': animal,
+      'dateEnd': dateEnd,
+      'dateStart': dateStart,
+      'description': description,
+      'jeu': jeu,
+      'lieuAdresse': adresse.features[0].properties.name,
+      'lieuCodePostal': int.parse(adresse.features[0].properties.citycode),
+      'lieuVille': adresse.features[0].properties.city,
+      'name': name,
+      'nbPersonne': nbPersonne,
+      'price': price,
+      'userToken': token.toString(),
+    });
+
+    http.Response? response = await BaseService.makeRequest(
+        BaseService.baseUri + '/service/create-loisir-service',
+        method: 'POST',
+        body: payload);
+
+    if (response!.statusCode == 201 || response.statusCode == 200) {
+      print(response.body);
+      return true;
+    } else {
+      print('erreur');
+      return false;
+    }
+  }
+
+  static Future<bool> insertMenage(
+    String dateEnd,
+    String dateStart,
+    String description,
+    String libelle,
+    String adresseComplete,
+    String materiel,
+    String name,
+    int nbHeure,
+    int price,
+  ) async {
+    final adresse = await getAdressesByQuery(adresseComplete);
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+    var payload = json.encode({
+      'dateEnd': dateEnd,
+      'dateStart': dateStart,
+      'description': description,
+      'libelle': libelle,
+      'lieuAdresse': adresse.features[0].properties.name,
+      'lieuCodePostal': int.parse(adresse.features[0].properties.citycode),
+      'lieuVille': adresse.features[0].properties.city,
+      'materiel': materiel,
+      'name': name,
+      'nbHeure': nbHeure,
+      'price': price,
+      'userToken': token.toString(),
+    });
+
+    http.Response? response = await BaseService.makeRequest(
+        BaseService.baseUri + '/service/create-tachemenagere-service',
         method: 'POST',
         body: payload);
 
