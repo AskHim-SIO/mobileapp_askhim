@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:ap4_askhim/Screens/Add/components/adresse_container.dart';
-import 'package:ap4_askhim/Screens/Add/components/dynamic_button.dart';
 import 'package:ap4_askhim/Screens/Add/components/dynamic_card.dart';
 import 'package:ap4_askhim/Screens/Add/components/input.dart';
 import 'package:ap4_askhim/components/big_input.dart';
@@ -23,11 +22,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final List<bool> _selections = [true, false];
+  final List<bool> _accompagnement = [true, false];
+  final List<bool> mode = [true, false];
 
   final titleController = TextEditingController();
   final typeLieuController = TextEditingController();
   bool accompagnement = true;
+  String modeFinal = 'Presentiel';
   final descriptionController = TextEditingController();
   final adresseController = TextEditingController();
   final priceController = TextEditingController();
@@ -40,6 +41,10 @@ class _BodyState extends State<Body> {
   final nbPlacesController = TextEditingController();
   final listeCourseController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final competenceController = TextEditingController();
+  final materielController = TextEditingController();
+
+  final nbHeuresController = TextEditingController();
 
   Future<List<CategorieService?>?>? _categorieServices;
 
@@ -66,7 +71,7 @@ class _BodyState extends State<Body> {
     switch (id) {
       case 1:
         return RoundedButton(
-          text: 'Ajouter le transport',
+          text: 'Ajouter la demande',
           sizeButton: 12,
           press: () {
             if (_formKey.currentState!.validate()) {
@@ -87,7 +92,7 @@ class _BodyState extends State<Body> {
         );
       case 2:
         return RoundedButton(
-          text: 'Ajouter le transport',
+          text: 'Ajouter la demande',
           sizeButton: 12,
           press: () {
             if (_formKey.currentState!.validate()) {
@@ -105,7 +110,25 @@ class _BodyState extends State<Body> {
           },
         );
       case 3:
-        return Text('formation');
+        return RoundedButton(
+          text: 'Ajouter la demande',
+          sizeButton: 12,
+          press: () {
+            if (_formKey.currentState!.validate()) {
+              AddService.insertFormations(
+                  competenceController.text,
+                  dateEndController.text,
+                  dateStartController.text,
+                  descriptionController.text,
+                  adresseController.text,
+                  materielController.text,
+                  titleController.text,
+                  int.parse(nbHeuresController.text),
+                  modeFinal,
+                  int.parse(priceController.text));
+            }
+          },
+        );
       case 4:
         return Text('loisir');
       case 5:
@@ -118,7 +141,19 @@ class _BodyState extends State<Body> {
 
   getBool() {
     setState(() {
-      accompagnement = _selections[0];
+      accompagnement = _accompagnement[0];
+    });
+  }
+
+  getMode() {
+    setState(() {
+      if (mode[0]) {
+        modeFinal = 'Presentiel';
+      }
+      if (!mode[0]) {
+        modeFinal = 'Distanciel';
+      }
+      print(modeFinal);
     });
   }
 
@@ -489,7 +524,11 @@ class _BodyState extends State<Body> {
                             nbPlacesController: nbPlacesController,
                             departController: departController,
                             typeLieuController: typeLieuController,
-                            accompagnement: accompagnement)
+                            accompagnement: accompagnement,
+                            competenceController: competenceController,
+                            nbHeuresController: nbHeuresController,
+                            materielController: materielController,
+                          )
                         : Container(
                             height: size.width * 0.15,
                             color: greyInput,
@@ -500,9 +539,8 @@ class _BodyState extends State<Body> {
                             ),
                           ),
                     value != null
-                        ? int.parse(value!) == 1
-                            ? Container()
-                            : Container(
+                        ? int.parse(value!) == 2
+                            ? Container(
                                 color: greyInput,
                                 child: Column(
                                   children: [
@@ -530,7 +568,7 @@ class _BodyState extends State<Body> {
                                               Text('Oui'),
                                               Text('Non')
                                             ],
-                                            isSelected: _selections,
+                                            isSelected: _accompagnement,
                                             selectedColor: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(12),
@@ -539,9 +577,12 @@ class _BodyState extends State<Body> {
                                               setState(
                                                 () {
                                                   for (int i = 0;
-                                                      i < _selections.length;
+                                                      i <
+                                                          _accompagnement
+                                                              .length;
                                                       i++) {
-                                                    _selections[i] = i == index;
+                                                    _accompagnement[i] =
+                                                        i == index;
                                                   }
                                                   getBool();
                                                 },
@@ -583,6 +624,69 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                               )
+                            : Container()
+                        : Container(),
+                    value != null
+                        ? int.parse(value!) == 3
+                            ? Container(
+                                color: greyInput,
+                                child: Column(
+                                  children: [
+                                    Row(children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 8.0, top: 8, bottom: 12),
+                                        child: Text(
+                                          'Mode :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, right: 8.0, bottom: 12),
+                                        child: Container(
+                                          height: size.width * 0.12,
+                                          width: size.width * 0.5,
+                                          child: ToggleButtons(
+                                            children: const [
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Présentiel'),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Distanciel'),
+                                              )
+                                            ],
+                                            isSelected: mode,
+                                            selectedColor: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            fillColor: kPrimaryColor,
+                                            onPressed: (int index) {
+                                              setState(
+                                                () {
+                                                  for (int i = 0;
+                                                      i < mode.length;
+                                                      i++) {
+                                                    mode[i] = i == index;
+                                                  }
+                                                  getMode();
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ]),
+                                  ],
+                                ),
+                              )
+                            : Container()
                         : Container(),
                     value == null
                         ? Container()

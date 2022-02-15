@@ -111,4 +111,50 @@ class AddService extends BaseService {
       return false;
     }
   }
+
+  static Future<bool> insertFormations(
+    String competence,
+    String dateEnd,
+    String dateStart,
+    String description,
+    String adresseComplete,
+    String materiel,
+    String name,
+    int nbHeure,
+    String presence,
+    int price,
+  ) async {
+    final adresse = await getAdressesByQuery(adresseComplete);
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+    var payload = json.encode({
+      'competence': competence,
+      'dateEnd': dateEnd,
+      'dateStart': dateStart,
+      'description': description,
+      'lieuAdresse': adresse.features[0].properties.name,
+      'lieuCodePostal': int.parse(adresse.features[0].properties.citycode),
+      'lieuVille': adresse.features[0].properties.city,
+      'materiel': materiel,
+      'name': name,
+      'nbHeure': nbHeure,
+      'presence': presence,
+      'price': price,
+      'userToken': token.toString(),
+    });
+
+    http.Response? response = await BaseService.makeRequest(
+        BaseService.baseUri + '/service/create-formation-service',
+        method: 'POST',
+        body: payload);
+
+    if (response!.statusCode == 201 || response.statusCode == 200) {
+      print(response.body);
+      return true;
+    } else {
+      print('erreur');
+      return false;
+    }
+  }
 }

@@ -1,6 +1,8 @@
-import 'package:ap4_askhim/Screens/Add/components/course.dart';
-import 'package:ap4_askhim/Screens/Add/components/transport.dart';
+import 'package:ap4_askhim/Screens/Add/components/card_by_services/course.dart';
+import 'package:ap4_askhim/Screens/Add/components/card_by_services/transport.dart';
 import 'package:flutter/material.dart';
+
+import 'card_by_services/formation.dart';
 
 class DynamicCard extends StatefulWidget {
   final int id;
@@ -11,6 +13,10 @@ class DynamicCard extends StatefulWidget {
   final TextEditingController nbPlacesController;
   final TextEditingController typeLieuController;
   final bool accompagnement;
+  final TextEditingController competenceController;
+  final TextEditingController materielController;
+
+  final TextEditingController nbHeuresController;
 
   DynamicCard(
       {Key? key,
@@ -21,7 +27,10 @@ class DynamicCard extends StatefulWidget {
       required this.vehiculeController,
       required this.nbPlacesController,
       required this.typeLieuController,
-      required this.accompagnement})
+      required this.competenceController,
+      required this.accompagnement,
+      required this.materielController,
+      required this.nbHeuresController})
       : super(key: key);
 
   @override
@@ -48,7 +57,10 @@ class _DynamicCardState extends State<DynamicCard> {
               typeLieuController: widget.typeLieuController,
               value: widget.accompagnement);
         case 3:
-          return Container(child: Text('Formation'));
+          return FormationCard(
+              competenceController: widget.competenceController,
+              nbHeures: widget.nbHeuresController,
+              materielController: widget.materielController);
 
         case 4:
           return Container(child: Text('Loisir'));
