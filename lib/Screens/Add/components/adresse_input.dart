@@ -1,37 +1,38 @@
 import 'package:ap4_askhim/components/form_verif.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import '../constants.dart';
+import '../../../constants.dart';
 
-class InputBasicForm extends StatefulWidget {
+class InputAdress extends StatefulWidget {
   final String hintText, labelText;
-  TextInputType? textInputType = TextInputType.text;
+  TextInputType? textInputType = TextInputType.streetAddress;
+  final Function(String)? onChanged;
+  String finalAdresse;
 
   Color? fillcolor;
   final double borderRadius;
   final TextEditingController controller;
-  InputBasicForm(
+  InputAdress(
       {Key? key,
       required this.hintText,
       required this.labelText,
       required this.controller,
       required this.borderRadius,
+      required this.finalAdresse,
+      this.onChanged,
       this.textInputType,
       this.fillcolor})
       : super(key: key);
 
   @override
-  State<InputBasicForm> createState() => _InputBasicFormState();
+  State<InputAdress> createState() => _InputAdressState();
 }
 
-class _InputBasicFormState extends State<InputBasicForm> {
+class _InputAdressState extends State<InputAdress> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(50),
-      ],
+      onChanged: widget.onChanged,
       maxLines: 1,
       keyboardType: widget.textInputType,
       controller: widget.controller,
@@ -58,7 +59,8 @@ class _InputBasicFormState extends State<InputBasicForm> {
         ),
       ),
       validator: (v) {
-        if (v!.isNotEmpty) {
+        if (widget.finalAdresse.isNotEmpty) {
+          print(widget.finalAdresse);
           return null;
         } else {
           return 'Veuillez entrer des informations valides';
