@@ -1,54 +1,17 @@
-import 'package:ap4_askhim/Screens/ModifProfile/modifProfile_screen.dart';
-import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
-import 'package:ap4_askhim/components/rounded_buttons.dart';
-import 'package:ap4_askhim/models/serviceByUser.dart';
-import 'package:ap4_askhim/models/userInfo.dart';
-import 'package:ap4_askhim/services/profile_service.dart';
+import 'package:ap4_askhim/Screens/ModifProfile/components/input.dart';
+import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:hive/hive.dart';
-import '../../../constants.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+  final nameController = TextEditingController();
+
+  Body({Key? key}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
 }
 
-var selected_Index = 0;
-
 class _BodyState extends State<Body> {
-  bool visibilityService = true;
-  bool visibilityEvaluation = false;
-  Future<Map<String, dynamic>?>? _userInfo;
-  Future<List<ServiceByUser?>?>? _servicesByUser;
-
-  @override
-  initState() {
-    _userInfo = ProfileService.getUserInfo();
-
-    _servicesByUser = ProfileService.getServicesByUser();
-    super.initState();
-  }
-
-  //methode pour afficher selon la toggle bar
-  void _changed(int index) {
-    setState(() {
-      if (index == 0) {
-        selected_Index = index;
-        visibilityService = true;
-        visibilityEvaluation = false;
-      }
-      if (index == 1) {
-        selected_Index = index;
-        visibilityEvaluation = true;
-        visibilityService = false;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -81,13 +44,7 @@ class _BodyState extends State<Body> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Container(
                             child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ModifProfile(),
-                                    ));
-                              },
+                              onTap: () {},
                               child: const Text(
                                 'Modifier',
                                 style: TextStyle(
