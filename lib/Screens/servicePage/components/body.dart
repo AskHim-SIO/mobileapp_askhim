@@ -45,13 +45,12 @@ class _BodyState extends State<Body> {
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    blurRadius: 2,
+                    blurRadius: 0,
                     color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 1,
+                    spreadRadius: 0,
                   )
                 ]),
           ),
-          SizedBox(height: size.width * 0.1),
           carousel(id: widget.id),
           GestureDetector(
             onTap: () {
