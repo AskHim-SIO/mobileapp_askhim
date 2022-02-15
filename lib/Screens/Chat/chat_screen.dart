@@ -1,4 +1,5 @@
 import 'package:ap4_askhim/Screens/Chat/components/body.dart';
+import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
 import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class ChatScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Body(),
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         leading: Builder(
           builder: (BuildContext context) {
@@ -19,7 +21,7 @@ class ChatScreen extends StatelessWidget {
               icon: const Icon(
                 Icons.arrow_back_ios,
                 size: 20,
-                color: Colors.white,
+                color: kPrimaryColor,
               ), // Put icon of your preference.
               onPressed: () {
                 Navigator.pop(context);
@@ -39,7 +41,10 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Text(
                   "ROMAIN MAHOT",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             )
@@ -47,8 +52,16 @@ class ChatScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.phone),
-            onPressed: () {},
+            icon: Icon(Icons.person_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfileScreen(),
+                ),
+              );
+            },
+            color: kPrimaryColor,
           ),
         ],
       ),

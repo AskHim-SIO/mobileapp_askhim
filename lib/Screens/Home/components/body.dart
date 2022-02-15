@@ -1,4 +1,5 @@
 import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
+import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/components/card_bloc_rounded.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
@@ -71,15 +72,30 @@ class _BodyState extends State<Body> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               var service = snapshot.data![index];
-                              return buildCard(
-                                  borderRadius: 15,
-                                  width: 150,
-                                  height: 150,
-                                  linkImage: service!.type.defaultPhoto,
-                                  titleCard: service.name,
-                                  prix: "${service.price}€",
-                                  sizeTitle: 15,
-                                  sizeSubtitle: 15);
+
+                              print(service);
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => servicePage(
+                                        id: service!.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: buildCard(
+                                    borderRadius: 15,
+                                    width: 150,
+                                    height: 150,
+                                    linkImage: service!.type.defaultPhoto,
+                                    titleCard: service.name,
+                                    prix: "${service.price}€",
+                                    sizeTitle: 15,
+                                    sizeSubtitle: 15),
+                              );
+
                             },
                           );
                         } else {
