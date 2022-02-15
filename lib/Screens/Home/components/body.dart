@@ -95,7 +95,6 @@ class _BodyState extends State<Body> {
                                     sizeTitle: 15,
                                     sizeSubtitle: 15),
                               );
-
                             },
                           );
                         } else {
@@ -194,8 +193,10 @@ class _BodyState extends State<Body> {
                                         borderRadius: 15,
                                         width: double.infinity,
                                         height: double.infinity,
-                                        linkImage: service!.photos[0].libelle
-                                            .toString(),
+                                        linkImage: service!.photos.isEmpty
+                                            ? service.type.defaultPhoto
+                                            : service.photos[0].libelle
+                                                .toString(),
                                         titleCard: service.name,
                                         prix: '${service.price}€',
                                         sizeTitle: 15,
