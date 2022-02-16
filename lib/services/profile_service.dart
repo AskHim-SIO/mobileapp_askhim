@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ap4_askhim/models/getUserById.dart';
 import 'package:ap4_askhim/models/serviceByUser.dart';
 import 'package:ap4_askhim/models/userInfo.dart';
 import 'package:hive/hive.dart';
@@ -29,6 +30,19 @@ class ProfileService extends BaseService {
     } else {
       Hive.box('tokenBox').clear();
       print('supprimé2');
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getUserInfoById(int id) async {
+    http.Response? response = await BaseService.makeRequest(
+      BaseService.baseUri + '/user/get-user-by-id/' + id.toString(),
+      method: 'GET',
+    );
+    print(response!.body);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+          new Map<String, dynamic>.from(json.decode(response.body));
+      return data;
     }
   }
 
