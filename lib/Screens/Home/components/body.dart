@@ -39,15 +39,26 @@ class _BodyState extends State<Body> {
     _recentServices = HomeService.getRecentService();
     _shuffleServices = HomeService.getShuffleService();
     _categorieServices = HomeService.getCategoriesServices();
+<<<<<<< HEAD
     setState(() {});
+=======
+    print('ok');
+>>>>>>> 2b45c63e4981222409ebcaa243fced1f09ccfea8
   }
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+<<<<<<< HEAD
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RefreshIndicator(
         onRefresh: getData,
+=======
+    return RefreshIndicator(
+      onRefresh: getData,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+>>>>>>> 2b45c63e4981222409ebcaa243fced1f09ccfea8
         child: ListView(
           children: <Widget>[
             Stack(
