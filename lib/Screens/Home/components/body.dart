@@ -95,7 +95,6 @@ class _BodyState extends State<Body> {
                                     sizeTitle: 15,
                                     sizeSubtitle: 15),
                               );
-
                             },
                           );
                         } else {
