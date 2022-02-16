@@ -66,13 +66,70 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 150,
-                      child: FutureBuilder<List<RecentService?>?>(
-                        future: _recentServices,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView.separated(
+                  ),
+                  Container(
+                    height: 150,
+                    child: FutureBuilder<List<RecentService?>?>(
+                      future: _recentServices,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.separated(
+                            separatorBuilder: (context, _) =>
+                                SizedBox(width: 8),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              var service = snapshot.data![index];
+
+                              print(service);
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => servicePage(
+                                        id: service!.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: buildCard(
+                                    borderRadius: 15,
+                                    width: 150,
+                                    height: 150,
+                                    linkImage: service!.type.defaultPhoto,
+                                    titleCard: service.name,
+                                    prix: "${service.price}€",
+                                    sizeTitle: 15,
+                                    sizeSubtitle: 15),
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 15.0, bottom: 6.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Catégories",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 150,
+                    child: FutureBuilder<List<CategorieService?>?>(
+                      future: _categorieServices,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.separated(
                               separatorBuilder: (context, _) =>
                                   SizedBox(width: 8),
                               scrollDirection: Axis.horizontal,
