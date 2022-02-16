@@ -53,7 +53,9 @@ class ProfileService extends BaseService {
       var token = u.token;
       List<ServiceByUser> recentServices = [];
       http.Response? response = await BaseService.makeRequest(
-          BaseService.baseUri + '/service/get-services-from-user/' + token,
+          BaseService.baseUri +
+              '/service/get-services-from-user-by-token/' +
+              token,
           method: 'GET');
       print(response!.body);
       if (response.statusCode == 200) {
