@@ -53,89 +53,103 @@ class _BodyState extends State<Body> {
                 ]),
           ),
           carousel(id: widget.id),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PublicProfile(),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: 10,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 2,
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 1,
-                      )
-                    ]),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15,
-                    top: 15,
-                    bottom: 15,
-                  ),
-                  child: FutureBuilder<Map<String, dynamic>?>(
-                      future: _service_details,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          print(snapshot.data!['user']['profilPicture']);
-                          return Row(
-                            children: [
-                              snapshot.data!['user']['profilPicture'] == null
-                                  ? CircleAvatar(
-                                      radius: size.width * 0.2,
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: const NetworkImage(
-                                          'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
-                                    )
-                                  : CircleAvatar(
-                                      backgroundImage: NetworkImage(snapshot
-                                          .data!['user']['profilPicture'])),
-                              SizedBox(width: kDefaultPadding * 0.50),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    snapshot.data!['user']['firstname'] +
-                                        " " +
-                                        snapshot.data!['user']['name'],
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              const Padding(
-                                padding: EdgeInsets.only(right: 8),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 20,
-                                ),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                ),
-              ),
-            ),
-          ),
+          FutureBuilder<Map<String, dynamic>?>(
+              future: _service_details,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              PublicProfile(id: snapshot.data!['user']['id']),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                              )
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            top: 15,
+                            bottom: 15,
+                          ),
+                          child: FutureBuilder<Map<String, dynamic>?>(
+                              future: _service_details,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  print(
+                                      snapshot.data!['user']['profilPicture']);
+                                  return Row(
+                                    children: [
+                                      snapshot.data!['user']['profilPicture'] ==
+                                              null
+                                          ? CircleAvatar(
+                                              radius: size.width * 0.2,
+                                              backgroundColor: Colors.white,
+                                              backgroundImage: const NetworkImage(
+                                                  'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  snapshot.data!['user']
+                                                      ['profilPicture'])),
+                                      SizedBox(width: kDefaultPadding * 0.50),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot.data!['user']
+                                                    ['firstname'] +
+                                                " " +
+                                                snapshot.data!['user']['name'],
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      const Padding(
+                                        padding: EdgeInsets.only(right: 8),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              }),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
           FutureBuilder<Map<String, dynamic>?>(
             future: _service_details,
             builder: (context, snapshot) {
