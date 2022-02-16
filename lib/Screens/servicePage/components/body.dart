@@ -2,6 +2,7 @@
 
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
+import 'package:ap4_askhim/Screens/servicePage/PublicProfile/publicprofile.dart';
 import 'package:ap4_askhim/Screens/servicePage/components/carousel.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
@@ -57,7 +58,7 @@ class _BodyState extends State<Body> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProfileScreen(),
+                  builder: (_) => PublicProfile(),
                 ),
               );
             },
