@@ -30,7 +30,7 @@ class _PublicProfileState extends State<PublicProfile> {
   initState() {
     _userInfo = ProfileService.getUserInfoById(widget.id);
 
-    _servicesByUser = ProfileService.getServicesByUser();
+    _servicesByUser = ProfileService.getServicesByUserById(widget.id);
     super.initState();
   }
 
@@ -182,8 +182,8 @@ class _PublicProfileState extends State<PublicProfile> {
                                 FutureBuilder<List<ServiceByUser?>?>(
                                   future: _servicesByUser,
                                   builder: (context, snapshot) {
-                                    if (snapshot.data == null) {
-                                      if (snapshot.hasData) {
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data!.isNotEmpty) {
                                         return ListView.separated(
                                             separatorBuilder:
                                                 (BuildContext context,
@@ -220,9 +220,13 @@ class _PublicProfileState extends State<PublicProfile> {
                                                           CircleAvatar(
                                                             backgroundImage:
                                                                 NetworkImage(
-                                                              service!.photos[0]
-                                                                  .libelle
-                                                                  .toString(),
+                                                              service!.photos.isEmpty
+                                                                  ? service.type
+                                                                      .defaultPhoto
+                                                                  : service
+                                                                      .photos[0]
+                                                                      .libelle
+                                                                      .toString(),
                                                             ),
                                                           ),
                                                           Padding(
@@ -241,14 +245,17 @@ class _PublicProfileState extends State<PublicProfile> {
                                                                 children: [
                                                                   Row(
                                                                     children: [
-                                                                      Text(
-                                                                        service
-                                                                            .name,
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
+                                                                      Expanded(
+                                                                        child:
+                                                                            Text(
+                                                                          service
+                                                                              .name,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          style: const TextStyle(
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
                                                                       ),
                                                                       const Spacer(),
                                                                       Text(
@@ -269,7 +276,9 @@ class _PublicProfileState extends State<PublicProfile> {
                                                                           Alignment
                                                                               .centerLeft,
                                                                       child: Text(
-                                                                          'some text some text some text some text some text',
+                                                                          '${service.description}',
+                                                                          overflow: TextOverflow
+                                                                              .ellipsis,
                                                                           style:
                                                                               TextStyle(fontSize: 12))),
                                                                 ],
@@ -283,29 +292,23 @@ class _PublicProfileState extends State<PublicProfile> {
                                                 ),
                                               );
                                             });
-                                      } else {
-                                        return Container(
-                                            child: Column(children: <Widget>[
-                                          SizedBox(height: size.width * 0.3),
-                                          Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                        ]));
                                       }
+                                      return const Center(
+                                          child: Padding(
+                                        padding: EdgeInsets.only(top: 38.0),
+                                        child: Text(
+                                            'Vous n\'avez encore posté aucun service',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold)),
+                                      ));
                                     } else {
-                                      return Center(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 38.0),
-                                          child: Container(
-                                              child: Text(
-                                                  'L\'utilisateur n\'a encore posté aucun service',
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold))),
-                                        ),
-                                      );
+                                      return Container(
+                                          child: Column(children: <Widget>[
+                                        SizedBox(height: size.width * 0.3),
+                                        Center(
+                                            child: CircularProgressIndicator())
+                                      ]));
                                     }
                                   },
                                 ),

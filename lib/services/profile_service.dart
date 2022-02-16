@@ -73,4 +73,20 @@ class ProfileService extends BaseService {
       print('supprimé2');
     }
   }
+
+  static Future<List<ServiceByUser?>?> getServicesByUserById(int id) async {
+    List<ServiceByUser> recentServices = [];
+    http.Response? response = await BaseService.makeRequest(
+        BaseService.baseUri +
+            '/service/get-services-from-user-by-id/' +
+            id.toString(),
+        method: 'GET');
+    if (response!.statusCode == 200) {
+      var jsonList = json.decode(response.body);
+      for (var service in jsonList) {
+        recentServices.add(ServiceByUser.fromJson(service));
+      }
+      return recentServices;
+    }
+  }
 }
