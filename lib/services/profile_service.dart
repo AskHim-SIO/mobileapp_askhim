@@ -14,7 +14,7 @@ class ProfileService extends BaseService {
       var u = box.get('Token');
       var token = u.token;
       http.Response? response = await BaseService.makeRequest(
-        BaseService.baseUri + '/user/get-user/' + token,
+        BaseService.baseUri + '/user/get-user-by-token/' + token,
         method: 'GET',
       );
       print(response!.body);

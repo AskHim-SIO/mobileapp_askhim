@@ -198,8 +198,9 @@ class _BodyState extends State<Body> {
                           FutureBuilder<List<ServiceByUser?>?>(
                             future: _servicesByUser,
                             builder: (context, snapshot) {
-                              if (snapshot.data == null) {
-                                if (snapshot.hasData) {
+                              print(_servicesByUser);
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.isNotEmpty) {
                                   return ListView.separated(
                                       separatorBuilder:
                                           (BuildContext context, int index) =>
@@ -215,6 +216,7 @@ class _BodyState extends State<Body> {
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         var service = snapshot.data![index];
+                                        print(service);
                                         return Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Padding(
@@ -231,9 +233,12 @@ class _BodyState extends State<Body> {
                                                     CircleAvatar(
                                                       backgroundImage:
                                                           NetworkImage(
-                                                        service!
-                                                            .photos[0].libelle
-                                                            .toString(),
+                                                        service!.photos.isEmpty
+                                                            ? service.type
+                                                                .defaultPhoto
+                                                            : service.photos[0]
+                                                                .libelle
+                                                                .toString(),
                                                       ),
                                                     ),
                                                     Padding(
@@ -249,14 +254,19 @@ class _BodyState extends State<Body> {
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                Text(
-                                                                  service.name,
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    service
+                                                                        .name,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
                                                                 ),
                                                                 const Spacer(),
                                                                 Text(
@@ -276,7 +286,10 @@ class _BodyState extends State<Body> {
                                                                 alignment: Alignment
                                                                     .centerLeft,
                                                                 child: Text(
-                                                                    'some text some text some text some text some text',
+                                                                    '${service.description}',
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             12))),
@@ -292,22 +305,23 @@ class _BodyState extends State<Body> {
                                         );
                                       });
                                 } else {
-                                  return Container(
-                                      child: Column(children: <Widget>[
-                                    SizedBox(height: size.width * 0.3),
-                                    Center(child: CircularProgressIndicator())
-                                  ]));
+                                  return const Center(
+                                      child: Padding(
+                                    padding: EdgeInsets.only(top: 38.0),
+                                    child: Text(
+                                        'Vous n\'avez encore posté aucun service',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ));
                                 }
                               } else {
-                                return Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 38.0),
-                                    child: Container(
-                                        child: Text(
-                                            'Vous n\'avez encore posté aucun service',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold))),
+                                return Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      SizedBox(height: size.width * 0.3),
+                                      Center(child: CircularProgressIndicator())
+                                    ],
                                   ),
                                 );
                               }
