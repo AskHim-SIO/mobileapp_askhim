@@ -542,6 +542,7 @@ packages:
     source: hosted
     version: "2.0.5"
 <<<<<<< HEAD
+<<<<<<< HEAD
   pedantic:
     dependency: transitive
     description:
@@ -558,6 +559,8 @@ packages:
     version: "4.4.0"
 =======
 >>>>>>> c12d379 (some change)
+=======
+>>>>>>> 4281ad4796bfa573e50ffd2f64bc6cecd08b5127
   platform:
     dependency: transitive
     description:
