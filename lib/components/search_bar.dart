@@ -1,3 +1,5 @@
+import 'package:ap4_askhim/services/auth_service.dart';
+import 'package:ap4_askhim/services/base_service.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
@@ -11,52 +13,9 @@ class SearchBar extends StatefulWidget {
 class _HomePageState extends State<SearchBar> {
   static const historyLength = 5;
 
-  List<String> _searchHistory = [
-    'fuchsia',
-    'flutter',
-    'widgets',
-    'resocoder',
-  ];
-
   List<String> filteredSearchHistory = [];
 
   String? selectedTerm;
-
-  List<String> filterSearchTerms({
-    required String? filter,
-  }) {
-    if (filter != null && filter.isNotEmpty) {
-      return _searchHistory.reversed
-          .where((term) => term.startsWith(filter))
-          .toList();
-    } else {
-      return _searchHistory.reversed.toList();
-    }
-  }
-
-  void addSearchTerm(String term) {
-    if (_searchHistory.contains(term)) {
-      putSearchTermFirst(term);
-      return;
-    }
-
-    _searchHistory.add(term);
-    if (_searchHistory.length > historyLength) {
-      _searchHistory.removeRange(0, _searchHistory.length - historyLength);
-    }
-
-    filteredSearchHistory = filterSearchTerms(filter: null);
-  }
-
-  void deleteSearchTerm(String term) {
-    _searchHistory.removeWhere((t) => t == term);
-    filteredSearchHistory = filterSearchTerms(filter: null);
-  }
-
-  void putSearchTermFirst(String term) {
-    deleteSearchTerm(term);
-    addSearchTerm(term);
-  }
 
   FloatingSearchBarController? controller;
 
@@ -64,7 +23,6 @@ class _HomePageState extends State<SearchBar> {
   void initState() {
     super.initState();
     controller = FloatingSearchBarController();
-    filteredSearchHistory = filterSearchTerms(filter: null);
   }
 
   @override
@@ -100,13 +58,10 @@ class _HomePageState extends State<SearchBar> {
           FloatingSearchBarAction.searchToClear(),
         ],
         onQueryChanged: (query) {
-          setState(() {
-            filteredSearchHistory = filterSearchTerms(filter: query);
-          });
+          setState(() {});
         },
         onSubmitted: (query) {
           setState(() {
-            addSearchTerm(query);
             selectedTerm = query;
           });
           controller?.close();
@@ -136,7 +91,6 @@ class _HomePageState extends State<SearchBar> {
                       title: Text(controller!.query),
                       onTap: () {
                         setState(() {
-                          addSearchTerm(controller!.query);
                           selectedTerm = controller!.query;
                         });
                         controller?.close();
@@ -157,14 +111,11 @@ class _HomePageState extends State<SearchBar> {
                               trailing: IconButton(
                                 icon: const Icon(Icons.clear),
                                 onPressed: () {
-                                  setState(() {
-                                    deleteSearchTerm(term);
-                                  });
+                                  setState(() {});
                                 },
                               ),
                               onTap: () {
                                 setState(() {
-                                  putSearchTermFirst(term);
                                   selectedTerm = term;
                                 });
                                 controller?.close();
