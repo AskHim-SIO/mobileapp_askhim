@@ -161,8 +161,8 @@ class _Body extends State<Body> {
                   AuthService.signUp(
                     dateController.text,
                     emailController.text,
-                    nameController.text,
                     subNameController.text,
+                    nameController.text,
                     passwordController.text,
                   ).then(
                     (val) {

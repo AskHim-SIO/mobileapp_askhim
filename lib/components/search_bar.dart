@@ -1,17 +1,24 @@
+import 'package:ap4_askhim/Screens/Search/components/resultPage.dart';
+import 'package:ap4_askhim/models/categorieServicePage.dart';
+import 'package:ap4_askhim/models/getSearchByQuery.dart';
 import 'package:ap4_askhim/services/auth_service.dart';
 import 'package:ap4_askhim/services/base_service.dart';
+import 'package:ap4_askhim/services/search_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../constants.dart';
 
 class SearchBar extends StatefulWidget {
+  const SearchBar({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<SearchBar> {
-  static const historyLength = 5;
+  Future<List<GetSearchByQuery?>?>? _searchByQuery;
 
   List<String> filteredSearchHistory = [];
 
@@ -21,8 +28,8 @@ class _HomePageState extends State<SearchBar> {
 
   @override
   void initState() {
-    super.initState();
     controller = FloatingSearchBarController();
+    super.initState();
   }
 
   @override
@@ -31,8 +38,20 @@ class _HomePageState extends State<SearchBar> {
     super.dispose();
   }
 
+  redirect() {
+    if (selectedTerm != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>
+              ResultSearchPage(searchTerm: selectedTerm.toString()),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       height: 800,
       child: FloatingSearchBar(
@@ -42,15 +61,11 @@ class _HomePageState extends State<SearchBar> {
         backdropColor: Colors.transparent,
         borderRadius: const BorderRadius.all(Radius.circular(29)),
         controller: controller,
-        body: FloatingSearchBarScrollNotifier(
-          child: SearchResultsListView(
-            searchTerm: selectedTerm,
-          ),
-        ),
+        body: Container(),
         transition: CircularFloatingSearchBarTransition(),
         physics: BouncingScrollPhysics(),
-        title: Center(
-          child: Text(selectedTerm ?? 'Rechercher un service ou un membre',
+        title: const Center(
+          child: Text('Rechercher un service',
               style: TextStyle(fontSize: 15, color: greyInputText)),
         ),
         hint: 'Taper ici pour chercher..',
@@ -58,9 +73,14 @@ class _HomePageState extends State<SearchBar> {
           FloatingSearchBarAction.searchToClear(),
         ],
         onQueryChanged: (query) {
+          // ici qu'on appelle les nouvelle a chque fois que c'est tapé
+          _searchByQuery = SearchService.getSearchByQuery(query, 10);
+
           setState(() {});
         },
         onSubmitted: (query) {
+          // redirect avec le bouton 'rechercher'
+          print('tap redirect');
           setState(() {
             selectedTerm = query;
           });
@@ -87,14 +107,49 @@ class _HomePageState extends State<SearchBar> {
                       ),
                     );
                   } else if (filteredSearchHistory.isEmpty) {
-                    return ListTile(
-                      title: Text(controller!.query),
-                      onTap: () {
-                        setState(() {
-                          selectedTerm = controller!.query;
-                        });
-                        controller?.close();
-                      },
+                    //redirect vers la page
+                    return Container(
+                      height: 250,
+                      child: FutureBuilder<List<GetSearchByQuery?>?>(
+                          future: _searchByQuery,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (context, _) =>
+                                      SizedBox(width: 2),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: 10,
+                                  itemBuilder: (context, index) {
+                                    var recherche = snapshot.data![index];
+
+                                    return Container(
+                                      width: 100,
+                                      child: Column(
+                                        children: [
+                                          ListTile(
+                                            title: Text(recherche!.name,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500)),
+                                            onTap: () {
+                                              print('tapped');
+                                              setState(() {
+                                                selectedTerm = recherche.name;
+                                              });
+                                              redirect();
+                                              controller?.close();
+                                            },
+                                          ),
+                                          Divider(indent: 25, endIndent: 25),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          }),
                     );
                   } else {
                     return Column(
@@ -111,11 +166,13 @@ class _HomePageState extends State<SearchBar> {
                               trailing: IconButton(
                                 icon: const Icon(Icons.clear),
                                 onPressed: () {
+                                  // ici qu'on clique sur la croix pour delete
                                   setState(() {});
                                 },
                               ),
                               onTap: () {
                                 setState(() {
+                                  // ici qu'on doit redirect vers la page
                                   selectedTerm = term;
                                 });
                                 controller?.close();
@@ -132,39 +189,5 @@ class _HomePageState extends State<SearchBar> {
         },
       ),
     );
-  }
-}
-
-class SearchResultsListView extends StatelessWidget {
-  final String? searchTerm;
-
-  const SearchResultsListView({
-    Key? key,
-    required this.searchTerm,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (searchTerm == null) {
-      return Container();
-    } else {
-      final fsb = FloatingSearchBar.of(context);
-
-      return Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 75.0),
-          child: ListView(
-            children: List.generate(
-              50,
-              (index) => ListTile(
-                title: Text('$searchTerm search result'),
-                subtitle: Text(index.toString()),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
   }
 }
