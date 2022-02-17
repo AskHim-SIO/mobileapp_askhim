@@ -23,6 +23,7 @@ class _HomePageState extends State<SearchBar> {
   List<String> filteredSearchHistory = [];
 
   String? selectedTerm;
+  int count = 4;
 
   FloatingSearchBarController? controller;
 
@@ -74,16 +75,16 @@ class _HomePageState extends State<SearchBar> {
         ],
         onQueryChanged: (query) {
           // ici qu'on appelle les nouvelle a chque fois que c'est tapé
-          _searchByQuery = SearchService.getSearchByQuery(query, 10);
+          _searchByQuery = SearchService.getSearchByQuery(query, count);
 
           setState(() {});
         },
         onSubmitted: (query) {
           // redirect avec le bouton 'rechercher'
-          print('tap redirect');
           setState(() {
             selectedTerm = query;
           });
+          redirect();
           controller?.close();
         },
         builder: (context, transition) {
@@ -109,43 +110,52 @@ class _HomePageState extends State<SearchBar> {
                   } else if (filteredSearchHistory.isEmpty) {
                     //redirect vers la page
                     return Container(
-                      height: 250,
                       child: FutureBuilder<List<GetSearchByQuery?>?>(
                           future: _searchByQuery,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return ListView.separated(
-                                  shrinkWrap: true,
-                                  separatorBuilder: (context, _) =>
-                                      SizedBox(width: 2),
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    var recherche = snapshot.data![index];
+                              if (snapshot.data!.isNotEmpty) {
+                                return ListView.separated(
+                                    shrinkWrap: true,
+                                    separatorBuilder: (context, _) =>
+                                        SizedBox(width: 2),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      var recherche = snapshot.data![index];
 
-                                    return Container(
-                                      width: 100,
-                                      child: Column(
-                                        children: [
-                                          ListTile(
-                                            title: Text(recherche!.name,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                            onTap: () {
-                                              print('tapped');
-                                              setState(() {
-                                                selectedTerm = recherche.name;
-                                              });
-                                              redirect();
-                                              controller?.close();
-                                            },
-                                          ),
-                                          Divider(indent: 25, endIndent: 25),
-                                        ],
-                                      ),
-                                    );
-                                  });
+                                      return Container(
+                                        width: 100,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              title: Text(recherche!.name,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                              onTap: () {
+                                                print('tapped');
+                                                setState(() {
+                                                  selectedTerm = recherche.name;
+                                                });
+                                                redirect();
+                                                controller?.close();
+                                              },
+                                            ),
+                                            Divider(indent: 25, endIndent: 25),
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              } else {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(25.0),
+                                    child:
+                                        Text('Aucune recherche correspondante'),
+                                  ),
+                                );
+                              }
                             } else {
                               return Center(child: CircularProgressIndicator());
                             }

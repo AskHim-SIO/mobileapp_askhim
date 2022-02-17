@@ -34,7 +34,7 @@ class GetSearchByQuery {
   int postDate;
   Lieu lieu;
   Type type;
-  List<dynamic> photos;
+  List<Photo> photos;
 
   factory GetSearchByQuery.fromJson(Map<String, dynamic> json) =>
       GetSearchByQuery(
@@ -47,7 +47,7 @@ class GetSearchByQuery {
         postDate: json["postDate"],
         lieu: Lieu.fromJson(json["lieu"]),
         type: Type.fromJson(json["type"]),
-        photos: List<dynamic>.from(json["photos"].map((x) => x)),
+        photos: List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,7 +60,7 @@ class GetSearchByQuery {
         "postDate": postDate,
         "lieu": lieu.toJson(),
         "type": type.toJson(),
-        "photos": List<dynamic>.from(photos.map((x) => x)),
+        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
       };
 }
 
@@ -89,6 +89,26 @@ class Lieu {
         "adresse": adresse,
         "codePostal": codePostal,
         "ville": ville,
+      };
+}
+
+class Photo {
+  Photo({
+    required this.id,
+    required this.libelle,
+  });
+
+  int id;
+  String libelle;
+
+  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
+        id: json["id"],
+        libelle: json["libelle"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "libelle": libelle,
       };
 }
 
