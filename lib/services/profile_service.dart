@@ -57,4 +57,34 @@ class ProfileService extends BaseService {
       print('supprimé2');
     }
   }
+
+  static Future<bool> updateUser(String adresse, String dateNaiss, String email,
+      String firstname, String name, int tel) async {
+    var box = await Hive.openBox('tokenBox');
+    if (box.get('Token') != null) {
+      var u = box.get('Token');
+      var token = u.token;
+      var payload = json.encode({
+        'adress': adresse,
+        'dateNaiss': dateNaiss,
+        'email': email,
+        'firstname': firstname,
+        'name': name,
+        'tel': tel
+      });
+      http.Response? response = await BaseService.makeRequest(
+          BaseService.baseUri + '/user/update-user/' + token,
+          method: 'PUT',
+          body: payload);
+
+      print(response!.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

@@ -1,9 +1,20 @@
 import 'package:ap4_askhim/Screens/ModifProfile/components/input.dart';
+import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/services/profile_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+import '../modifProfile_screen.dart';
 
 class Body extends StatefulWidget {
   final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final telephoneController = TextEditingController();
+  final adresseController = TextEditingController();
+  final dateNaissController = TextEditingController();
+  String? firstName;
 
   Body({Key? key}) : super(key: key);
 
@@ -12,14 +23,21 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  Future<Map<String, dynamic>?>? _userInfo;
+
   @override
+  initState() {
+    _userInfo = ProfileService.getUserInfo();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(children: [
-        Column(
-          children: [
+      body: ListView(
+        children: [
+          Column(children: [
             Stack(
               clipBehavior: Clip.none,
               alignment: Alignment.topCenter,
@@ -37,52 +55,24 @@ class _BodyState extends State<Body> {
                 ),
                 Column(
                   children: [
-                    SizedBox(height: size.width * 0.05),
+                    SizedBox(height: size.width * 0.02),
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container(
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: const Text(
-                                'Modifier',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  backgroundColor: kPrimaryColor,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                Hive.box('tokenBox').clear();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => WelcomeScreen(),
-                                    ));
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                size: 20,
+                                color: Colors.white,
+                              ), // Put icon of your preference.
+                              onPressed: () {
+                                Navigator.pop(context);
                               },
-                              child: const Text(
-                                'Déconnexion',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  backgroundColor: kPrimaryColor,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                            )),
                       ],
                     ),
-                    SizedBox(height: size.width * 0.06),
+                    SizedBox(height: size.width * 0.01),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -134,205 +124,145 @@ class _BodyState extends State<Body> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 80),
+            SizedBox(height: size.width * 0.24),
+            Container(
+              width: size.width * 0.8,
               child: FutureBuilder<Map<String, dynamic>?>(
-                  future: _userInfo,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                        '${snapshot.data!['name']} ${snapshot.data!['firstname']}',
-                        style: (TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold)),
-                      );
-                    } else {
-                      return Text('');
-                    }
-                  }),
-            ),
-            SizedBox(height: size.width * 0.05),
-            ToggleSwitch(
-              minWidth: 130.0,
-              cornerRadius: 20.0,
-              activeBgColors: [
-                [Colors.white],
-                [Colors.white]
-              ],
-              activeFgColor: kPrimaryColor,
-              inactiveBgColor: greyInput,
-              inactiveFgColor: greyInputText,
-              borderColor: [greyInput],
-              borderWidth: 2,
-              initialLabelIndex: selected_Index,
-              totalSwitches: 2,
-              labels: ['Services', 'Evaluation'],
-              radiusStyle: true,
-              onToggle: (index) {
-                _changed(index!);
-              },
-            ),
-            visibilityService
-                ? Container(
-                    height: size.height * 3.25,
-                    child: ListView(
-                        physics: const NeverScrollableScrollPhysics(), // new
-                        children: [
-                          FutureBuilder<List<ServiceByUser?>?>(
-                              future: _servicesByUser,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  if (snapshot.data!.isNotEmpty) {
-                                    return ListView.separated(
-                                        separatorBuilder:
-                                            (BuildContext context, int index) =>
-                                                const Divider(
-                                                  indent:
-                                                      50, // empty space to the leading edge of divider.
-                                                  endIndent: 30,
-                                                ),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(), // new
+                future: _userInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    widget.firstName = snapshot.data!['email'];
+                    print(widget.firstName);
+                    return Column(
+                      children: [
+                        Input(
+                          libelle: 'Nom :',
+                          controller: widget.firstNameController,
+                          inputHint: '${snapshot.data!['name']}',
+                        ),
+                        Input(
+                          libelle: 'Prénom :',
+                          controller: widget.nameController,
+                          inputHint: '${snapshot.data!['firstname']}',
+                        ),
+                        Input(
+                          libelle: 'Email :',
+                          controller: widget.emailController,
+                          inputHint: '${snapshot.data!['email']}',
+                        ),
+                        Input(
+                            libelle: 'Télephone :',
+                            controller: widget.telephoneController,
+                            inputHint: '${snapshot.data!['tel']}',
+                            textInputType: TextInputType.number),
+                        Input(
+                          libelle: 'Adresse :',
+                          controller: widget.adresseController,
+                          inputHint: '${snapshot.data!['adresse']}',
+                        ),
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                'Date de Naissance : ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                width: size.width * 0.315,
+                                child: TextFormField(
+                                  controller: widget.dateNaissController,
+                                  enableInteractiveSelection: false,
+                                  onTap: () {
+                                    // Below line stops keyboard from appearing
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
 
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          var service = snapshot.data![index];
-                                          return Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: Container(
-                                                  width: size.width * 0.9,
-                                                  height: size.height * 0.09,
-                                                  child: Row(
-                                                    children: [
-                                                      service!.photos.isEmpty
-                                                          ? const CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
-                                                            )
-                                                          : CircleAvatar(
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                service
-                                                                    .photos[0]
-                                                                    .libelle
-                                                                    .toString(),
-                                                              ),
-                                                            ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 8.0,
-                                                                top: 2,
-                                                                bottom: 2.0),
-                                                        child: Container(
-                                                          width:
-                                                              size.width * 0.80,
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: Text(
-                                                                      service
-                                                                          .name,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            20),
-                                                                    child: Text(
-                                                                      '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
-                                                                      ' '
-                                                                      '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          color:
-                                                                              greyInputText),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              const Spacer(),
-                                                              Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerLeft,
-                                                                  child: Text(
-                                                                      service
-                                                                          .description,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12))),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  } else {
-                                    return Center(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 38.0),
-                                        child: Container(
-                                            child: Text(
-                                                'Vous n\'avez encore posté aucun service',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                      ),
-                                    );
-                                  }
-                                } else {
-                                  return Container(
-                                    child: Column(
-                                      children: <Widget>[
-                                        SizedBox(height: size.width * 0.3),
-                                        Center(
-                                            child: CircularProgressIndicator())
-                                      ],
+                                    DatePicker.showDatePicker(context,
+                                        showTitleActions: true,
+                                        minTime: DateTime(1980, 1, 1),
+                                        maxTime: DateTime(2022, 12, 31),
+                                        onChanged: (date) {
+                                      widget.dateNaissController.text =
+                                          '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                                    }, onConfirm: (date) {
+                                      widget.dateNaissController.text =
+                                          '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                                    },
+                                        currentTime: DateTime.now(),
+                                        locale: LocaleType.fr);
+                                  },
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintText: "01/01/1001",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(11),
+                                      borderSide: const BorderSide(
+                                          color: greyInputBorder),
                                     ),
-                                  );
-                                }
-                              })
-                        ]),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 38.0),
-                    child: Container(
-                        child: Text(
-                            'Disponible dans une prochaine mise à jour !',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold))),
-                  )
-          ],
-        ),
-      ]),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(11),
+                                      borderSide:
+                                          const BorderSide(color: Colors.red),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(11),
+                                      borderSide:
+                                          const BorderSide(color: Colors.red),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(11),
+                                      borderSide: const BorderSide(
+                                          color: greyInputBorder),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+            ),
+            SizedBox(
+              height: 105,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(left: 35, right: 35, top: 15, bottom: 15),
+                child: RoundedButton(
+                  press: () {
+                    ProfileService.updateUser(
+                        widget.adresseController.text,
+                        widget.dateNaissController.text,
+                        widget.emailController.text,
+                        widget.firstNameController.text,
+                        widget.nameController.text,
+                        int.tryParse(widget.telephoneController.text) ?? 0);
+                    initState() {
+                      _userInfo = ProfileService.getUserInfo();
+                    }
+                  },
+                  sizeButton: 17,
+                  text: 'Modifier',
+                ),
+              ),
+            )
+          ]),
+        ],
+      ),
     );
   }
 }
