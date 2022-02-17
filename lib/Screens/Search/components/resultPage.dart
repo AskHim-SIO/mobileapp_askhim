@@ -15,10 +15,13 @@ class ResultSearchPage extends StatefulWidget {
 
 class _ResultSearchPageState extends State<ResultSearchPage> {
   Future<List<GetSearchByQuery?>?>? _searchByQuery;
+  Future<List<GetSearchByQuery?>?>? _filteredSearch;
+
   @override
   void initState() {
     super.initState();
-    _searchByQuery = SearchService.getSearchByQuery(widget.searchTerm, 100);
+    _searchByQuery = _filteredSearch =
+        SearchService.getSearchByQuery(widget.searchTerm, 100);
   }
 
   @override
