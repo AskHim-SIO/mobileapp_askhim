@@ -82,4 +82,16 @@ class ProfileService extends BaseService {
       return recentServices;
     }
   }
+
+  static Future<Map<String, dynamic>?> getServiceById(int id) async {
+    http.Response? response = await BaseService.makeRequest(
+      BaseService.baseUri + '/service/get-service/' + id.toString(),
+      method: 'GET',
+    );
+    if (response!.statusCode == 200) {
+      Map<String, dynamic> data =
+          Map<String, dynamic>.from(json.decode(response.body));
+      return data;
+    }
+  }
 }

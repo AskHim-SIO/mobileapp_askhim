@@ -51,51 +51,55 @@ class _BodyState extends State<Body> {
                     children: [
                       Expanded(
                         child: FutureBuilder<List<GetListMessageByUserToken?>?>(
-                            future: _listMessage,
-                            builder: (context, snapshot) {
+                          future: _listMessage,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
                               if (snapshot.data!.isNotEmpty) {
-                                if (snapshot.hasData) {
-                                  return ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (context, index) {
-                                        var message = snapshot.data![index];
-                                        return ChatCard(
-                                          photo: message!.service.photos.isEmpty
-                                              ? message
-                                                  .service.type.defaultPhoto
-                                              : message
-                                                  .service.photos[0].libelle
-                                                  .toString(),
-                                          nomService: message.service.name,
-                                          nomUser: message.users[0].firstname +
-                                              ' ' +
-                                              message.users[0].name,
-                                          press: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ChatScreen(
-                                                idSender: message.users[1].id,
-                                                idReceiver: message.users[0].id,
-                                                photoProfil: message
-                                                    .users[0].profilPicture,
-                                                nom: message.users[0].firstname,
-                                                prenom: message.users[0].name,
-                                                uuid: message.uuid,
-                                              ),
+                                return ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      var message = snapshot.data![index];
+                                      return ChatCard(
+                                        photo: message!.service.photos.isEmpty
+                                            ? message.service.type.defaultPhoto
+                                            : message.service.photos[0].libelle
+                                                .toString(),
+                                        nomService: message.service.name,
+                                        nomUser: message.users[0].firstname +
+                                            ' ' +
+                                            message.users[0].name,
+                                        press: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ChatScreen(
+                                              idSender: message.users[1].id,
+                                              idReceiver: message.users[0].id,
+                                              photoProfil: message
+                                                  .users[0].profilPicture,
+                                              nom: message.users[0].firstname,
+                                              prenom: message.users[0].name,
+                                              uuid: message.uuid,
                                             ),
                                           ),
-                                        );
-                                      });
-                                } else {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                }
+                                        ),
+                                      );
+                                    });
                               } else {
-                                return Center(child: Text('pas de message'));
+                                return Center(
+                                    child: CircularProgressIndicator());
                               }
-                            }),
+                            } else {
+                              return const Center(
+                                  child: Text(
+                                      'Vous n\'avez pas encore de message',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)));
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
