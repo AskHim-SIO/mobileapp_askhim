@@ -1,17 +1,38 @@
 import 'package:ap4_askhim/Screens/Chat/components/body.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
-import 'package:ap4_askhim/components/appbar.dart';
+import 'package:ap4_askhim/Screens/servicePage/PublicProfile/publicprofile.dart';
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/models/chat/getDiscussionByUuid.dart';
+import 'package:ap4_askhim/services/chat_services.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class ChatScreen extends StatefulWidget {
+  String photoProfil, nom, prenom;
+  String uuid;
+  int idReceiver, idSender;
+  ChatScreen(
+      {Key? key,
+      required this.uuid,
+      required this.photoProfil,
+      required this.nom,
+      required this.prenom,
+      required this.idReceiver,
+      required this.idSender})
+      : super(key: key);
 
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Body(),
+      body: Body(
+          uuid: widget.uuid,
+          idReceiver: widget.idReceiver,
+          idSender: widget.idSender),
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -32,16 +53,15 @@ class ChatScreen extends StatelessWidget {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://i1.sndcdn.com/avatars-TxTlTnjuRCVM5loh-wkUE7A-t500x500.jpg"),
+              backgroundImage: NetworkImage(widget.photoProfil),
             ),
             SizedBox(width: kDefaultPadding * 0.50),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "ROMAIN MAHOT",
-                  style: TextStyle(
+                  widget.nom + ' ' + widget.prenom,
+                  style: const TextStyle(
                       fontSize: 16,
                       color: kPrimaryColor,
                       fontWeight: FontWeight.bold),
@@ -57,8 +77,7 @@ class ChatScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProfileScreen(),
-                ),
+                    builder: (_) => PublicProfile(id: widget.idReceiver)),
               );
             },
             color: kPrimaryColor,

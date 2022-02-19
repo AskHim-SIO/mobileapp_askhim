@@ -81,7 +81,6 @@ class _BodyState extends State<Body> {
                               itemBuilder: (context, index) {
                                 var service = snapshot.data![index];
 
-                                print(service);
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(

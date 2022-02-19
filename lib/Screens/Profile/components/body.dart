@@ -198,7 +198,6 @@ class _BodyState extends State<Body> {
                           FutureBuilder<List<ServiceByUser?>?>(
                             future: _servicesByUser,
                             builder: (context, snapshot) {
-                              print(_servicesByUser);
                               if (snapshot.hasData) {
                                 if (snapshot.data!.isNotEmpty) {
                                   return ListView.separated(
@@ -216,7 +215,6 @@ class _BodyState extends State<Body> {
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         var service = snapshot.data![index];
-                                        print(service);
                                         return Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Padding(

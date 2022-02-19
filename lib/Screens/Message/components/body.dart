@@ -1,36 +1,110 @@
+import 'dart:async';
+
 import 'package:ap4_askhim/Screens/Chat/chat_screen.dart';
 import 'package:ap4_askhim/Screens/Message/message_screen.dart';
 import 'package:ap4_askhim/constants.dart';
+import 'package:ap4_askhim/models/chat/getListMessageByUserToken.dart';
 import 'package:ap4_askhim/models/message.dart';
+import 'package:ap4_askhim/services/chat_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:timer_builder/timer_builder.dart';
 
 import 'message_card.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  Future<List<GetListMessageByUserToken?>?>? _listMessage;
+  Timer? _everySecond;
+  @override
+  initState() {
+    super.initState();
+    _listMessage = ChatService.getListMessageByUserToken();
+
+    // defines a timer
+    _everySecond = Timer.periodic(Duration(seconds: 10), (Timer t) {
+      if (this.mounted) {
+        setState(() {
+          _listMessage = ChatService.getListMessageByUserToken();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-          child: Row(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: chatsData.length,
-              itemBuilder: (context, index) => ChatCard(
-                message: chatsData[index],
-                press: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatScreen(),
+      body: ListView(children: [
+        Container(
+          height: size.height,
+          child: Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: FutureBuilder<List<GetListMessageByUserToken?>?>(
+                            future: _listMessage,
+                            builder: (context, snapshot) {
+                              if (snapshot.data!.isNotEmpty) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, index) {
+                                        var message = snapshot.data![index];
+                                        return ChatCard(
+                                          photo: message!.service.photos.isEmpty
+                                              ? message
+                                                  .service.type.defaultPhoto
+                                              : message
+                                                  .service.photos[0].libelle
+                                                  .toString(),
+                                          nomService: message.service.name,
+                                          nomUser: message.users[0].firstname +
+                                              ' ' +
+                                              message.users[0].name,
+                                          press: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChatScreen(
+                                                idSender: message.users[1].id,
+                                                idReceiver: message.users[0].id,
+                                                photoProfil: message
+                                                    .users[0].profilPicture,
+                                                nom: message.users[0].firstname,
+                                                prenom: message.users[0].name,
+                                                uuid: message.uuid,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                } else {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              } else {
+                                return Center(child: Text('pas de message'));
+                              }
+                            }),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
-      ),),
+        ),
+      ]),
     );
   }
 }

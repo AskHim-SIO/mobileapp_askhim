@@ -60,7 +60,6 @@ class _InputAdressState extends State<InputAdress> {
       ),
       validator: (v) {
         if (widget.finalAdresse.isNotEmpty) {
-          print(widget.finalAdresse);
           return null;
         } else {
           return 'Veuillez entrer des informations valides';

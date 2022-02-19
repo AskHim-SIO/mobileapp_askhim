@@ -166,7 +166,6 @@ class _Body extends State<Body> {
                     passwordController.text,
                   ).then(
                     (val) {
-                      print(val);
                       if (val == true) {
                         context.router.pushNamed('/');
                       } else if (val == false) {

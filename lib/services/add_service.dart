@@ -31,7 +31,6 @@ class AddService extends BaseService {
       int price,
       String vehiculePerso) async {
     final adresse = await getAdressesByQuery(adresseComplete);
-    print(adresse);
     var box = await Hive.openBox('tokenBox');
     var u = box.get('Token');
     var token = u.token;
@@ -58,7 +57,6 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
       throw Exception('Erreur');
@@ -101,7 +99,6 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
       return false;
@@ -146,10 +143,8 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
-      print('erreur');
       return false;
     }
   }
@@ -190,10 +185,8 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
-      print('erreur');
       return false;
     }
   }
@@ -234,10 +227,8 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
-      print('erreur');
       return false;
     }
   }

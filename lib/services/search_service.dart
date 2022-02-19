@@ -15,8 +15,7 @@ class SearchService extends BaseService {
           count.toString(),
       method: 'GET',
     );
-    print(response!.body);
-    if (response.statusCode == 200) {
+    if (response!.statusCode == 200) {
       var jsonList = json.decode(response.body);
       for (var service in jsonList) {
         searchByQuery.add(GetSearchByQuery.fromJson(service));

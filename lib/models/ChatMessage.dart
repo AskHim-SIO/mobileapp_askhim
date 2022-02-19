@@ -25,7 +25,7 @@ List demeChatMessages = [
     text: "YO MEC,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
-    isSenders: false,
+    isSenders: true,
   ),
   ChatMessage(
     text: "Tu vas bien ?",

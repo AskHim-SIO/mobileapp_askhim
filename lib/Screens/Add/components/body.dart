@@ -189,7 +189,6 @@ class _BodyState extends State<Body> {
   getBoolAnimal() {
     setState(() {
       accompagnementAnimal = _accompagnement[0];
-      print(accompagnementAnimal);
     });
   }
 
@@ -201,7 +200,6 @@ class _BodyState extends State<Body> {
       if (!mode[0]) {
         modeFinal = 'Distanciel';
       }
-      print(modeFinal);
     });
   }
 
@@ -257,8 +255,6 @@ class _BodyState extends State<Body> {
                                 future: _categorieServices,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    print(snapshot.data);
-
                                     return DropdownButton(
                                       hint: Text('Choisir un type de service'),
                                       value: value,

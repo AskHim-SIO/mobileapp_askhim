@@ -1,12 +1,12 @@
-// ignore_for_file: deprecated_member_use
+import 'package:ap4_askhim/Screens/Chat/chat_screen.dart';
+import 'package:ap4_askhim/Screens/Chat/components/body.dart' as bodychat;
 
-import 'package:ap4_askhim/Screens/Message/message_screen.dart';
-import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
 import 'package:ap4_askhim/Screens/servicePage/PublicProfile/publicprofile.dart';
 import 'package:ap4_askhim/Screens/servicePage/components/carousel.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
-import 'package:ap4_askhim/models/serviceDetails.dart';
+import 'package:ap4_askhim/services/chat_services.dart';
+import 'package:ap4_askhim/services/profile_service.dart';
 import 'package:ap4_askhim/services/serviceDetails.dart';
 import 'package:ap4_askhim/Screens/servicePage/components/dynamic_card_service.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +25,12 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   Future<Map<String, dynamic>?>? _service_details;
+  Future<Map<String, dynamic>?>? _userInfos;
+  int? status;
+
   initState() {
     _service_details = serviceDetails.getServiceDetails(widget.id.toString());
+    _userInfos = ProfileService.getUserInfo();
     super.initState();
   }
 
@@ -95,8 +99,6 @@ class _BodyState extends State<Body> {
                               future: _service_details,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  print(
-                                      snapshot.data!['user']['profilPicture']);
                                   return Row(
                                     children: [
                                       snapshot.data!['user']['profilPicture'] ==
@@ -288,11 +290,46 @@ class _BodyState extends State<Body> {
                   left: 35, right: 35, top: 15, bottom: 15),
               child: RoundedButton(
                 press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MessageScreen(),
-                    ),
+                  ChatService.initDiscussion(widget.id).then(
+                    (val) {
+                      if (val == '409') {
+                        //implementation du message d'erreur
+                      } else {
+                        ChatService.getDiscussionByUuid(val).then((val1) {
+                          ProfileService.getUserInfo().then((val2) {
+                            final int idSender = val2!['id'];
+                            final int idReceiver;
+                            final String prenom, profilPicture, nom;
+
+                            idSender == val1!['users'][0]['id']
+                                ? idReceiver = val1['users'][1]['id']
+                                : idReceiver = val1['users'][0]['id'];
+                            idSender == val1['users'][0]['id']
+                                ? prenom = val1['users'][1]['firstname']
+                                : prenom = val1['users'][0]['firstname'];
+                            idSender == val1['users'][0]['id']
+                                ? profilPicture =
+                                    val1['users'][1]['profilPicture']
+                                : profilPicture =
+                                    val1['users'][0]['profilPicture'];
+                            idSender == val1['users'][0]['id']
+                                ? nom = val1['users'][1]['name']
+                                : nom = val1['users'][0]['name'];
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => ChatScreen(
+                                        prenom: prenom,
+                                        photoProfil: profilPicture,
+                                        nom: nom,
+                                        uuid: val,
+                                        idSender: idSender,
+                                        idReceiver: idReceiver)));
+                          });
+                        });
+                      }
+                      ;
+                    },
                   );
                 },
                 sizeButton: 17,
