@@ -29,8 +29,8 @@ class Message extends StatelessWidget {
       padding: const EdgeInsets.only(top: kDefaultPadding),
       child: Row(
         mainAxisAlignment: message!['author']['id'] == idSender
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.end,
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         children: [
           if (message!['author']['id'] == idSender) ...[
             CircleAvatar(

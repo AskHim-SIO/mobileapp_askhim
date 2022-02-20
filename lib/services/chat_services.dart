@@ -65,4 +65,23 @@ class ChatService extends BaseService {
       return throw Exception('erreur');
     }
   }
+
+  static Future<bool> postChat(String discussionId, String query) async {
+    var box = await Hive.openBox('tokenBox');
+    if (box.get('Token') != null) {
+      var u = box.get('Token');
+      var token = u.token;
+
+      final String url =
+          'http://api.askhim.ctrempe.fr:80/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query';
+      http.Response res = await http.post(Uri.parse(url));
+      if (res.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return throw Exception('erreur');
+    }
+  }
 }

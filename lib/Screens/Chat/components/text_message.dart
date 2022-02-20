@@ -30,7 +30,7 @@ class TextMessage extends StatelessWidget {
       child: Text(
         message!['message'],
         style: TextStyle(
-          color: message!['author']['id'] == idSender
+          color: message!['author']['id'] == idReceiver
               ? Colors.white
               : Theme.of(context).textTheme.bodyText1?.color,
         ),

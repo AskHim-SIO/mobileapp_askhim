@@ -277,7 +277,6 @@ class _BodyState extends State<Body> {
               } else {
                 return const Center(child: CircularProgressIndicator());
               }
-              ;
             },
           ),
           SizedBox(height: size.width * 0.05),

@@ -27,26 +27,49 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   Future<Map<String, dynamic>?>? _listMessage;
   Timer? _everySecond;
+  ScrollController? _scrollController;
 
   @override
   void initState() {
     _listMessage = ChatService.getDiscussionByUuid(widget.uuid);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _scrollController = ScrollController();
+    });
 
     super.initState();
     // defines a timer
-    _everySecond = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    _everySecond = Timer.periodic(Duration(seconds: 2), (Timer t) {
       if (this.mounted) {
         setState(() {
           _listMessage = ChatService.getDiscussionByUuid(widget.uuid);
         });
+        scrollToBottom();
       }
     });
   }
 
-  void redirect() {}
+  void scrollToBottom() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_scrollController!.hasClients) {
+        final bottomOffset = _scrollController!.position.maxScrollExtent;
+        _scrollController!.jumpTo(_scrollController!.position.maxScrollExtent);
+      }
+    });
+  }
+
+  void refresh() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      setState(() {
+        _scrollController = ScrollController();
+      });
+    });
+    scrollToBottom();
+    print(('refresh'));
+  }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Expanded(
@@ -58,6 +81,7 @@ class _BodyState extends State<Body> {
                   if (snapshot.hasData) {
                     var message = snapshot.data;
                     return ListView.builder(
+                        controller: _scrollController,
                         itemCount: snapshot.data!['messages'].length,
                         itemBuilder: (context, index) {
                           return M.Message(
@@ -71,7 +95,11 @@ class _BodyState extends State<Body> {
                 }),
           ),
         ),
-        ChatInputField(),
+        SizedBox(height: size.width * 0.02),
+        ChatInputField(
+          uuid: widget.uuid,
+          refresh: refresh,
+        ),
       ],
     );
   }

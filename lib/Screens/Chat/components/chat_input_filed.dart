@@ -1,8 +1,26 @@
+import 'package:ap4_askhim/services/chat_services.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class ChatInputField extends StatelessWidget {
+class ChatInputField extends StatefulWidget {
+  final Function() refresh;
+  final String uuid;
+  const ChatInputField({Key? key, required this.uuid, required this.refresh})
+      : super(key: key);
+
+  @override
+  State<ChatInputField> createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends State<ChatInputField> {
+  final chatController = TextEditingController();
+  String? selectedTerm;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,22 +52,52 @@ class ChatInputField extends StatelessWidget {
                 ),
                 child: Row(children: [
                   SizedBox(width: kDefaultPadding / 4),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      textInputAction: TextInputAction.done,
+                      onChanged: (query) {
+                        setState(() {
+                          selectedTerm = query;
+                        });
+                      },
+                      controller: chatController,
+                      onSubmitted: (query) {
+                        ChatService.postChat(widget.uuid, query).then((value) {
+                          if (value) {
+                            chatController.clear();
+                            widget.refresh();
+                          }
+                        });
+                      },
+                      decoration: const InputDecoration(
                         hintText: 'Votre message...',
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                   SizedBox(width: kDefaultPadding / 4),
-                  Icon(
-                    Icons.send_rounded,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.color!
-                        .withOpacity(0.64),
+                  GestureDetector(
+                    onTap: () {
+                      ChatService.postChat(widget.uuid, selectedTerm.toString())
+                          .then((value) {
+                        if (value) {
+                          chatController.clear();
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus) {
+                            currentFocus.unfocus();
+                          }
+                          widget.refresh();
+                        }
+                      });
+                    },
+                    child: Icon(
+                      Icons.send_rounded,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.color!
+                          .withOpacity(0.64),
+                    ),
                   ),
                 ]),
               ),
