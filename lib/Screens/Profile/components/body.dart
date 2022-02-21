@@ -107,7 +107,7 @@ class _BodyState extends State<Body> {
                       children: <Widget>[
                         Center(
                           child: const Text(
-                            'Profile',
+                            'Profil',
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -168,7 +168,7 @@ class _BodyState extends State<Body> {
                           ),
                           SizedBox(height: size.width * 0.02),
                           Text(
-                            'AskCoins : ${snapshot.data!['credit']}',
+                            '${snapshot.data!['credit']} AskCoins 💰',
                             style: (TextStyle(fontSize: 18)),
                           ),
                         ],
@@ -290,7 +290,6 @@ class _BodyState extends State<Body> {
                                                                               FontWeight.bold),
                                                                     ),
                                                                   ),
-                                                                  const Spacer(),
                                                                   Text(
                                                                     '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
                                                                     ' '
