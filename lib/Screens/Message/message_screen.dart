@@ -16,7 +16,7 @@ class MessageScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 1,
           automaticallyImplyLeading: false,
-          title: Center(
+          title: const Center(
               child: Text("Messages",
                   style: TextStyle(
                       color: kPrimaryColor, fontWeight: FontWeight.bold)))),

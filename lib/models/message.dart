@@ -25,5 +25,5 @@ List chatsData = [
     image: "https://i1.sndcdn.com/avatars-TxTlTnjuRCVM5loh-wkUE7A-t500x500.jpg",
     time: "2m ago",
     isActive: false,
-  )
+  ),
 ];

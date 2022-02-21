@@ -134,7 +134,6 @@ class _HomePageState extends State<SearchBar> {
                                                       fontWeight:
                                                           FontWeight.w500)),
                                               onTap: () {
-                                                print('tapped');
                                                 setState(() {
                                                   selectedTerm = recherche.name;
                                                 });

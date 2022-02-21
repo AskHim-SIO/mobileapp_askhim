@@ -12,8 +12,7 @@ class CategorieService extends BaseService {
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/service/get-services-from-type/' + idCat,
         method: 'GET');
-    print(response!.body);
-    if (response.statusCode == 200) {
+    if (response!.statusCode == 200) {
       var jsonList = json.decode(response.body);
       for (var service in jsonList) {
         serviceByCat.add(CategorieServicePage.fromJson(service));

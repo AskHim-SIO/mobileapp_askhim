@@ -6,56 +6,69 @@ import 'package:flutter/material.dart';
 class ChatCard extends StatelessWidget {
   const ChatCard({
     Key? key,
-    required this.message,
+    required this.nomUser,
+    required this.photo,
+    required this.nomService,
+    required this.state,
     required this.press,
   }) : super(key: key);
 
-  final Message message;
+  final String nomUser, nomService, photo;
   final VoidCallback press;
+  final bool state;
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: press,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
-        child: Row(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        child: Column(
           children: [
-            Stack(
+            SizedBox(height: size.width * 0.02),
+            Row(
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage(message.image),
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundImage: NetworkImage(photo),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          nomService,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        Opacity(
+                          opacity: 0.64,
+                          child: Text(
+                            nomUser,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  SizedBox(height: 7),
-                  Opacity(
-                    opacity: 0.64,
-                    child: Text(
-                      message.lastMessage,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-            )),
-            Opacity(opacity: 0.64, child: Text(message.time)),
+                ),
+                state ? Container() : Icon(Icons.check, color: kPrimaryColor)
+              ],
+            ),
+            SizedBox(height: size.width * 0.03),
+            Divider()
           ],
         ),
       ),

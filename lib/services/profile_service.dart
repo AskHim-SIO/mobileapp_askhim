@@ -18,18 +18,15 @@ class ProfileService extends BaseService {
         BaseService.baseUri + '/user/get-user-by-token/' + token,
         method: 'GET',
       );
-      print(response!.body);
-      if (response.statusCode == 200) {
+      if (response!.statusCode == 200) {
         Map<String, dynamic> data =
             new Map<String, dynamic>.from(json.decode(response.body));
         return data;
       } else if (response.statusCode == 404) {
         Hive.box('tokenBox').clear();
-        print('supprimé');
       }
     } else {
       Hive.box('tokenBox').clear();
-      print('supprimé2');
     }
   }
 
@@ -38,8 +35,7 @@ class ProfileService extends BaseService {
       BaseService.baseUri + '/user/get-user-by-id/' + id.toString(),
       method: 'GET',
     );
-    print(response!.body);
-    if (response.statusCode == 200) {
+    if (response!.statusCode == 200) {
       Map<String, dynamic> data =
           new Map<String, dynamic>.from(json.decode(response.body));
       return data;
@@ -57,8 +53,7 @@ class ProfileService extends BaseService {
               '/service/get-services-from-user-by-token/' +
               token,
           method: 'GET');
-      print(response!.body);
-      if (response.statusCode == 200) {
+      if (response!.statusCode == 200) {
         var jsonList = json.decode(response.body);
         for (var service in jsonList) {
           recentServices.add(ServiceByUser.fromJson(service));
@@ -66,11 +61,9 @@ class ProfileService extends BaseService {
         return recentServices;
       } else if (response.statusCode == 404) {
         Hive.box('tokenBox').clear();
-        print('supprimé');
       }
     } else {
       Hive.box('tokenBox').clear();
-      print('supprimé2');
     }
   }
 
@@ -87,6 +80,18 @@ class ProfileService extends BaseService {
         recentServices.add(ServiceByUser.fromJson(service));
       }
       return recentServices;
+    }
+  }
+
+  static Future<Map<String, dynamic>?> getServiceById(int id) async {
+    http.Response? response = await BaseService.makeRequest(
+      BaseService.baseUri + '/service/get-service/' + id.toString(),
+      method: 'GET',
+    );
+    if (response!.statusCode == 200) {
+      Map<String, dynamic> data =
+          Map<String, dynamic>.from(json.decode(response.body));
+      return data;
     }
   }
 }
