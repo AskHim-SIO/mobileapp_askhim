@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:hive/hive.dart';
 import '../../../constants.dart';
+import '../servicePage.dart';
 
 class PublicProfile extends StatefulWidget {
   final int id;
@@ -203,89 +204,100 @@ class _PublicProfileState extends State<PublicProfile> {
                                                   snapshot.data![index];
                                               return Padding(
                                                 padding: EdgeInsets.all(8.0),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 15.0),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Container(
-                                                      width: size.width * 0.9,
-                                                      height:
-                                                          size.height * 0.09,
-                                                      child: Row(
-                                                        children: [
-                                                          CircleAvatar(
-                                                            backgroundImage:
-                                                                NetworkImage(
-                                                              service!.photos.isEmpty
-                                                                  ? service.type
-                                                                      .defaultPhoto
-                                                                  : service
-                                                                      .photos[0]
-                                                                      .libelle
-                                                                      .toString(),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 8.0,
-                                                                    top: 2,
-                                                                    bottom:
-                                                                        2.0),
-                                                            child: Container(
-                                                              width:
-                                                                  size.width *
-                                                                      0.75,
-                                                              child: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      Expanded(
-                                                                        child:
-                                                                            Text(
-                                                                          service
-                                                                              .name,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style: const TextStyle(
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                      ),
-                                                                      const Spacer(),
-                                                                      Text(
-                                                                        '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
-                                                                        ' '
-                                                                        '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
-                                                                        style: const TextStyle(
-                                                                            fontSize:
-                                                                                12,
-                                                                            color:
-                                                                                greyInputText),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const Spacer(),
-                                                                  Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .centerLeft,
-                                                                      child: Text(
-                                                                          '${service.description}',
-                                                                          overflow: TextOverflow
-                                                                              .ellipsis,
-                                                                          style:
-                                                                              TextStyle(fontSize: 12))),
-                                                                ],
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            servicePage(
+                                                          id: service!.id,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 15.0),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      child: Container(
+                                                        width: size.width * 0.9,
+                                                        height:
+                                                            size.height * 0.09,
+                                                        child: Row(
+                                                          children: [
+                                                            CircleAvatar(
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                service!.photos
+                                                                        .isEmpty
+                                                                    ? service
+                                                                        .type
+                                                                        .defaultPhoto
+                                                                    : service
+                                                                        .photos[
+                                                                            0]
+                                                                        .libelle
+                                                                        .toString(),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 8.0,
+                                                                      top: 2,
+                                                                      bottom:
+                                                                          2.0),
+                                                              child: Container(
+                                                                width:
+                                                                    size.width *
+                                                                        0.75,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child:
+                                                                              Text(
+                                                                            service.name,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                        ),
+                                                                        const Spacer(),
+                                                                        Text(
+                                                                          '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
+                                                                          ' '
+                                                                          '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
+                                                                          style: const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: greyInputText),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const Spacer(),
+                                                                    Align(
+                                                                        alignment:
+                                                                            Alignment
+                                                                                .centerLeft,
+                                                                        child: Text(
+                                                                            '${service.description}',
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(fontSize: 12))),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
