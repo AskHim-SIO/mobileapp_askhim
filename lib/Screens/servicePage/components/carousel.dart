@@ -21,33 +21,33 @@ class _carouselState extends State<carousel> {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 300.0,
-        enlargeCenterPage: true,
-      ),
-      items: [
-        FutureBuilder<Map<String, dynamic>?>(
-          future: _service_details,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  image: DecorationImage(
-                    image: NetworkImage(snapshot.data!['photos'].length == 0
-                        ? snapshot.data!["type"]["defaultPhoto"]
-                        : snapshot.data!["photos"][0]["libelle"]),
-                    fit: BoxFit.cover,
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: _service_details,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return CarouselSlider.builder(
+              itemCount: snapshot.data!['photos'].length,
+              options: CarouselOptions(
+                height: 300.0,
+                enlargeCenterPage: true,
+              ),
+              itemBuilder: (context, index, index2) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: NetworkImage(snapshot.data!['photos'].length == 0
+                          ? snapshot.data!["type"]["defaultPhoto"]
+                          : snapshot.data!["photos"][index]["libelle"]),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ],
+                );
+              });
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
