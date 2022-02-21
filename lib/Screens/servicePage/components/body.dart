@@ -311,8 +311,11 @@ class _BodyState extends State<Body> {
                                   final int idSender = val2!['id'];
                                   final int idReceiver;
                                   final String prenom, profilPicture, nom;
-
+                                  final int idP;
                                   idSender == val1!['users'][0]['id']
+                                      ? idP = val1['users'][1]['id']
+                                      : idP = val1['users'][0]['id'];
+                                  idSender == val1['users'][0]['id']
                                       ? idReceiver = val1['users'][1]['id']
                                       : idReceiver = val1['users'][0]['id'];
                                   idSender == val1['users'][0]['id']
@@ -330,6 +333,8 @@ class _BodyState extends State<Body> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) => ChatScreen(
+                                              state: valS['state'],
+                                              id: idP,
                                               prenom: prenom,
                                               photoProfil: profilPicture,
                                               nom: nom,

@@ -50,7 +50,7 @@ class Message extends StatelessWidget {
             ),
             const SizedBox(width: kDefaultPadding / 2),
           ],
-          messageContaint(message),
+          Flexible(child: messageContaint(message)),
         ],
       ),
     );

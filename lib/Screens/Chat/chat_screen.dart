@@ -9,10 +9,13 @@ import 'package:flutter/material.dart';
 class ChatScreen extends StatefulWidget {
   String photoProfil, nom, prenom;
   String uuid;
-  int idReceiver, idSender;
+  int idReceiver, idSender, id;
+  final bool state;
   ChatScreen(
       {Key? key,
       required this.uuid,
+      required this.state,
+      required this.id,
       required this.photoProfil,
       required this.nom,
       required this.prenom,
@@ -30,6 +33,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Body(
+          state: widget.state,
+          id: widget.id,
           uuid: widget.uuid,
           idReceiver: widget.idReceiver,
           idSender: widget.idSender),
@@ -60,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.nom + ' ' + widget.prenom,
+                  widget.prenom + ' ' + widget.nom,
                   style: const TextStyle(
                       fontSize: 16,
                       color: kPrimaryColor,

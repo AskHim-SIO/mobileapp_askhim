@@ -62,7 +62,8 @@ class _BodyState extends State<Body> {
                                     itemBuilder: (context, index) {
                                       var message = snapshot.data![index];
                                       return ChatCard(
-                                        photo: message!.service.photos.isEmpty
+                                        state: message!.service.state,
+                                        photo: message.service.photos.isEmpty
                                             ? message.service.type.defaultPhoto
                                             : message.service.photos[0].libelle
                                                 .toString(),
@@ -74,12 +75,14 @@ class _BodyState extends State<Body> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ChatScreen(
+                                              state: message.service.state,
                                               idSender: message.users[1].id,
                                               idReceiver: message.users[0].id,
                                               photoProfil: message
                                                   .users[0].profilPicture,
                                               nom: message.users[0].firstname,
                                               prenom: message.users[0].name,
+                                              id: message.users[0].id,
                                               uuid: message.uuid,
                                             ),
                                           ),
@@ -87,16 +90,15 @@ class _BodyState extends State<Body> {
                                       );
                                     });
                               } else {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                                return const Center(
+                                    child: Text(
+                                        'Vous n\'avez pas encore de message',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)));
                               }
                             } else {
-                              return const Center(
-                                  child: Text(
-                                      'Vous n\'avez pas encore de message',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)));
+                              return Center(child: CircularProgressIndicator());
                             }
                           },
                         ),

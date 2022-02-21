@@ -47,18 +47,21 @@ class Message {
     required this.author,
     required this.postDate,
     required this.message,
+    required this.unreaded,
   });
 
   String uuid;
   User author;
   int postDate;
   String message;
+  bool unreaded;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         uuid: json["uuid"],
         author: User.fromJson(json["author"]),
         postDate: json["postDate"],
         message: json["message"],
+        unreaded: json["unreaded"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +69,7 @@ class Message {
         "author": author.toJson(),
         "postDate": postDate,
         "message": message,
+        "unreaded": unreaded,
       };
 }
 
@@ -88,9 +92,9 @@ class User {
   String firstname;
   String profilPicture;
   bool admin;
-  Email? email;
-  int tel;
-  Address? address;
+  String email;
+  dynamic tel;
+  dynamic address;
   int dateNaiss;
   int credit;
 
@@ -100,10 +104,9 @@ class User {
         firstname: json["firstname"],
         profilPicture: json["profilPicture"],
         admin: json["admin"],
-        email: emailValues.map[json["email"]],
-        tel: json["tel"] == null ? 0 : json["tel"],
-        address:
-            json["address"] == null ? null : addressValues.map[json["address"]],
+        email: json["email"],
+        tel: json["tel"],
+        address: json["address"],
         dateNaiss: json["dateNaiss"],
         credit: json["credit"],
       );
@@ -115,38 +118,28 @@ class User {
         "profilPicture": profilPicture,
         "admin": admin,
         "email": emailValues.reverse![email],
-        "tel": tel == null ? null : tel,
-        "address": address == null ? null : addressValues.reverse![address],
+        "tel": tel,
+        "address": address,
         "dateNaiss": dateNaiss,
         "credit": credit,
       };
 }
 
-enum Address { THE_27_RUE_LECOURBE_75015_PARIS }
-
-final addressValues = EnumValues(
-    {"27 Rue Lecourbe 75015 Paris": Address.THE_27_RUE_LECOURBE_75015_PARIS});
-
-enum Email { MALCOM_GMAIL_COM, EMMANUEL_MACRON_GOUV_FR, USER1_GMAIL_COM }
+enum Email { BMETAIS_ASKHIM_FR, CTREMPE_ASKHIM_FR }
 
 final emailValues = EnumValues({
-  "emmanuel.macron@gouv.fr": Email.EMMANUEL_MACRON_GOUV_FR,
-  "malcom@gmail.com": Email.MALCOM_GMAIL_COM,
-  "user1@gmail.com": Email.USER1_GMAIL_COM
+  "bmetais@askhim.fr": Email.BMETAIS_ASKHIM_FR,
+  "ctrempe@askhim.fr": Email.CTREMPE_ASKHIM_FR
 });
 
-enum Firstname { MALCOM, EMMANUEL, USER1 }
+enum Firstname { BASTIEN, CLMENT }
 
-final firstnameValues = EnumValues({
-  "Emmanuel": Firstname.EMMANUEL,
-  "Malcom": Firstname.MALCOM,
-  "user1": Firstname.USER1
-});
+final firstnameValues =
+    EnumValues({"Bastien": Firstname.BASTIEN, "Clément": Firstname.CLMENT});
 
-enum Name { MOREL, MACRON, USER1 }
+enum Name { MTAIS, TREMP }
 
-final nameValues = EnumValues(
-    {"Macron": Name.MACRON, "Morel": Name.MOREL, "user1": Name.USER1});
+final nameValues = EnumValues({"Métais": Name.MTAIS, "Trempé": Name.TREMP});
 
 class Service {
   Service({
@@ -155,6 +148,7 @@ class Service {
     required this.description,
     required this.dateStart,
     required this.dateEnd,
+    required this.state,
     required this.price,
     required this.postDate,
     required this.lieu,
@@ -167,11 +161,12 @@ class Service {
   String description;
   int dateStart;
   int dateEnd;
+  bool state;
   int price;
   int postDate;
   Lieu lieu;
   Type type;
-  List<Photo> photos;
+  List<dynamic> photos;
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
         id: json["id"],
@@ -179,11 +174,12 @@ class Service {
         description: json["description"],
         dateStart: json["dateStart"],
         dateEnd: json["dateEnd"],
+        state: json["state"],
         price: json["price"],
         postDate: json["postDate"],
         lieu: Lieu.fromJson(json["lieu"]),
         type: Type.fromJson(json["type"]),
-        photos: List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
+        photos: List<dynamic>.from(json["photos"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -192,11 +188,12 @@ class Service {
         "description": description,
         "dateStart": dateStart,
         "dateEnd": dateEnd,
+        "state": state,
         "price": price,
         "postDate": postDate,
         "lieu": lieu.toJson(),
         "type": type.toJson(),
-        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
+        "photos": List<dynamic>.from(photos.map((x) => x)),
       };
 }
 
@@ -225,26 +222,6 @@ class Lieu {
         "adresse": adresse,
         "codePostal": codePostal,
         "ville": ville,
-      };
-}
-
-class Photo {
-  Photo({
-    required this.id,
-    required this.libelle,
-  });
-
-  int id;
-  String libelle;
-
-  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
-        id: json["id"],
-        libelle: json["libelle"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "libelle": libelle,
       };
 }
 

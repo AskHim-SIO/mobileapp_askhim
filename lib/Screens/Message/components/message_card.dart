@@ -9,11 +9,13 @@ class ChatCard extends StatelessWidget {
     required this.nomUser,
     required this.photo,
     required this.nomService,
+    required this.state,
     required this.press,
   }) : super(key: key);
 
   final String nomUser, nomService, photo;
   final VoidCallback press;
+  final bool state;
 
   @override
   Widget build(BuildContext context) {
@@ -36,32 +38,33 @@ class ChatCard extends StatelessWidget {
                   ],
                 ),
                 Expanded(
-                    child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        nomService,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          nomService,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 7),
-                      Opacity(
-                        opacity: 0.64,
-                        child: Text(
-                          nomUser,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
+                        SizedBox(height: 7),
+                        Opacity(
+                          opacity: 0.64,
+                          child: Text(
+                            nomUser,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                )),
-                //Opacity(opacity: 0.64, child: Text(message.time)),
+                ),
+                state ? Container() : Icon(Icons.check, color: kPrimaryColor)
               ],
             ),
             SizedBox(height: size.width * 0.03),

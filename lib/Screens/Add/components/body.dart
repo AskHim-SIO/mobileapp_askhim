@@ -347,7 +347,7 @@ class _BodyState extends State<Body> {
                                       const Padding(
                                         padding: EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                          'Date de Depart : ',
+                                          'Date de début : ',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
@@ -371,7 +371,9 @@ class _BodyState extends State<Body> {
 
                                               DatePicker.showDatePicker(context,
                                                   showTitleActions: true,
-                                                  minTime: DateTime(1980, 1, 1),
+                                                  minTime: DateTime.now()
+                                                      .subtract(
+                                                          Duration(days: 0)),
                                                   maxTime:
                                                       DateTime(2022, 12, 31),
                                                   onChanged: (date) {
@@ -433,7 +435,7 @@ class _BodyState extends State<Body> {
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: const Text(
-                                          'Date d\'arrivée : ',
+                                          'Date de fin : ',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
@@ -457,7 +459,9 @@ class _BodyState extends State<Body> {
 
                                               DatePicker.showDatePicker(context,
                                                   showTitleActions: true,
-                                                  minTime: DateTime(1980, 1, 1),
+                                                  minTime: DateTime.now()
+                                                      .subtract(
+                                                          Duration(days: 0)),
                                                   maxTime:
                                                       DateTime(2022, 12, 31),
                                                   onChanged: (date) {

@@ -84,4 +84,16 @@ class ChatService extends BaseService {
       return throw Exception('erreur');
     }
   }
+
+  static Future<bool> validateService(int serviceId, int userId) async {
+    final String url =
+        'http://api.askhim.ctrempe.fr:80/service/validate-service?serviceId=$serviceId&userId=$userId';
+    http.Response res = await http.put(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      print(res.body);
+      return false;
+    }
+  }
 }

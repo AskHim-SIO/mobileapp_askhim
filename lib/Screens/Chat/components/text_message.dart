@@ -29,6 +29,7 @@ class TextMessage extends StatelessWidget {
       ),
       child: Text(
         message!['message'],
+        textWidthBasis: TextWidthBasis.longestLine,
         style: TextStyle(
           color: message!['author']['id'] == idReceiver
               ? Colors.white

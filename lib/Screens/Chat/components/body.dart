@@ -12,9 +12,12 @@ import 'text_message.dart';
 
 class Body extends StatefulWidget {
   final String uuid;
-  final int idReceiver, idSender;
+  final int idReceiver, idSender, id;
+  final bool state;
   Body(
       {Key? key,
+      required this.state,
+      required this.id,
       required this.uuid,
       required this.idReceiver,
       required this.idSender})
@@ -97,6 +100,8 @@ class _BodyState extends State<Body> {
         ),
         SizedBox(height: size.width * 0.02),
         ChatInputField(
+          state: widget.state,
+          id: widget.id,
           uuid: widget.uuid,
           refresh: refresh,
         ),
