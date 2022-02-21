@@ -96,7 +96,10 @@ class _BodyState extends State<Body> {
                                       borderRadius: 15,
                                       width: 150,
                                       height: 150,
-                                      linkImage: service!.type.defaultPhoto,
+                                      linkImage: service!.photos.isEmpty
+                                          ? service.type.defaultPhoto
+                                          : service.photos[0].libelle
+                                              .toString(),
                                       titleCard: service.name,
                                       prix: "${service.price}€",
                                       sizeTitle: 15,
@@ -197,18 +200,30 @@ class _BodyState extends State<Body> {
                                       itemBuilder: (context, index) {
                                         var service = snapshot.data![index];
 
-                                        return buildCard(
-                                          borderRadius: 15,
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          linkImage: service!.photos.isEmpty
-                                              ? service.type.defaultPhoto
-                                              : service.photos[0].libelle
-                                                  .toString(),
-                                          titleCard: service.name,
-                                          prix: '${service.price}€',
-                                          sizeTitle: 15,
-                                          sizeSubtitle: 15,
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => servicePage(
+                                                  id: service!.id,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: buildCard(
+                                            borderRadius: 15,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            linkImage: service!.photos.isEmpty
+                                                ? service.type.defaultPhoto
+                                                : service.photos[0].libelle
+                                                    .toString(),
+                                            titleCard: service.name,
+                                            prix: '${service.price}€',
+                                            sizeTitle: 15,
+                                            sizeSubtitle: 15,
+                                          ),
                                         );
                                       },
                                       gridDelegate:

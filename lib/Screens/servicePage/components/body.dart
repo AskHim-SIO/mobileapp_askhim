@@ -38,7 +38,6 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
@@ -110,7 +109,8 @@ class _BodyState extends State<Body> {
                                               backgroundImage: NetworkImage(
                                                   snapshot.data!['user']
                                                       ['profilPicture'])),
-                                      SizedBox(width: kDefaultPadding * 0.50),
+                                      const SizedBox(
+                                          width: kDefaultPadding * 0.50),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -120,7 +120,7 @@ class _BodyState extends State<Body> {
                                                     ['firstname'] +
                                                 " " +
                                                 snapshot.data!['user']['name'],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -146,7 +146,7 @@ class _BodyState extends State<Body> {
                     ),
                   );
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: const CircularProgressIndicator());
                 }
               }),
           FutureBuilder<Map<String, dynamic>?>(
@@ -154,7 +154,7 @@ class _BodyState extends State<Body> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Padding(
-                  padding: EdgeInsets.only(left: 25, right: 25),
+                  padding: const EdgeInsets.only(left: 25, right: 25),
                   child: Text(
                     snapshot.data!['name'],
                     style: const TextStyle(
@@ -171,14 +171,14 @@ class _BodyState extends State<Body> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Padding(
-                  padding: EdgeInsets.only(top: 15, left: 8),
+                  padding: const EdgeInsets.only(top: 15, left: 8),
                   child: Center(
                     child: Text(
                       " Créer le : " +
                           '${DateTime.fromMillisecondsSinceEpoch(snapshot.data!['dateStart'])}'
-                              .substring(0, 9),
+                              .substring(0, 10),
                       //"Créer le : " + snapshot.data!['dateStart'].toString(),
-                      style: TextStyle(fontSize: 13, height: 1.0),
+                      style: const TextStyle(fontSize: 13, height: 1.0),
                     ),
                   ),
                 );
@@ -192,7 +192,7 @@ class _BodyState extends State<Body> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Padding(
-                  padding: EdgeInsets.only(left: 25, right: 25, top: 18),
+                  padding: const EdgeInsets.only(left: 25, right: 25, top: 18),
                   child: Center(
                     child: Text(
                       snapshot.data!['price'].toString() + " €",
@@ -206,27 +206,44 @@ class _BodyState extends State<Body> {
               }
             },
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, right: 215),
-            child: Text(
-              "Description :",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
-          ),
+          SizedBox(height: size.width * 0.04),
           FutureBuilder<Map<String, dynamic>?>(
             future: _service_details,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 15, left: 15),
-                      child: Text(
-                        snapshot.data!['description'],
-                        style: TextStyle(fontSize: 13, height: 1.0),
-                      ),
-                    ),
-                  ],
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 15, right: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 2,
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 1,
+                          )
+                        ]),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 15, bottom: 10),
+                          child: Row(children: [
+                            const Text(
+                              "Description :  ",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            Flexible(
+                              child: Text(
+                                snapshot.data!['description'],
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            )
+                          ]),
+                        )),
+                  ),
                 );
               } else {
                 return const Center(child: CircularProgressIndicator());
@@ -252,7 +269,7 @@ class _BodyState extends State<Body> {
                         ]),
                     child: Row(
                       children: [
-                        SizedBox(width: kDefaultPadding * 0.50),
+                        const SizedBox(width: kDefaultPadding * 0.50),
                         Padding(
                           padding: const EdgeInsets.only(top: 15, left: 15),
                           child: Column(
@@ -261,7 +278,7 @@ class _BodyState extends State<Body> {
                               DynamicCardService(
                                   id: snapshot.data!["type"]["id"],
                                   idS: snapshot.data!["id"]),
-                              Text(
+                              const Text(
                                 "",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),

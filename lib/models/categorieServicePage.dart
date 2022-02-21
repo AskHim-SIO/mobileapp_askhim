@@ -18,6 +18,7 @@ class CategorieServicePage {
     required this.description,
     required this.dateStart,
     required this.dateEnd,
+    required this.state,
     required this.price,
     required this.postDate,
     required this.lieu,
@@ -30,11 +31,12 @@ class CategorieServicePage {
   String description;
   int dateStart;
   int dateEnd;
+  bool state;
   int price;
   int postDate;
   Lieu lieu;
   Type type;
-  List<dynamic> photos;
+  List<Photo> photos;
 
   factory CategorieServicePage.fromJson(Map<String, dynamic> json) =>
       CategorieServicePage(
@@ -43,26 +45,37 @@ class CategorieServicePage {
         description: json["description"],
         dateStart: json["dateStart"],
         dateEnd: json["dateEnd"],
+        state: json["state"],
         price: json["price"],
         postDate: json["postDate"],
         lieu: Lieu.fromJson(json["lieu"]),
         type: Type.fromJson(json["type"]),
-        photos: List<dynamic>.from(json["photos"].map((x) => x)),
+        photos: List<Photo>.from(json["photos"].map((x) => Photo.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "description": description,
+        "name": nameValues.reverse![name],
+        "description": descriptionValues.reverse![description],
         "dateStart": dateStart,
         "dateEnd": dateEnd,
+        "state": state,
         "price": price,
         "postDate": postDate,
         "lieu": lieu.toJson(),
         "type": type.toJson(),
-        "photos": List<dynamic>.from(photos.map((x) => x)),
+        "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
       };
 }
+
+enum Description { B, T, VENDREDI_SOIR_C_EST_CHAPITEAU_NOGENT_LE_ROTROU }
+
+final descriptionValues = EnumValues({
+  "b": Description.B,
+  "t": Description.T,
+  "Vendredi soir c'est chapiteau à Nogent le Rotrou":
+      Description.VENDREDI_SOIR_C_EST_CHAPITEAU_NOGENT_LE_ROTROU
+});
 
 class Lieu {
   Lieu({
@@ -73,15 +86,15 @@ class Lieu {
   });
 
   int id;
-  Adresse? adresse;
+  String adresse;
   int codePostal;
-  Ville? ville;
+  String ville;
 
   factory Lieu.fromJson(Map<String, dynamic> json) => Lieu(
         id: json["id"],
-        adresse: adresseValues.map[json["adresse"]],
+        adresse: json["adresse"],
         codePostal: json["codePostal"],
-        ville: villeValues.map[json["ville"]],
+        ville: json["ville"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,23 +106,55 @@ class Lieu {
 }
 
 enum Adresse {
-  THE_27_RUE_PELLEPORT,
-  THE_27_RUE_JUDAIQUE,
-  THE_29_RUE_LECOURBE,
-  STRING
+  RUE,
+  THE_31_RUE_LECOURBE,
+  THE_31_RUE_PELLEPORT,
+  THE_2_RUE_ADRIEN_RECOUVREUR
 }
 
 final adresseValues = EnumValues({
-  "string": Adresse.STRING,
-  "27 Rue Judaique": Adresse.THE_27_RUE_JUDAIQUE,
-  "27 Rue Pelleport": Adresse.THE_27_RUE_PELLEPORT,
-  "29 Rue Lecourbe": Adresse.THE_29_RUE_LECOURBE
+  "Rue": Adresse.RUE,
+  "2 Rue Adrien Recouvreur": Adresse.THE_2_RUE_ADRIEN_RECOUVREUR,
+  "31 Rue Lecourbe": Adresse.THE_31_RUE_LECOURBE,
+  "31 Rue Pelleport": Adresse.THE_31_RUE_PELLEPORT
 });
 
-enum Ville { BORDEAUX, PARIS, STRING }
+enum Ville { SAINT_JEAN_DE_VDAS, PARIS, BORDEAUX, ANGERS }
 
-final villeValues = EnumValues(
-    {"Bordeaux": Ville.BORDEAUX, "Paris": Ville.PARIS, "string": Ville.STRING});
+final villeValues = EnumValues({
+  "Angers": Ville.ANGERS,
+  "Bordeaux": Ville.BORDEAUX,
+  "Paris": Ville.PARIS,
+  "Saint-Jean-de-Védas": Ville.SAINT_JEAN_DE_VDAS
+});
+
+enum Name { TEST, T, ON_VA_CHEZ_PRIAM }
+
+final nameValues = EnumValues({
+  "On va chez Priam": Name.ON_VA_CHEZ_PRIAM,
+  "t": Name.T,
+  "Test": Name.TEST
+});
+
+class Photo {
+  Photo({
+    required this.id,
+    required this.libelle,
+  });
+
+  int id;
+  String libelle;
+
+  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
+        id: json["id"],
+        libelle: json["libelle"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "libelle": libelle,
+      };
+}
 
 class Type {
   Type({

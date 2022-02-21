@@ -1,4 +1,5 @@
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
+import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/models/serviceByUser.dart';
 import 'package:ap4_askhim/models/userInfo.dart';
@@ -159,7 +160,7 @@ class _BodyState extends State<Body> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Text(
-                        '${snapshot.data!['name']} ${snapshot.data!['firstname']}',
+                        '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
                         style: (TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
                       );
@@ -172,7 +173,7 @@ class _BodyState extends State<Body> {
             ToggleSwitch(
               minWidth: 130.0,
               cornerRadius: 20.0,
-              activeBgColors: [
+              activeBgColors: const [
                 [Colors.white],
                 [Colors.white]
               ],
@@ -191,8 +192,8 @@ class _BodyState extends State<Body> {
             ),
             visibilityService
                 ? Container(
-                    height: size.height * 3.25,
                     child: ListView(
+                        shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(), // new
                         children: [
                           FutureBuilder<List<ServiceByUser?>?>(
@@ -215,87 +216,103 @@ class _BodyState extends State<Body> {
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         var service = snapshot.data![index];
-                                        return Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => servicePage(
+                                                  id: service!.id,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Container(
-                                                width: size.width * 0.9,
-                                                height: size.height * 0.09,
-                                                child: Row(
-                                                  children: [
-                                                    CircleAvatar(
-                                                      backgroundImage:
-                                                          NetworkImage(
-                                                        service!.photos.isEmpty
-                                                            ? service.type
-                                                                .defaultPhoto
-                                                            : service.photos[0]
-                                                                .libelle
-                                                                .toString(),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 8.0,
-                                                              top: 2,
-                                                              bottom: 2.0),
-                                                      child: Container(
-                                                        width:
-                                                            size.width * 0.75,
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    service
-                                                                        .name,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                ),
-                                                                const Spacer(),
-                                                                Text(
-                                                                  '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
-                                                                  ' '
-                                                                  '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      color:
-                                                                          greyInputText),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            const Spacer(),
-                                                            Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Text(
-                                                                    '${service.description}',
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            12))),
-                                                          ],
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 15.0),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                child: Container(
+                                                  width: size.width * 0.9,
+                                                  height: size.height * 0.09,
+                                                  child: Row(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                          service!.photos
+                                                                  .isEmpty
+                                                              ? service.type
+                                                                  .defaultPhoto
+                                                              : service
+                                                                  .photos[0]
+                                                                  .libelle
+                                                                  .toString(),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 8.0,
+                                                                top: 2,
+                                                                bottom: 2.0),
+                                                        child: Container(
+                                                          width:
+                                                              size.width * 0.75,
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      service
+                                                                          .name,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                  Text(
+                                                                    '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
+                                                                    ' '
+                                                                    '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color:
+                                                                            greyInputText),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const Spacer(),
+                                                              Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  child: Text(
+                                                                      '${service.description}',
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12))),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
