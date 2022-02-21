@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:ap4_askhim/Screens/Add/components/adresse_container.dart';
 import 'package:ap4_askhim/Screens/Add/components/dynamic_card.dart';
 import 'package:ap4_askhim/Screens/Add/components/input.dart';
+import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/big_input.dart';
 import 'package:ap4_askhim/components/input_basic_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
@@ -83,17 +84,37 @@ class _BodyState extends State<Body> {
           press: () {
             if (_formKey.currentState!.validate()) {
               AddService.insertTransport(
-                  dateStartController.text,
-                  dateEndController.text,
-                  descriptionController.text,
-                  adresseController.text,
-                  motifController.text,
-                  titleController.text,
-                  int.parse(nbPlacesController.text),
-                  arriveeController.text,
-                  departController.text,
-                  int.parse(priceController.text),
-                  vehiculeController.text);
+                      dateStartController.text,
+                      dateEndController.text,
+                      descriptionController.text,
+                      adresseController.text,
+                      motifController.text,
+                      titleController.text,
+                      int.parse(nbPlacesController.text),
+                      arriveeController.text,
+                      departController.text,
+                      int.parse(priceController.text),
+                      vehiculeController.text)
+                  .then((val) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Votre service à bien été ajouté'),
+                      );
+                    });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => servicePage(
+                      id: int.parse(val),
+                    ),
+                  ),
+                );
+              });
             }
           },
         );
@@ -104,15 +125,35 @@ class _BodyState extends State<Body> {
           press: () {
             if (_formKey.currentState!.validate()) {
               AddService.insertCourse(
-                  dateEndController.text,
-                  dateStartController.text,
-                  accompagnement.toString(),
-                  descriptionController.text,
-                  adresseController.text,
-                  listeCourseController.text,
-                  typeLieuController.text,
-                  titleController.text,
-                  int.parse(priceController.text));
+                      dateEndController.text,
+                      dateStartController.text,
+                      accompagnement.toString(),
+                      descriptionController.text,
+                      adresseController.text,
+                      listeCourseController.text,
+                      typeLieuController.text,
+                      titleController.text,
+                      int.parse(priceController.text))
+                  .then((val) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Votre service à bien été ajouté'),
+                      );
+                    });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => servicePage(
+                      id: int.parse(val),
+                    ),
+                  ),
+                );
+              });
             }
           },
         );
@@ -123,16 +164,36 @@ class _BodyState extends State<Body> {
           press: () {
             if (_formKey.currentState!.validate()) {
               AddService.insertFormations(
-                  competenceController.text,
-                  dateEndController.text,
-                  dateStartController.text,
-                  descriptionController.text,
-                  adresseController.text,
-                  materielController.text,
-                  titleController.text,
-                  int.parse(nbHeuresController.text),
-                  modeFinal,
-                  int.parse(priceController.text));
+                      competenceController.text,
+                      dateEndController.text,
+                      dateStartController.text,
+                      descriptionController.text,
+                      adresseController.text,
+                      materielController.text,
+                      titleController.text,
+                      int.parse(nbHeuresController.text),
+                      modeFinal,
+                      int.parse(priceController.text))
+                  .then((val) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Votre service à bien été ajouté'),
+                      );
+                    });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => servicePage(
+                      id: int.parse(val),
+                    ),
+                  ),
+                );
+              });
             }
           },
         );
@@ -143,15 +204,35 @@ class _BodyState extends State<Body> {
           press: () {
             if (_formKey.currentState!.validate()) {
               AddService.insertLoisir(
-                  accompagnementAnimal,
-                  dateEndController.text,
-                  dateStartController.text,
-                  descriptionController.text,
-                  loisirToDoController.text,
-                  adresseController.text,
-                  titleController.text,
-                  int.parse(nbPersonnesController.text),
-                  int.parse(priceController.text));
+                      accompagnementAnimal,
+                      dateEndController.text,
+                      dateStartController.text,
+                      descriptionController.text,
+                      loisirToDoController.text,
+                      adresseController.text,
+                      titleController.text,
+                      int.parse(nbPersonnesController.text),
+                      int.parse(priceController.text))
+                  .then((val) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Votre service à bien été ajouté'),
+                      );
+                    });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => servicePage(
+                      id: int.parse(val),
+                    ),
+                  ),
+                );
+              });
             }
           },
         );
@@ -162,20 +243,38 @@ class _BodyState extends State<Body> {
           press: () {
             if (_formKey.currentState!.validate()) {
               AddService.insertMenage(
-                  dateEndController.text,
-                  dateStartController.text,
-                  descriptionController.text,
-                  typeTacheController.text,
-                  adresseController.text,
-                  materielMenage.text,
-                  titleController.text,
-                  int.parse(nbHeuresMenagesController.text),
-                  int.parse(priceController.text));
+                      dateEndController.text,
+                      dateStartController.text,
+                      descriptionController.text,
+                      typeTacheController.text,
+                      adresseController.text,
+                      materielMenage.text,
+                      titleController.text,
+                      int.parse(nbHeuresMenagesController.text),
+                      int.parse(priceController.text))
+                  .then((val) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Votre service à bien été ajouté'),
+                      );
+                    });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => servicePage(
+                      id: int.parse(val),
+                    ),
+                  ),
+                );
+              });
             }
           },
         );
-
-        break;
       default:
     }
   }

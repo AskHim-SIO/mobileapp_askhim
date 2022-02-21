@@ -1,10 +1,7 @@
-import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
-import 'package:ap4_askhim/components/appbar.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/material.dart';
 
 import "package:ap4_askhim/Screens/Message/components/body.dart";
-import 'package:flutter/services.dart';
 
 class MessageScreen extends StatelessWidget {
   const MessageScreen({Key? key}) : super(key: key);

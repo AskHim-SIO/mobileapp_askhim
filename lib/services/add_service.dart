@@ -18,7 +18,7 @@ class AddService extends BaseService {
     }
   }
 
-  static Future<bool> insertTransport(
+  static Future<String> insertTransport(
       String dateEnd,
       String dateStart,
       String description,
@@ -57,13 +57,13 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return response.body;
     } else {
       throw Exception('Erreur');
     }
   }
 
-  static Future<bool> insertCourse(
+  static Future<String> insertCourse(
     String dateEnd,
     String dateStart,
     String accompagnement,
@@ -99,13 +99,13 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return response.body;
     } else {
-      return false;
+      throw Exception(response);
     }
   }
 
-  static Future<bool> insertFormations(
+  static Future<String> insertFormations(
     String competence,
     String dateEnd,
     String dateStart,
@@ -143,13 +143,13 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return response.body;
     } else {
-      return false;
+      throw Exception(response);
     }
   }
 
-  static Future<bool> insertLoisir(
+  static Future<String> insertLoisir(
     bool animal,
     String dateEnd,
     String dateStart,
@@ -185,13 +185,13 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return response.body;
     } else {
-      return false;
+      throw Exception(response);
     }
   }
 
-  static Future<bool> insertMenage(
+  static Future<String> insertMenage(
     String dateEnd,
     String dateStart,
     String description,
@@ -227,9 +227,9 @@ class AddService extends BaseService {
         body: payload);
 
     if (response!.statusCode == 201 || response.statusCode == 200) {
-      return true;
+      return response.body;
     } else {
-      return false;
+      throw Exception(response);
     }
   }
 }
