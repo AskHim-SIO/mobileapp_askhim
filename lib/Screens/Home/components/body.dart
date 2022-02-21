@@ -183,7 +183,7 @@ class _BodyState extends State<Body> {
                     ),
                     //TODO add infinite scroll
                     Container(
-                      height: size.width * 5.05,
+                      //height: size.width * 5.05,
                       child: ListView(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
