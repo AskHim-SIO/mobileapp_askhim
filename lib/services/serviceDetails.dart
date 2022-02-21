@@ -11,8 +11,7 @@ class serviceDetails extends BaseService {
     http.Response? response = await BaseService.makeRequest(
         BaseService.baseUri + '/service/get-service/' + idS,
         method: 'GET');
-    print(response!.body);
-    if (response.statusCode == 200) {
+    if (response!.statusCode == 200) {
       Map<String, dynamic> data =
           new Map<String, dynamic>.from(json.decode(response.body));
       return data;

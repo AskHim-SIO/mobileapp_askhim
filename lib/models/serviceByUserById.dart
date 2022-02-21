@@ -1,18 +1,18 @@
 // To parse this JSON data, do
 //
-//     final categorieServicePage = categorieServicePageFromJson(jsonString);
+//     final getServiceByUserById = getServiceByUserByIdFromJson(jsonString);
 
 import 'dart:convert';
 
-List<CategorieServicePage> categorieServicePageFromJson(String str) =>
-    List<CategorieServicePage>.from(
-        json.decode(str).map((x) => CategorieServicePage.fromJson(x)));
+List<GetServiceByUserById> getServiceByUserByIdFromJson(String str) =>
+    List<GetServiceByUserById>.from(
+        json.decode(str).map((x) => GetServiceByUserById.fromJson(x)));
 
-String categorieServicePageToJson(List<CategorieServicePage> data) =>
+String getServiceByUserByIdToJson(List<GetServiceByUserById> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class CategorieServicePage {
-  CategorieServicePage({
+class GetServiceByUserById {
+  GetServiceByUserById({
     required this.id,
     required this.name,
     required this.description,
@@ -36,8 +36,8 @@ class CategorieServicePage {
   Type type;
   List<dynamic> photos;
 
-  factory CategorieServicePage.fromJson(Map<String, dynamic> json) =>
-      CategorieServicePage(
+  factory GetServiceByUserById.fromJson(Map<String, dynamic> json) =>
+      GetServiceByUserById(
         id: json["id"],
         name: json["name"],
         description: json["description"],
@@ -73,43 +73,24 @@ class Lieu {
   });
 
   int id;
-  Adresse? adresse;
+  String adresse;
   int codePostal;
-  Ville? ville;
+  String ville;
 
   factory Lieu.fromJson(Map<String, dynamic> json) => Lieu(
         id: json["id"],
-        adresse: adresseValues.map[json["adresse"]],
+        adresse: json["adresse"],
         codePostal: json["codePostal"],
-        ville: villeValues.map[json["ville"]],
+        ville: json["ville"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "adresse": adresseValues.reverse![adresse],
+        "adresse": adresse,
         "codePostal": codePostal,
-        "ville": villeValues.reverse![ville],
+        "ville": ville,
       };
 }
-
-enum Adresse {
-  THE_27_RUE_PELLEPORT,
-  THE_27_RUE_JUDAIQUE,
-  THE_29_RUE_LECOURBE,
-  STRING
-}
-
-final adresseValues = EnumValues({
-  "string": Adresse.STRING,
-  "27 Rue Judaique": Adresse.THE_27_RUE_JUDAIQUE,
-  "27 Rue Pelleport": Adresse.THE_27_RUE_PELLEPORT,
-  "29 Rue Lecourbe": Adresse.THE_29_RUE_LECOURBE
-});
-
-enum Ville { BORDEAUX, PARIS, STRING }
-
-final villeValues = EnumValues(
-    {"Bordeaux": Ville.BORDEAUX, "Paris": Ville.PARIS, "string": Ville.STRING});
 
 class Type {
   Type({
@@ -121,14 +102,14 @@ class Type {
   });
 
   int id;
-  Libelle? libelle;
+  String libelle;
   String defaultPhoto;
   String defaultPhotoMobile;
   List<dynamic> prefer;
 
   factory Type.fromJson(Map<String, dynamic> json) => Type(
         id: json["id"],
-        libelle: libelleValues.map[json["libelle"]],
+        libelle: json["libelle"],
         defaultPhoto: json["defaultPhoto"],
         defaultPhotoMobile: json["defaultPhotoMobile"],
         prefer: List<dynamic>.from(json["prefer"].map((x) => x)),
@@ -136,27 +117,9 @@ class Type {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "libelle": libelleValues.reverse![libelle],
+        "libelle": libelle,
         "defaultPhoto": defaultPhoto,
         "defaultPhotoMobile": defaultPhotoMobile,
         "prefer": List<dynamic>.from(prefer.map((x) => x)),
       };
-}
-
-enum Libelle { TRANSPORT }
-
-final libelleValues = EnumValues({"Transport": Libelle.TRANSPORT});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String>? reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String>? get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }
