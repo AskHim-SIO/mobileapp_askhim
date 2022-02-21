@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:ap4_askhim/Screens/Add/components/adresse_container.dart';
 import 'package:ap4_askhim/Screens/Add/components/dynamic_card.dart';
 import 'package:ap4_askhim/Screens/Add/components/input.dart';
@@ -66,11 +68,20 @@ class _BodyState extends State<Body> {
     super.initState();
   }
 
+  String imagepath = "";
+  List<String> listImage = [];
+
   void pickImage() async {
     final XFile? selected =
         await imagePicker.pickImage(source: ImageSource.gallery);
     if (selected != null && selected.path.isNotEmpty) {
       images!.add(selected);
+      imagepath = selected.path;
+      File imagefile = File(imagepath); //convert Path to File
+      Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+      String base64string =
+          base64.encode(imagebytes); //convert bytes to base64 string
+      listImage.add(base64string);
     }
     setState(() {});
   }
@@ -96,6 +107,13 @@ class _BodyState extends State<Body> {
                       int.parse(priceController.text),
                       vehiculeController.text)
                   .then((val) {
+                if (listImage.isNotEmpty) {
+                  for (int i = 0; i < listImage.length; i++) {
+                    String finalString =
+                        'data:image/png;base64,' + listImage[i];
+                    AddService.postImage(int.parse(val), finalString);
+                  }
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -135,6 +153,13 @@ class _BodyState extends State<Body> {
                       titleController.text,
                       int.parse(priceController.text))
                   .then((val) {
+                if (listImage.isNotEmpty) {
+                  for (int i = 0; i < listImage.length; i++) {
+                    String finalString =
+                        'data:image/png;base64,' + listImage[i];
+                    AddService.postImage(int.parse(val), finalString);
+                  }
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -175,6 +200,13 @@ class _BodyState extends State<Body> {
                       modeFinal,
                       int.parse(priceController.text))
                   .then((val) {
+                if (listImage.isNotEmpty) {
+                  for (int i = 0; i < listImage.length; i++) {
+                    String finalString =
+                        'data:image/png;base64,' + listImage[i];
+                    AddService.postImage(int.parse(val), finalString);
+                  }
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -214,6 +246,13 @@ class _BodyState extends State<Body> {
                       int.parse(nbPersonnesController.text),
                       int.parse(priceController.text))
                   .then((val) {
+                if (listImage.isNotEmpty) {
+                  for (int i = 0; i < listImage.length; i++) {
+                    String finalString =
+                        'data:image/png;base64,' + listImage[i];
+                    AddService.postImage(int.parse(val), finalString);
+                  }
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -253,6 +292,13 @@ class _BodyState extends State<Body> {
                       int.parse(nbHeuresMenagesController.text),
                       int.parse(priceController.text))
                   .then((val) {
+                if (listImage.isNotEmpty) {
+                  for (int i = 0; i < listImage.length; i++) {
+                    String finalString =
+                        'data:image/png;base64,' + listImage[i];
+                    AddService.postImage(int.parse(val), finalString);
+                  }
+                }
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -304,6 +350,7 @@ class _BodyState extends State<Body> {
 
   void deleteImage(int index) async {
     images!.removeAt(index);
+    listImage.removeAt(index);
     setState(() {});
   }
 

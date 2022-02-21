@@ -232,4 +232,23 @@ class AddService extends BaseService {
       throw Exception(response);
     }
   }
+
+  static Future<bool> postImage(int serviceId, String image) async {
+    final String url =
+        'http://api.askhim.ctrempe.fr:80/photo/save-photo-to-service?serviceId=$serviceId';
+    http.Response res = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'fileStr': image,
+      }),
+    );
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
