@@ -159,10 +159,19 @@ class _BodyState extends State<Body> {
                   future: _userInfo,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Text(
-                        '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
-                        style: (TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold)),
+                      return Column(
+                        children: [
+                          Text(
+                            '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
+                            style: (TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold)),
+                          ),
+                          SizedBox(height: size.width * 0.02),
+                          Text(
+                            'AskCoins : ${snapshot.data!['credit']}',
+                            style: (TextStyle(fontSize: 18)),
+                          ),
+                        ],
                       );
                     } else {
                       return Text('');
