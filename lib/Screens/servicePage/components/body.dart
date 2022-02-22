@@ -195,7 +195,7 @@ class _BodyState extends State<Body> {
                   padding: const EdgeInsets.only(left: 25, right: 25, top: 18),
                   child: Center(
                     child: Text(
-                      snapshot.data!['price'].toString() + " €",
+                      snapshot.data!['price'].toString() + " AskCoins",
                       style: const TextStyle(
                           fontSize: 30, fontWeight: FontWeight.w500),
                     ),

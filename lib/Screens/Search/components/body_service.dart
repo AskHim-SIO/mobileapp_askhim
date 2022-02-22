@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
                                   ? service.type.defaultPhoto
                                   : service.photos[0].libelle.toString(),
                               titleCard: service.name,
-                              prix: '${service.price}€',
+                              prix: '${service.price} AskCoins',
                               sizeTitle: 15,
                               sizeSubtitle: 15,
                             );
