@@ -27,9 +27,7 @@ class _BodyState extends State<Body> {
 
   @override
   initState() {
-    _userInfo = ProfileService.getUserInfo();
-
-    _servicesByUser = ProfileService.getServicesByUser();
+    getData();
     super.initState();
   }
 
@@ -49,320 +47,331 @@ class _BodyState extends State<Body> {
     });
   }
 
+  Future<void> getData() async {
+    _userInfo = ProfileService.getUserInfo();
+
+    _servicesByUser = ProfileService.getServicesByUser();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView(children: [
-        Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: size.width * 0.50,
-                  decoration: const BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+    return RefreshIndicator(
+      onRefresh: getData,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: ListView(children: [
+          Column(
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: size.width * 0.50,
+                    decoration: const BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    SizedBox(height: size.width * 0.05),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          child: GestureDetector(
-                            onTap: () {
-                              Hive.box('tokenBox').clear();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => WelcomeScreen(),
-                                  ));
-                            },
-                            child: const Text(
-                              'Déconnexion',
-                              style: TextStyle(
-                                fontSize: 14,
-                                backgroundColor: kPrimaryColor,
-                                color: Colors.white,
+                  Column(
+                    children: [
+                      SizedBox(height: size.width * 0.05),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            child: GestureDetector(
+                              onTap: () {
+                                Hive.box('tokenBox').clear();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WelcomeScreen(),
+                                    ));
+                              },
+                              child: const Text(
+                                'Déconnexion',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  backgroundColor: kPrimaryColor,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: size.width * 0.06),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Center(
-                          child: const Text(
-                            'Profil',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: kPrimaryColor,
-                              color: Colors.white,
+                      SizedBox(height: size.width * 0.06),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Center(
+                            child: Text(
+                              'Profil',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                backgroundColor: kPrimaryColor,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: size.width * 0.27,
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: size.width * 0.21,
-                      backgroundColor: Colors.white,
-                      child: FutureBuilder<Map<String, dynamic>?>(
-                          future: _userInfo,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!['profilPicture'] == null) {
-                                return CircleAvatar(
-                                  radius: size.width * 0.2,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: const NetworkImage(
-                                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
-                                );
-                              } else {
-                                return CircleAvatar(
-                                    radius: size.width * 0.2,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: NetworkImage(
-                                        snapshot.data!['profilPicture']));
-                              }
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          }),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 80),
-              child: FutureBuilder<Map<String, dynamic>?>(
-                  future: _userInfo,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          Text(
-                            '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
-                            style: (TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold)),
-                          ),
-                          SizedBox(height: size.width * 0.02),
-                          Text(
-                            '${snapshot.data!['credit']} AskCoins 💰',
-                            style: (TextStyle(fontSize: 18)),
-                          ),
                         ],
-                      );
-                    } else {
-                      return Text('');
-                    }
-                  }),
-            ),
-            SizedBox(height: size.width * 0.05),
-            ToggleSwitch(
-              minWidth: 130.0,
-              cornerRadius: 20.0,
-              activeBgColors: const [
-                [Colors.white],
-                [Colors.white]
-              ],
-              activeFgColor: kPrimaryColor,
-              inactiveBgColor: greyInput,
-              inactiveFgColor: greyInputText,
-              borderColor: [greyInput],
-              borderWidth: 2,
-              initialLabelIndex: selected_Index,
-              totalSwitches: 2,
-              labels: ['Services', 'Evaluation'],
-              radiusStyle: true,
-              onToggle: (index) {
-                _changed(index!);
-              },
-            ),
-            visibilityService
-                ? Container(
-                    child: ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(), // new
-                        children: [
-                          FutureBuilder<List<ServiceByUser?>?>(
-                            future: _servicesByUser,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: size.width * 0.27,
+                    child: Container(
+                      child: CircleAvatar(
+                        radius: size.width * 0.21,
+                        backgroundColor: Colors.white,
+                        child: FutureBuilder<Map<String, dynamic>?>(
+                            future: _userInfo,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                if (snapshot.data!.isNotEmpty) {
-                                  return ListView.separated(
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
-                                              const Divider(
-                                                indent:
-                                                    50, // empty space to the leading edge of divider.
-                                                endIndent: 30,
-                                              ),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(), // new
-
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (context, index) {
-                                        var service = snapshot.data![index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (_) => servicePage(
-                                                  id: service!.id,
+                                if (snapshot.data!['profilPicture'] == null) {
+                                  return CircleAvatar(
+                                    radius: size.width * 0.2,
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: const NetworkImage(
+                                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
+                                  );
+                                } else {
+                                  return CircleAvatar(
+                                      radius: size.width * 0.2,
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: NetworkImage(
+                                          snapshot.data!['profilPicture']));
+                                }
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            }),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 80),
+                child: FutureBuilder<Map<String, dynamic>?>(
+                    future: _userInfo,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            Text(
+                              '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
+                              style: (TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                            ),
+                            SizedBox(height: size.width * 0.02),
+                            Text(
+                              '${snapshot.data!['credit']} AskCoins 💰',
+                              style: (TextStyle(fontSize: 18)),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Text('');
+                      }
+                    }),
+              ),
+              SizedBox(height: size.width * 0.05),
+              ToggleSwitch(
+                minWidth: 130.0,
+                cornerRadius: 20.0,
+                activeBgColors: const [
+                  [Colors.white],
+                  [Colors.white]
+                ],
+                activeFgColor: kPrimaryColor,
+                inactiveBgColor: greyInput,
+                inactiveFgColor: greyInputText,
+                borderColor: [greyInput],
+                borderWidth: 2,
+                initialLabelIndex: selected_Index,
+                totalSwitches: 2,
+                labels: ['Services', 'Evaluation'],
+                radiusStyle: true,
+                onToggle: (index) {
+                  _changed(index!);
+                },
+              ),
+              visibilityService
+                  ? Container(
+                      child: ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(), // new
+                          children: [
+                            FutureBuilder<List<ServiceByUser?>?>(
+                              future: _servicesByUser,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.isNotEmpty) {
+                                    return ListView.separated(
+                                        separatorBuilder:
+                                            (BuildContext context, int index) =>
+                                                const Divider(
+                                                  indent:
+                                                      50, // empty space to the leading edge of divider.
+                                                  endIndent: 30,
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(), // new
+
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          var service = snapshot.data![index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => servicePage(
+                                                    id: service!.id,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: Container(
-                                                  width: size.width * 0.9,
-                                                  height: size.height * 0.09,
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                          service!.photos
-                                                                  .isEmpty
-                                                              ? service.type
-                                                                  .defaultPhoto
-                                                              : service
-                                                                  .photos[0]
-                                                                  .libelle
-                                                                  .toString(),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 8.0,
-                                                                top: 2,
-                                                                bottom: 2.0),
-                                                        child: Container(
-                                                          width:
-                                                              size.width * 0.75,
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: Text(
-                                                                      service
-                                                                          .name,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
-                                                                    ' '
-                                                                    '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            12,
-                                                                        color:
-                                                                            greyInputText),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              const Spacer(),
-                                                              Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerLeft,
-                                                                  child: Text(
-                                                                      '${service.description}',
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12))),
-                                                            ],
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 15.0),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Container(
+                                                    width: size.width * 0.9,
+                                                    height: size.height * 0.09,
+                                                    child: Row(
+                                                      children: [
+                                                        CircleAvatar(
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                            service!.photos
+                                                                    .isEmpty
+                                                                ? service.type
+                                                                    .defaultPhoto
+                                                                : service
+                                                                    .photos[0]
+                                                                    .libelle
+                                                                    .toString(),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8.0,
+                                                                  top: 2,
+                                                                  bottom: 2.0),
+                                                          child: Container(
+                                                            width: size.width *
+                                                                0.75,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child:
+                                                                          Text(
+                                                                        service
+                                                                            .name,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      '${DateTime.fromMillisecondsSinceEpoch(service.postDate).day}'
+                                                                      ' '
+                                                                      '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.postDate).month))}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          color:
+                                                                              greyInputText),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const Spacer(),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Text(
+                                                                        '${service.description}',
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                12))),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      });
+                                          );
+                                        });
+                                  } else {
+                                    return const Center(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(top: 38.0),
+                                      child: Text(
+                                          'Vous n\'avez encore posté aucun service',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)),
+                                    ));
+                                  }
                                 } else {
-                                  return const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(top: 38.0),
-                                    child: Text(
-                                        'Vous n\'avez encore posté aucun service',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold)),
-                                  ));
+                                  return Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: size.width * 0.3),
+                                        Center(
+                                            child: CircularProgressIndicator())
+                                      ],
+                                    ),
+                                  );
                                 }
-                              } else {
-                                return Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(height: size.width * 0.3),
-                                      Center(child: CircularProgressIndicator())
-                                    ],
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ]),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 38.0),
-                    child: Container(
-                        child: Text(
-                            'Disponible dans une prochaine mise à jour !',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold))),
-                  )
-          ],
-        ),
-      ]),
+                              },
+                            ),
+                          ]),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 38.0),
+                      child: Container(
+                          child: Text(
+                              'Disponible dans une prochaine mise à jour !',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold))),
+                    )
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

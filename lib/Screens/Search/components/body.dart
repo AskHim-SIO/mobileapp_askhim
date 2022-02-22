@@ -1,3 +1,5 @@
+import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
+import 'package:ap4_askhim/Screens/Search/components/recent_service_page.dart';
 import 'package:ap4_askhim/components/search_bar.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/models/homeCategorieService.dart';
@@ -36,28 +38,38 @@ class _BodyState extends State<Body> {
                   Column(
                     children: [
                       SizedBox(height: size.width * 0.23),
-                      Container(
-                        height: size.width * 0.3,
-                        width: size.width,
-                        color: greyInput,
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 18.0),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'SERVICES RECENTS',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RecentServicePage(),
+                              ));
+                        },
+                        child: Container(
+                          height: size.width * 0.3,
+                          width: size.width,
+                          color: greyInput,
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 18.0),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'SERVICES RECENTS',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25.0),
-                              child: Image.network(
-                                  'http://cdn.askhim.ctrempe.fr/sacMobile.png'),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 55.0),
+                                child: Image.network(
+                                    'http://cdn.askhim.ctrempe.fr/Horloge.png'),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: size.width * 0.04),
@@ -82,30 +94,43 @@ class _BodyState extends State<Body> {
                                     itemBuilder: (context, index) {
                                       var categorie = snapshot.data![index];
 
-                                      return Container(
-                                        height: size.width * 0.3,
-                                        width: size.width,
-                                        color: greyInput,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 18.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  categorie!.libelle
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CategoriePage(
+                                                        nom: categorie!.libelle,
+                                                        id: categorie.id),
+                                              ));
+                                        },
+                                        child: Container(
+                                          height: size.width * 0.3,
+                                          width: size.width,
+                                          color: greyInput,
+                                          child: Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 18.0),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    categorie!.libelle
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Spacer(),
-                                            Image.network(
-                                                categorie.defaultPhotoMobile),
-                                          ],
+                                              Spacer(),
+                                              Image.network(
+                                                  categorie.defaultPhotoMobile),
+                                            ],
+                                          ),
                                         ),
                                       );
                                     },

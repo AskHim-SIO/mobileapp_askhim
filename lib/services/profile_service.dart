@@ -94,4 +94,16 @@ class ProfileService extends BaseService {
       return data;
     }
   }
+
+  static Future<bool> tokenValid(String token) async {
+    http.Response? response = await BaseService.makeRequest(
+      BaseService.baseUri + '/auth/token-valid?request=' + token,
+      method: 'GET',
+    );
+    if (response!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

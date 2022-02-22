@@ -101,7 +101,7 @@ class _HomePageState extends State<SearchBar> {
                       width: double.infinity,
                       alignment: Alignment.center,
                       child: Text(
-                        'Start searching',
+                        'Commencer à chercher',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.caption,
