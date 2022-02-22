@@ -1,3 +1,4 @@
+import 'package:ap4_askhim/Screens/ModifProfile/modifProfile_screen.dart';
 import 'package:ap4_askhim/Screens/Welcome/welcome_screens.dart';
 import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
@@ -54,6 +55,14 @@ class _BodyState extends State<Body> {
     setState(() {});
   }
 
+  refresh() {
+    setState(() {
+      _userInfo = ProfileService.getUserInfo();
+    });
+    setState(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,39 +91,64 @@ class _BodyState extends State<Body> {
                   Column(
                     children: [
                       SizedBox(height: size.width * 0.05),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                Hive.box('tokenBox').clear();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => WelcomeScreen(),
-                                    ));
-                              },
-                              child: const Text(
-                                'Déconnexion',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  backgroundColor: kPrimaryColor,
-                                  color: Colors.white,
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ModifProfile(notifyParent: refresh),
+                                      ));
+                                },
+                                child: const Text(
+                                  'Modifier',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    backgroundColor: kPrimaryColor,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Hive.box('tokenBox').clear();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WelcomeScreen(),
+                                      ));
+                                },
+                                child: const Text(
+                                  'Déconnexion',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    backgroundColor: kPrimaryColor,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: size.width * 0.06),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
+                        children: <Widget>[
                           Center(
-                            child: Text(
-                              'Profil',
+                            child: const Text(
+                              'Profile',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
