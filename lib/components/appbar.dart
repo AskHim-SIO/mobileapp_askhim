@@ -21,23 +21,23 @@ class appBar extends StatelessWidget {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
-                title: Text('Acceuil'),
+                label: 'Acceuil',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search_outlined),
-                title: Text('Rechercher'),
+                  label: 'Rechercher',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.add_circle_outline_outlined),
-                title: Text('Ajouter'),
+                  label: 'Ajouter',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.mail_outline),
-                title: Text('Messages'),
+                label:'Messages',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person_outlined),
-                title: Text('Profil'),
+                label: 'Profil',
               ),
             ],
             currentIndex: tabsRouter.activeIndex,
