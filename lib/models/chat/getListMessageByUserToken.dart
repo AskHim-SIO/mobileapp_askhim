@@ -107,7 +107,7 @@ class User {
         email: json["email"],
         tel: json["tel"],
         address: json["address"],
-        dateNaiss: json["dateNaiss"],
+        dateNaiss: json["dateNaiss"] ?? 0,
         credit: json["credit"],
       );
 

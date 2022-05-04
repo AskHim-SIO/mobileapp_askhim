@@ -53,7 +53,7 @@ class ChatService extends BaseService {
       var token = u.token;
 
       final String url =
-          'http://api.askhim.ctrempe.fr:80/chat/init-discussion?serviceId=$serviceId&userToken=$token';
+          'https://api.askhim.ctrempe.fr/chat/init-discussion?serviceId=$serviceId&userToken=$token';
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 200) {
         String data = json.decode(json.encode(res.body));
