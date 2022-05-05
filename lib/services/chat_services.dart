@@ -53,7 +53,7 @@ class ChatService extends BaseService {
       var token = u.token;
 
       final String url =
-          'http://api.askhim.ctrempe.fr:80/chat/init-discussion?serviceId=$serviceId&userToken=$token';
+          'https://api.askhim.ctrempe.fr/chat/init-discussion?serviceId=$serviceId&userToken=$token';
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 200) {
         String data = json.decode(json.encode(res.body));
@@ -73,7 +73,7 @@ class ChatService extends BaseService {
       var token = u.token;
 
       final String url =
-          'http://api.askhim.ctrempe.fr:80/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query';
+          'https://api.askhim.ctrempe.fr/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query';
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 201) {
         return true;
@@ -87,7 +87,7 @@ class ChatService extends BaseService {
 
   static Future<bool> validateService(int serviceId, int userId) async {
     final String url =
-        'http://api.askhim.ctrempe.fr:80/service/validate-service?serviceId=$serviceId&userId=$userId';
+        'https://api.askhim.ctrempe.fr/service/validate-service?serviceId=$serviceId&userId=$userId';
     http.Response res = await http.put(Uri.parse(url));
     if (res.statusCode == 200) {
       return true;

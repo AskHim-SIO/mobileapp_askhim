@@ -45,8 +45,8 @@ class appBar extends StatelessWidget {
             selectedItemColor: kPrimaryColor,
             onTap: tabsRouter.setActiveIndex,
             type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
             backgroundColor: Colors.white,
           );
         });
