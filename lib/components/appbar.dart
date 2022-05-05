@@ -82,6 +82,7 @@ class _appBarState extends State<appBar> {
               return Row(
                 children: [
                   NavigationRail(
+                    labelType: NavigationRailLabelType.all,
                     selectedIndex: currentIndex,
                     onDestinationSelected: (int index) {
                       setState(() {
@@ -111,6 +112,7 @@ class _appBarState extends State<appBar> {
                       ),
                     ],
                   ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   Expanded(child: getSreens(currentIndex)),
                 ],
               );
