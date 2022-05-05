@@ -56,6 +56,7 @@ class _HomePageState extends State<SearchBar> {
     return Container(
       height: 800,
       child: FloatingSearchBar(
+        border: BorderSide(color: (Colors.grey[300])!, width: 1),
         automaticallyImplyBackButton: false,
         backgroundColor: greyInput,
         shadowColor: Colors.white,
