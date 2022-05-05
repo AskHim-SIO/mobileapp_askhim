@@ -37,7 +37,7 @@ class AppRouter extends _i5.RootStackRouter {
   final Map<String, _i5.PageFactory> pagesMap = {
     AppBar.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i1.appBar());
+          routeData: routeData, child:  _i1.appBar());
     },
     WelcomeRouter.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
