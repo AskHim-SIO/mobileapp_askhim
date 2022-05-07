@@ -49,6 +49,7 @@ class _Body extends State<Body> {
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
         child: ListView(
           children: <Widget>[
+            SizedBox(height: size.height * 0.10),
             const Center(
               child: Text(
                 "S'inscrire",
@@ -59,21 +60,21 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
-            SizedBox(height: size.width * 0.10),
+            SizedBox(height: size.height * 0.10),
             InputBasicForm(
               controller: nameController,
               hintText: 'Nom',
               labelText: 'Nom',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.height * 0.02),
             InputBasicForm(
               controller: subNameController,
               hintText: 'Prénom',
               labelText: 'Prénom',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.height * 0.02),
             TextFormField(
               controller: dateController,
               enableInteractiveSelection: false,
@@ -121,21 +122,21 @@ class _Body extends State<Body> {
                 }
               },
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.height * 0.02),
             InputFormMail(
               controller: emailController,
               hintText: 'Email',
               labelText: 'Email',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.height * 0.02),
             InputFormPassword(
               controller: passwordController,
               hintText: 'Mot de passe',
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.04),
+            SizedBox(height: size.height * 0.04),
             Center(
               child: Visibility(
                 visible: mailAlreadyToken,
@@ -143,7 +144,7 @@ class _Body extends State<Body> {
                     style: TextStyle(color: Colors.red)),
               ),
             ),
-            SizedBox(height: size.width * 0.14),
+            SizedBox(height: size.height * 0.14),
             RoundedButton(
               text: 'S\'inscrire',
               sizeButton: 0.8,
@@ -179,7 +180,7 @@ class _Body extends State<Body> {
                 }
               },
             ),
-            SizedBox(height: size.width * 0.01),
+            SizedBox(height: size.height * 0.01),
             const Spacer(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
