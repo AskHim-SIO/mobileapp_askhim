@@ -20,7 +20,8 @@ class Body extends StatelessWidget {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            Image.asset("assets/images/logo.png", width: size.width * 0.6),
+            SizedBox(height: size.height * 0.05),
+            Image.network("http://cdn.askhim.ctrempe.fr/logo-black.png", width: size.width * 0.1),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
               text: "Connexion",
