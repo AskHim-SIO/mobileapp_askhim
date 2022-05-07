@@ -5,6 +5,7 @@ import 'package:ap4_askhim/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'model/token_models.dart';
+import 'package:sizer/sizer.dart';
 
 void main() async {
   // avoid rotation screen
@@ -22,14 +23,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Inter'),
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              primaryColor: kPrimaryColor,
+              scaffoldBackgroundColor: Colors.white,
+              fontFamily: 'Inter'),
+          routerDelegate: _appRouter.delegate(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
+        );
+      },
     );
   }
 }
