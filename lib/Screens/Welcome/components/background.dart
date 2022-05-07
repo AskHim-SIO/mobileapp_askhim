@@ -17,8 +17,8 @@ class Background extends StatelessWidget {
         alignment: Alignment.center,
         children: <Widget>[
           Positioned(
-            child: Image.asset(
-              "assets/images/background_welcome.png",
+            child: Image.network(
+              "http://cdn.askhim.ctrempe.fr/poigne.png",
               width: double.infinity,
               height: double.infinity,
               alignment: Alignment.center,
