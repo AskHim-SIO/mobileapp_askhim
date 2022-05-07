@@ -40,6 +40,7 @@ class _Body extends State<Body> {
         padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: <Widget>[
+            SizedBox(height: size.height * 0.1),
             const Center(
               child: Text(
                 "Se connecter",
@@ -50,21 +51,21 @@ class _Body extends State<Body> {
                     fontSize: 30),
               ),
             ),
-            SizedBox(height: size.width * 0.25),
+            SizedBox(height: size.height * 0.25),
             InputFormMail(
               controller: emailController,
               hintText: 'Email',
               labelText: 'Email',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.04),
+            SizedBox(height: size.height * 0.04),
             InputFormPassword(
               controller: passwordController,
               hintText: 'Mot de passe',
               labelText: 'Mot de passe',
               borderRadius: 11,
             ),
-            SizedBox(height: size.width * 0.02),
+            SizedBox(height: size.height * 0.02),
             Center(
               child: Visibility(
                 visible: incorrect,
@@ -72,7 +73,7 @@ class _Body extends State<Body> {
                     style: TextStyle(color: Colors.red)),
               ),
             ),
-            SizedBox(height: size.width * 0.14),
+            SizedBox(height: size.height * 0.14),
             RoundedButton(
                 text: 'Se connecter',
                 sizeButton: 0.8,

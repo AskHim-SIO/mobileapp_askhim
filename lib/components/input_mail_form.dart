@@ -20,37 +20,38 @@ class InputFormMail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: greyInput,
-        hintText: hintText,
-        labelText: labelText,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
+        controller: controller,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: greyInput,
+          hintText: hintText,
+          labelText: labelText,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(color: greyInputBorder),
+          ),
         ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: const BorderSide(color: greyInputBorder),
-        ),
-      ),
-      validator: (v) {
-        if (v!.isValidEmail) {
-          return null;
-        } else {
-          return 'Veuillez entrer un email valide';
-        }
-      },
-      keyboardType: TextInputType.emailAddress,
+        validator: (v) {
+          if (v!.isValidEmail) {
+            return null;
+          } else {
+            return 'Veuillez entrer un email valide';
+          }
+        },
+        keyboardType: TextInputType.emailAddress,
+
     );
   }
 }
