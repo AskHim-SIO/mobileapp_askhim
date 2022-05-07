@@ -115,7 +115,7 @@ class _BodyDesktopState extends State<BodyDesktop> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(top: 15.0, bottom: 6.0),
+                      padding: EdgeInsets.only(top: 15.0, bottom: 2.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -127,14 +127,14 @@ class _BodyDesktopState extends State<BodyDesktop> {
                     ),
 
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.28,
+                      height: MediaQuery.of(context).size.height * 0.2,
                       child: FutureBuilder<List<CategorieService?>?>(
                         future: _categorieServices,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.separated(
                                 separatorBuilder: (context, _) =>
-                                    SizedBox(width: 8),
+                                    SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                                 scrollDirection: Axis.horizontal,
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {

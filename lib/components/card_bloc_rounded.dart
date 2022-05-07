@@ -26,13 +26,13 @@ class buildCardRounded extends StatelessWidget {
       height: height,
       child: Column(
         children: [
-          SizedBox(height: size.width * 0.07),
+          SizedBox(height: size.height * 0.04),
           CircleAvatar(
             backgroundColor: greyInput,
             radius: 30,
             child: icon,
           ),
-          SizedBox(height: size.width * 0.04),
+          SizedBox(height: size.height * 0.01),
           Expanded(
             child: Text(titleCard,
                 overflow: TextOverflow.ellipsis,
