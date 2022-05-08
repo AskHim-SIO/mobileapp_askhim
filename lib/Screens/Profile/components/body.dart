@@ -166,7 +166,7 @@ class _BodyState extends State<Body> {
                     ],
                   ),
                   Positioned(
-                    top: size.height * 0.13,
+                    top: size.height * 0.15,
                     child: Container(
                       child: CircleAvatar(
                         radius: !kIsWeb ? size.width * 0.21 :  size.width * 0.08 ,
@@ -198,9 +198,8 @@ class _BodyState extends State<Body> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: FutureBuilder<Map<String, dynamic>?>(
+              kIsWeb ? SizedBox(height: size.height * 0.2): SizedBox(height: size.height * 0.12),
+              FutureBuilder<Map<String, dynamic>?>(
                     future: _userInfo,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -221,7 +220,7 @@ class _BodyState extends State<Body> {
                       } else {
                         return Text('');
                       }
-                    }),
+                    },
               ),
               SizedBox(height: size.height * 0.05),
               ToggleSwitch(

@@ -5,6 +5,7 @@ import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/services/profile_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -80,7 +81,7 @@ class _BodyState extends State<Body> {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: size.width * 0.50,
+                    height: size.height * 0.25,
                     decoration: const BoxDecoration(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.only(
@@ -91,7 +92,7 @@ class _BodyState extends State<Body> {
                   ),
                   Column(
                     children: [
-                      SizedBox(height: size.width * 0.02),
+                      SizedBox(height: size.height * 0.02),
                       Row(
                         children: [
                           Padding(
@@ -108,7 +109,7 @@ class _BodyState extends State<Body> {
                               )),
                         ],
                       ),
-                      SizedBox(height: size.width * 0.01),
+                      SizedBox(height: size.height * 0.01),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const <Widget>[
@@ -128,10 +129,10 @@ class _BodyState extends State<Body> {
                     ],
                   ),
                   Positioned(
-                    top: size.width * 0.27,
+                    top: size.height * 0.13,
                     child: Container(
                       child: CircleAvatar(
-                        radius: size.width * 0.21,
+                        radius: !kIsWeb ? size.width * 0.21 :  size.width * 0.08 ,
                         backgroundColor: Colors.white,
                         child: FutureBuilder<Map<String, dynamic>?>(
                             future: _userInfo,
@@ -139,7 +140,7 @@ class _BodyState extends State<Body> {
                               if (snapshot.hasData) {
                                 if (snapshot.data!['profilPicture'] == null) {
                                   return CircleAvatar(
-                                    radius: size.width * 0.2,
+                                    radius: kIsWeb ? size.width * 0.2 :  size.width * 0.06,
                                     backgroundColor: Colors.white,
                                     backgroundImage: const NetworkImage(
                                         'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
@@ -158,7 +159,7 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  /*Positioned(
                     bottom: 35,
                     right: 90,
                     child: RawMaterialButton(
@@ -173,7 +174,7 @@ class _BodyState extends State<Body> {
                             ),
                             color: kPrimaryColor,
                           ),
-                          child: Icon(Icons.edit, color: Colors.white)),
+                          child: Icon(Icons.edit, color: Colors.white))
                       onPressed: () {
                         showDialog(
                           context: context,
@@ -257,10 +258,11 @@ class _BodyState extends State<Body> {
                         );
                       },
                     ),
-                  ),
+                  ),*/
                 ],
               ),
-              SizedBox(height: size.width * 0.24),
+              kIsWeb ? SizedBox(height: size.height * 0.11): SizedBox.shrink(),
+              SizedBox(height: size.height * 0.12),
               Container(
                 width: size.width * 0.8,
                 child: FutureBuilder<Map<String, dynamic>?>(
