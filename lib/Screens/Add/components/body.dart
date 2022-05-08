@@ -79,7 +79,8 @@ class _BodyState extends State<Body> {
 
   void pickImage() async {
     if (kIsWeb) {
-      html.FileUploadInputElement input = html.FileUploadInputElement();
+      html.FileUploadInputElement input = html.FileUploadInputElement()
+    ..accept = "image/*";
       input..click();
       input.onChange.listen((event) async {
         html.File file = input.files!.first;
@@ -91,11 +92,12 @@ class _BodyState extends State<Body> {
         await reader.onLoad.first;
         String base64string = base64.encode(
             reader.result as Uint8List); //convert bytes to base64 string
-        listImage.add(base64string);
+
         //print(reader.result);
 
         setState(() {
           imagebytes.add(reader.result as Uint8List);
+          listImage.add(base64string);
           print('ok');
           print(imagebytes.length);
         });
@@ -142,6 +144,7 @@ class _BodyState extends State<Body> {
                   .then((val) {
                 if (listImage.isNotEmpty) {
                   for (int i = 0; i < listImage.length; i++) {
+                    print("oui");
                     String finalString =
                         'data:image/png;base64,' + listImage[i];
                     AddService.postImage(int.parse(val), finalString);
