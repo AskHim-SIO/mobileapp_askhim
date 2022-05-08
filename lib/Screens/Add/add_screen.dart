@@ -7,8 +7,14 @@ class AddScreen extends StatelessWidget {
   const AddScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Body(),
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+        return constraints.maxWidth < 600 ? const Scaffold(
+          body:  Body(),
+        ) : Scaffold(
+          body:  Center(child: Container(width: MediaQuery.of(context).size.width * 0.8,child: Body())),
+        );
+      }
     );
   }
 }
