@@ -83,7 +83,7 @@ class _TransportCardState extends State<TransportCard> {
                         padding:
                             const EdgeInsets.only(right: 8.0, top: 14, left: 8),
                         child: Container(
-                          height: size.width * 0.29,
+                          //height: size.width * 0.29,
                           width: double.infinity,
                           child: BigInput(
                             fillcolor: Colors.white,

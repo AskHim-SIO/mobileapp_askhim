@@ -235,12 +235,13 @@ class AddService extends BaseService {
 
   static Future<bool> postImage(int serviceId, String image) async {
     final String url =
-        'http://api.askhim.ctrempe.fr:80/photo/save-photo-to-service?serviceId=$serviceId';
+        'https://api.askhim.ctrempe.fr/photo/save-photo-to-service?serviceId=$serviceId';
     http.Response res = await http.post(
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-      },
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+    },
       body: jsonEncode(<String, String>{
         'fileStr': image,
       }),
