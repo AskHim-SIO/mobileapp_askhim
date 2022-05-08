@@ -2,6 +2,7 @@ import 'package:ap4_askhim/Screens/servicePage/servicePage.dart';
 import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/models/getSearchByQuery.dart';
 import 'package:ap4_askhim/services/search_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -104,7 +105,7 @@ class _ResultSearchPageState extends State<ResultSearchPage> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             mainAxisSpacing: 20,
                             crossAxisSpacing: 10,
-                            crossAxisCount: 2,
+                            crossAxisCount: !kIsWeb ? 2 : 4,
                           ),
                         );
                       } else {

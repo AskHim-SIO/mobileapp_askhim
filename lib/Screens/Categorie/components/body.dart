@@ -2,6 +2,7 @@ import 'package:ap4_askhim/components/card_bloc_rectangle.dart';
 import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/models/categorieServicePage.dart';
 import 'package:ap4_askhim/services/categorie_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
@@ -31,7 +32,7 @@ class _BodyState extends State<Body> {
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Container(
-          height: size.width * 5.05,
+          //height: size.height * 0.5,
           child: ListView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -64,7 +65,7 @@ class _BodyState extends State<Body> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             mainAxisSpacing: 20,
                             crossAxisSpacing: 10,
-                            crossAxisCount: 2,
+                            crossAxisCount: !kIsWeb ? 2 : 4,
                           ),
                         );
                       } else {
