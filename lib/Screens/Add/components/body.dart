@@ -17,7 +17,6 @@ import 'package:ap4_askhim/constants.dart';
 import 'package:ap4_askhim/models/homeCategorieService.dart';
 import 'package:ap4_askhim/services/home_service.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:universal_html/html.dart' as html;
 
 class Body extends StatefulWidget {

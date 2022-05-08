@@ -5,6 +5,7 @@ import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/models/serviceByUser.dart';
 import 'package:ap4_askhim/models/userInfo.dart';
 import 'package:ap4_askhim/services/profile_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -25,6 +26,7 @@ class _BodyState extends State<Body> {
   bool visibilityEvaluation = false;
   Future<Map<String, dynamic>?>? _userInfo;
   Future<List<ServiceByUser?>?>? _servicesByUser;
+  final _scrollController = ScrollController();
 
   @override
   initState() {
@@ -70,7 +72,9 @@ class _BodyState extends State<Body> {
       onRefresh: getData,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: ListView(children: [
+        body: ListView(
+            controller: _scrollController,
+            children: [
           Column(
             children: [
               Stack(
@@ -79,7 +83,7 @@ class _BodyState extends State<Body> {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: size.width * 0.50,
+                    height: size.height * 0.25,
                     decoration: const BoxDecoration(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.only(
@@ -90,7 +94,7 @@ class _BodyState extends State<Body> {
                   ),
                   Column(
                     children: [
-                      SizedBox(height: size.width * 0.05),
+                      SizedBox(height: size.height * 0.01),
                       Row(
                         children: [
                           Padding(
@@ -142,7 +146,7 @@ class _BodyState extends State<Body> {
                           ),
                         ],
                       ),
-                      SizedBox(height: size.width * 0.06),
+                      SizedBox(height: size.height * 0.06),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -162,10 +166,10 @@ class _BodyState extends State<Body> {
                     ],
                   ),
                   Positioned(
-                    top: size.width * 0.27,
+                    top: size.height * 0.13,
                     child: Container(
                       child: CircleAvatar(
-                        radius: size.width * 0.21,
+                        radius: !kIsWeb ? size.width * 0.21 :  size.width * 0.08 ,
                         backgroundColor: Colors.white,
                         child: FutureBuilder<Map<String, dynamic>?>(
                             future: _userInfo,
@@ -173,7 +177,7 @@ class _BodyState extends State<Body> {
                               if (snapshot.hasData) {
                                 if (snapshot.data!['profilPicture'] == null) {
                                   return CircleAvatar(
-                                    radius: size.width * 0.2,
+                                    radius: kIsWeb ? size.width * 0.2 :  size.width * 0.06 ,
                                     backgroundColor: Colors.white,
                                     backgroundImage: const NetworkImage(
                                         'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
@@ -207,7 +211,7 @@ class _BodyState extends State<Body> {
                               style: (TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold)),
                             ),
-                            SizedBox(height: size.width * 0.02),
+                            SizedBox(height: size.height * 0.02),
                             Text(
                               '${snapshot.data!['credit']} AskCoins 💰',
                               style: (TextStyle(fontSize: 18)),
@@ -219,7 +223,7 @@ class _BodyState extends State<Body> {
                       }
                     }),
               ),
-              SizedBox(height: size.width * 0.05),
+              SizedBox(height: size.height * 0.05),
               ToggleSwitch(
                 minWidth: 130.0,
                 cornerRadius: 20.0,
@@ -255,6 +259,7 @@ class _BodyState extends State<Body> {
                                         separatorBuilder:
                                             (BuildContext context, int index) =>
                                                 const Divider(
+                                                  thickness: 1,
                                                   indent:
                                                       50, // empty space to the leading edge of divider.
                                                   endIndent: 30,
@@ -286,8 +291,8 @@ class _BodyState extends State<Body> {
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                   child: Container(
-                                                    width: size.width * 0.9,
-                                                    height: size.height * 0.09,
+                                                    width: double.infinity,
+                                                    height: size.height * 0.06,
                                                     child: Row(
                                                       children: [
                                                         CircleAvatar(
@@ -383,7 +388,7 @@ class _BodyState extends State<Body> {
                                   return Container(
                                     child: Column(
                                       children: <Widget>[
-                                        SizedBox(height: size.width * 0.3),
+                                        SizedBox(height: size.height * 0.3),
                                         Center(
                                             child: CircularProgressIndicator())
                                       ],
