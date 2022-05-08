@@ -382,8 +382,14 @@ class _BodyState extends State<Body> {
   }
 
   void deleteImage(int index) async {
-    images!.removeAt(index);
-    listImage.removeAt(index);
+    if(kIsWeb){
+      imagebytes.removeAt(index);
+      listImage.removeAt(index);
+    }
+    else {
+      images!.removeAt(index);
+      listImage.removeAt(index);
+    }
     setState(() {});
   }
 
