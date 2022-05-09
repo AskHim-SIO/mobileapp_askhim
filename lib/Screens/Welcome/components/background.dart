@@ -18,7 +18,7 @@ class Background extends StatelessWidget {
         children: <Widget>[
           Positioned(
             child: Image.network(
-              "192.168.49.11/poigne.png",
+              "http://192.168.49.11/poigne.png",
               width: double.infinity,
               height: double.infinity,
               alignment: Alignment.center,
