@@ -2,9 +2,9 @@ import 'package:http/http.dart' as http;
 
 class BaseService {
 
-  static const baseUri = "https://api.askhim.ctrempe.fr/";
+  //static const baseUri = "https://api.askhim.ctrempe.fr/";
   //static const baseUri = "http://localhost:4001";
-//static const baseUri = "192.168.49.11/";
+static const baseUri = "http://192.168.49.11:4001";
 
   static final Map<String, String> headers = {
     'Content-type': 'application/json'
