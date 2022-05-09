@@ -11,33 +11,34 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/material.dart' as _i11;
 
 import '../components/appbar.dart' as _i1;
 import '../Screens/Add/add_screen.dart' as _i10;
 import '../Screens/Categorie/categorie_screens.dart' as _i8;
 import '../Screens/Home/home_screen.dart' as _i7;
 import '../Screens/Login/login_screen.dart' as _i4;
-import '../Screens/Message/message_screen.dart' as _i11;
 import '../Screens/Profile/profile_screen.dart' as _i6;
 import '../Screens/Register/register_screen.dart' as _i3;
 import '../Screens/Search/search_screen.dart' as _i9;
 import '../Screens/Welcome/welcome_screens.dart' as _i2;
-import 'router.dart' as _i13;
+import 'router.dart' as _i12;
 
 class AppRouter extends _i5.RootStackRouter {
   AppRouter(
-      {_i12.GlobalKey<_i12.NavigatorState>? navigatorKey,
+      {_i11.GlobalKey<_i11.NavigatorState>? navigatorKey,
       required this.authGuard})
       : super(navigatorKey);
 
-  final _i13.AuthGuard authGuard;
+  final _i12.AuthGuard authGuard;
 
   @override
   final Map<String, _i5.PageFactory> pagesMap = {
     AppBar.name: (routeData) {
+      final args =
+          routeData.argsAs<AppBarArgs>(orElse: () => const AppBarArgs());
       return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child:  _i1.appBar());
+          routeData: routeData, child: _i1.appBar(key: args.key));
     },
     WelcomeRouter.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
@@ -63,10 +64,6 @@ class AppRouter extends _i5.RootStackRouter {
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i5.EmptyRouterPage());
     },
-    MessageRouter.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.EmptyRouterPage());
-    },
     ProfileRouter.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i6.ProfileScreen());
@@ -88,10 +85,6 @@ class AppRouter extends _i5.RootStackRouter {
     AddScreen.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i10.AddScreen());
-    },
-    MessageScreen.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.MessageScreen());
     },
     WelcomeScreen.name: (routeData) {
       return _i5.MaterialPageX<dynamic>(
@@ -129,13 +122,6 @@ class AppRouter extends _i5.RootStackRouter {
                 _i5.RouteConfig(AddScreen.name,
                     path: '', parent: AddRouter.name)
               ]),
-          _i5.RouteConfig(MessageRouter.name,
-              path: 'message',
-              parent: AppBar.name,
-              children: [
-                _i5.RouteConfig(MessageScreen.name,
-                    path: '', parent: MessageRouter.name)
-              ]),
           _i5.RouteConfig(ProfileRouter.name,
               path: 'profile',
               parent: AppBar.name,
@@ -152,11 +138,23 @@ class AppRouter extends _i5.RootStackRouter {
 
 /// generated route for
 /// [_i1.appBar]
-class AppBar extends _i5.PageRouteInfo<void> {
-  const AppBar({List<_i5.PageRouteInfo>? children})
-      : super(AppBar.name, path: '/', initialChildren: children);
+class AppBar extends _i5.PageRouteInfo<AppBarArgs> {
+  AppBar({_i11.Key? key, List<_i5.PageRouteInfo>? children})
+      : super(AppBar.name,
+            path: '/', args: AppBarArgs(key: key), initialChildren: children);
 
   static const String name = 'AppBar';
+}
+
+class AppBarArgs {
+  const AppBarArgs({this.key});
+
+  final _i11.Key? key;
+
+  @override
+  String toString() {
+    return 'AppBarArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -211,15 +209,6 @@ class AddRouter extends _i5.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.EmptyRouterPage]
-class MessageRouter extends _i5.PageRouteInfo<void> {
-  const MessageRouter({List<_i5.PageRouteInfo>? children})
-      : super(MessageRouter.name, path: 'message', initialChildren: children);
-
-  static const String name = 'MessageRouter';
-}
-
-/// generated route for
 /// [_i6.ProfileScreen]
 class ProfileRouter extends _i5.PageRouteInfo<void> {
   const ProfileRouter({List<_i5.PageRouteInfo>? children})
@@ -239,7 +228,7 @@ class HomeScreen extends _i5.PageRouteInfo<void> {
 /// generated route for
 /// [_i8.CategoriePage]
 class CategorieRoute extends _i5.PageRouteInfo<CategorieRouteArgs> {
-  CategorieRoute({_i12.Key? key, required int id, required String nom})
+  CategorieRoute({_i11.Key? key, required int id, required String nom})
       : super(CategorieRoute.name,
             path: ':categorieId',
             args: CategorieRouteArgs(key: key, id: id, nom: nom),
@@ -251,7 +240,7 @@ class CategorieRoute extends _i5.PageRouteInfo<CategorieRouteArgs> {
 class CategorieRouteArgs {
   const CategorieRouteArgs({this.key, required this.id, required this.nom});
 
-  final _i12.Key? key;
+  final _i11.Key? key;
 
   final int id;
 
@@ -277,14 +266,6 @@ class AddScreen extends _i5.PageRouteInfo<void> {
   const AddScreen() : super(AddScreen.name, path: '');
 
   static const String name = 'AddScreen';
-}
-
-/// generated route for
-/// [_i11.MessageScreen]
-class MessageScreen extends _i5.PageRouteInfo<void> {
-  const MessageScreen() : super(MessageScreen.name, path: '');
-
-  static const String name = 'MessageScreen';
 }
 
 /// generated route for

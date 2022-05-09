@@ -7,7 +7,6 @@ import '../Screens/Profile/profile_screen.dart' as profile;
 import '../Screens/Home/home_screen.dart' as home;
 import '../Screens/Search/search_screen.dart' as search;
 import '../Screens/Add/add_screen.dart' as add;
-import '../Screens/Message/message_screen.dart' as message;
 
 
 class appBar extends StatefulWidget {
@@ -25,7 +24,6 @@ class _appBarState extends State<appBar> {
       home.HomeScreen(),
       search.SearchScreen(),
       add.AddScreen(),
-      message.MessageScreen(),
       profile.ProfileScreen(),
     ];
 
@@ -39,7 +37,6 @@ class _appBarState extends State<appBar> {
         HomeRouter(),
         SearchRouter(),
         AddRouter(),
-        MessageRouter(),
         ProfileRouter()
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -59,10 +56,6 @@ class _appBarState extends State<appBar> {
                   BottomNavigationBarItem(
                     icon: Icon(Icons.add_circle_outline_outlined),
                     label: 'Ajouter',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.mail_outline),
-                    label: 'Messages',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person_outlined),
@@ -101,10 +94,6 @@ class _appBarState extends State<appBar> {
                       NavigationRailDestination(
                         icon: Icon(Icons.add_circle_outline_outlined),
                         label: Text('Ajouter'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.mail_outline),
-                        label: Text('Messages'),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.person_outlined),

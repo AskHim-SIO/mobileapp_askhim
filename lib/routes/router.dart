@@ -1,6 +1,5 @@
 import 'package:ap4_askhim/Screens/Add/add_screen.dart' as add;
 import 'package:ap4_askhim/Screens/Categorie/categorie_screens.dart';
-import 'package:ap4_askhim/Screens/Message/message_screen.dart' as message;
 import 'package:ap4_askhim/Screens/Home/home_screen.dart' as home;
 import 'package:ap4_askhim/Screens/Login/login_screen.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
@@ -48,11 +47,6 @@ import 'router.gr.dart';
           AutoRoute(path: "", page: add.AddScreen),
         ],
       ),
-      AutoRoute(
-          path: 'message',
-          name: 'messageRouter',
-          page: EmptyRouterPage,
-          children: [AutoRoute(path: "", page: message.MessageScreen)]),
       AutoRoute(
           path: 'profile',
           name: 'profileRouter',
