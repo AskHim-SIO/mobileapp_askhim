@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: size.height * 0.05),
-            Image.network("http://cdn.askhim.ctrempe.fr/logo-black.png", width: size.width * 0.1),
+            Image.network("192.168.49.11/logo-black.png", width: size.width * 0.1),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
               text: "Connexion",
