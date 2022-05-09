@@ -10,10 +10,13 @@ import 'package:ap4_askhim/components/input_password_form.dart';
 import 'package:ap4_askhim/components/rounded_buttons.dart';
 import 'package:ap4_askhim/services/auth_service.dart';
 import 'package:auto_route/src/router/auto_router_x.dart';
+import 'package:flutter/foundation.dart';
+
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 
 import '../../../constants.dart';
 
@@ -38,6 +41,24 @@ class _Body extends State<Body> {
     passwordController.dispose();
 
     super.dispose();
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+        dateController.text =
+        '${selectedDate.year}-${selectedDate.day.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}';
+      });
+    }
   }
 
   @override
@@ -82,7 +103,7 @@ class _Body extends State<Body> {
                 // Below line stops keyboard from appearing
                 FocusScope.of(context).requestFocus(new FocusNode());
 
-                DatePicker.showDatePicker(context,
+                !kIsWeb ? DatePicker.showDatePicker(context,
                     showTitleActions: true,
                     minTime: DateTime(1980, 1, 1),
                     maxTime: DateTime(2022, 12, 31), onChanged: (date) {
@@ -91,7 +112,8 @@ class _Body extends State<Body> {
                 }, onConfirm: (date) {
                   dateController.text =
                       '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
-                }, currentTime: DateTime.now(), locale: LocaleType.fr);
+                }, currentTime: DateTime.now(), locale: LocaleType.fr) :
+                _selectDate(context);
               },
               decoration: InputDecoration(
                 filled: true,

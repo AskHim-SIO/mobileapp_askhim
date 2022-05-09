@@ -120,6 +120,24 @@ class _BodyState extends State<Body> {
     }
   }
 
+  DateTime selectedDate = DateTime.now();
+
+  _selectDate(BuildContext context, Datecontroller) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+        Datecontroller.text =
+        '${selectedDate.year}-${selectedDate.day.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}';
+      });
+    }
+  }
+
   getButton(int id) {
     switch (id) {
       case 1:
@@ -564,7 +582,7 @@ class _BodyState extends State<Body> {
                                                       .requestFocus(
                                                           new FocusNode());
 
-                                                  DatePicker.showDatePicker(
+                                                  !kIsWeb ? DatePicker.showDatePicker(
                                                       context,
                                                       showTitleActions: true,
                                                       minTime: DateTime.now()
@@ -581,7 +599,7 @@ class _BodyState extends State<Body> {
                                                   },
                                                       currentTime:
                                                           DateTime.now(),
-                                                      locale: LocaleType.fr);
+                                                      locale: LocaleType.fr) : _selectDate(context, dateStartController);
                                                 },
                                                 decoration: InputDecoration(
                                                   filled: true,
@@ -664,7 +682,7 @@ class _BodyState extends State<Body> {
                                                       .requestFocus(
                                                           new FocusNode());
 
-                                                  DatePicker.showDatePicker(
+                                                  !kIsWeb ? DatePicker.showDatePicker(
                                                       context,
                                                       showTitleActions: true,
                                                       minTime: DateTime.now()
@@ -681,7 +699,7 @@ class _BodyState extends State<Body> {
                                                   },
                                                       currentTime:
                                                           DateTime.now(),
-                                                      locale: LocaleType.fr);
+                                                      locale: LocaleType.fr) : _selectDate(context, dateEndController);
                                                 },
                                                 decoration: InputDecoration(
                                                   filled: true,

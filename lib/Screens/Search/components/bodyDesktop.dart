@@ -66,7 +66,7 @@ class _BodyDesktopState extends State<BodyDesktop> {
                               ),
                               Spacer(),
                               Image.network(
-                                  'http://cdn.askhim.ctrempe.fr/Horloge.png'),
+                                  'http://192.168.49.11/Horloge.png'),
 
                             ],
                           ),

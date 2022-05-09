@@ -69,6 +69,8 @@ dev_dependencies:
   sizer: ^2.0.15
   universal_html: ^2.0.8
   mime_type: ^1.0.0
+  datetime_picker_formfield: ^2.0.0
+
 
 flutter_icons:
   ios: true
