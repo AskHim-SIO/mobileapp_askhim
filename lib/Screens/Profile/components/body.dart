@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:hive/hive.dart';
 import '../../../constants.dart';
+import '../../../models/chat/getListMessageByUserToken.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ var selected_Index = 0;
 class _BodyState extends State<Body> {
   bool visibilityService = true;
   bool visibilityEvaluation = false;
+  Future<List<GetListMessageByUserToken?>?>? _listMessage;
   Future<Map<String, dynamic>?>? _userInfo;
   Future<List<ServiceByUser?>?>? _servicesByUser;
   final _scrollController = ScrollController();
@@ -52,6 +54,7 @@ class _BodyState extends State<Body> {
 
   Future<void> getData() async {
     _userInfo = ProfileService.getUserInfo();
+    _listMessage = ProfileService.getListMessageByUserToken();
 
     _servicesByUser = ProfileService.getServicesByUser();
     setState(() {});
@@ -73,179 +76,184 @@ class _BodyState extends State<Body> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: ListView(
-            controller: _scrollController,
-            children: [
-          Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.topCenter,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.25,
-                    decoration: const BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
+          controller: _scrollController,
+          children: [
+            Column(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: size.height * 0.25,
+                      decoration: const BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(height: size.height * 0.01),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ModifProfile(notifyParent: refresh),
-                                      ));
-                                },
-                                child: const Text(
-                                  'Modifier',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    backgroundColor: kPrimaryColor,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Hive.box('tokenBox').clear();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WelcomeScreen(),
-                                      ));
-                                },
-                                child: const Text(
-                                  'Déconnexion',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    backgroundColor: kPrimaryColor,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.06),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Center(
-                            child: const Text(
-                              'Profile',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                backgroundColor: kPrimaryColor,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: size.height * 0.15,
-                    child: Container(
-                      child: CircleAvatar(
-                        radius: !kIsWeb ? size.width * 0.21 :  size.width * 0.08 ,
-                        backgroundColor: Colors.white,
-                        child: FutureBuilder<Map<String, dynamic>?>(
-                            future: _userInfo,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                if (snapshot.data!['profilPicture'] == null) {
-                                  return CircleAvatar(
-                                    radius: kIsWeb ? size.width * 0.2 :  size.width * 0.06 ,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: const NetworkImage(
-                                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
-                                  );
-                                } else {
-                                  return CircleAvatar(
-                                      radius: size.width * 0.2,
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: NetworkImage(
-                                          snapshot.data!['profilPicture']));
-                                }
-                              } else {
-                                return CircularProgressIndicator();
-                              }
-                            }),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              kIsWeb ? SizedBox(height: size.height * 0.2): SizedBox(height: size.height * 0.12),
-              FutureBuilder<Map<String, dynamic>?>(
-                    future: _userInfo,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
+                    Column(
+                      children: [
+                        SizedBox(height: size.height * 0.01),
+                        Row(
                           children: [
-                            Text(
-                              '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
-                              style: (TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ModifProfile(
+                                              notifyParent: refresh),
+                                        ));
+                                  },
+                                  child: const Text(
+                                    'Modifier',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      backgroundColor: kPrimaryColor,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            SizedBox(height: size.height * 0.02),
-                            Text(
-                              '${snapshot.data!['credit']} AskCoins 💰',
-                              style: (TextStyle(fontSize: 18)),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Hive.box('tokenBox').clear();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => WelcomeScreen(),
+                                        ));
+                                  },
+                                  child: const Text(
+                                    'Déconnexion',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      backgroundColor: kPrimaryColor,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
-                        );
-                      } else {
-                        return Text('');
-                      }
-                    },
-              ),
-              SizedBox(height: size.height * 0.05),
-              ToggleSwitch(
-                minWidth: 130.0,
-                cornerRadius: 20.0,
-                activeBgColors: const [
-                  [Colors.white],
-                  [Colors.white]
-                ],
-                activeFgColor: kPrimaryColor,
-                inactiveBgColor: greyInput,
-                inactiveFgColor: greyInputText,
-                borderColor: [greyInput],
-                borderWidth: 2,
-                initialLabelIndex: selected_Index,
-                totalSwitches: 2,
-                labels: ['Services', 'Evaluation'],
-                radiusStyle: true,
-                onToggle: (index) {
-                  _changed(index!);
-                },
-              ),
-              visibilityService
-                  ? Container(
-                      child: ListView(
+                        ),
+                        SizedBox(height: size.height * 0.06),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Center(
+                              child: Text(
+                                'Profile',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  backgroundColor: kPrimaryColor,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: size.height * 0.15,
+                      child: Container(
+                        child: CircleAvatar(
+                          radius:
+                              !kIsWeb ? size.width * 0.21 : size.width * 0.08,
+                          backgroundColor: Colors.white,
+                          child: FutureBuilder<Map<String, dynamic>?>(
+                              future: _userInfo,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!['profilPicture'] == null) {
+                                    return CircleAvatar(
+                                      radius: kIsWeb
+                                          ? size.width * 0.2
+                                          : size.width * 0.06,
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: const NetworkImage(
+                                          'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
+                                    );
+                                  } else {
+                                    return CircleAvatar(
+                                        radius: size.width * 0.2,
+                                        backgroundColor: Colors.white,
+                                        backgroundImage: NetworkImage(
+                                            snapshot.data!['profilPicture']));
+                                  }
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                kIsWeb
+                    ? SizedBox(height: size.height * 0.2)
+                    : SizedBox(height: size.height * 0.12),
+                FutureBuilder<Map<String, dynamic>?>(
+                  future: _userInfo,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Text(
+                            '${snapshot.data!['firstname']} ${snapshot.data!['name']}',
+                            style: (const TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold)),
+                          ),
+                          SizedBox(height: size.height * 0.02),
+                          Text(
+                            '${snapshot.data!['credit']} AskCoins 💰',
+                            style: (const TextStyle(fontSize: 18)),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Text('');
+                    }
+                  },
+                ),
+                SizedBox(height: size.height * 0.05),
+                ToggleSwitch(
+                  minWidth: 140.0,
+                  cornerRadius: 20.0,
+                  activeBgColors: const [
+                    [Colors.white],
+                    [Colors.white]
+                  ],
+                  activeFgColor: kPrimaryColor,
+                  inactiveBgColor: greyInput,
+                  inactiveFgColor: greyInputText,
+                  borderColor: [greyInput],
+                  borderWidth: 2,
+                  initialLabelIndex: selected_Index,
+                  totalSwitches: 2,
+                  labels: ['Services', 'Mes réservations'],
+                  radiusStyle: true,
+                  onToggle: (index) {
+                    _changed(index!);
+                  },
+                ),
+                visibilityService
+                    ? Container(
+                        child: ListView(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(), // new
                           children: [
@@ -396,19 +404,152 @@ class _BodyState extends State<Body> {
                                 }
                               },
                             ),
-                          ]),
+                          ],
+                        ),
+                      )
+                    : Container(
+                      child: ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(), // new
+                          children: [
+                            FutureBuilder<List<GetListMessageByUserToken?>?>(
+                              future: _listMessage,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.isNotEmpty) {
+                                    return ListView.separated(
+                                      reverse: true,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                      const Divider(
+                                        thickness: 1,
+                                        indent:
+                                        50, // empty space to the leading edge of divider.
+                                        endIndent: 30,
+                                      ),
+                                      physics:
+                                      const NeverScrollableScrollPhysics(), // new
+
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, index) {
+                                        var service = snapshot.data![index];
+                                        return
+                                          Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 15.0),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: size.height * 0.06,
+                                                  child: Row(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                          service!.service.photos
+                                                                  .isEmpty
+                                                              ? service
+                                                                  .service
+                                                                  .type
+                                                                  .defaultPhoto
+                                                              : service.service.photos[0].libelle,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                                left: 8.0,
+                                                                top: 2,
+                                                                bottom: 2.0),
+                                                        child: Container(
+                                                          width:
+                                                              size.width * 0.75,
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      service
+                                                                          .service
+                                                                          .name,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '${DateTime.fromMillisecondsSinceEpoch(service.service.postDate).day}'
+                                                                    ' '
+                                                                    '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.service.postDate).month))}',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        color:
+                                                                            greyInputText),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const Spacer(),
+                                                              Align(
+                                                                  alignment: Alignment
+                                                                      .centerLeft,
+                                                                  child: Text(
+                                                                      service
+                                                                          .service
+                                                                          .description,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              12))),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    return const Center(
+                                      child: Text(
+                                        'Vous n\'avez pas encore de réservations',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            )
+                          ],
+                        ),
                     )
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 38.0),
-                      child: Container(
-                          child: Text(
-                              'Disponible dans une prochaine mise à jour !',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold))),
-                    )
-            ],
-          ),
-        ]),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -54,7 +54,7 @@ class ChatService extends BaseService {
 
       //final String url =
       //    'https://api.askhim.ctrempe.fr/chat/init-discussion?serviceId=$serviceId&userToken=$token';
-      final String url = "http://localhost:4001/chat/init-discussion?serviceId=$serviceId&userToken=$token";
+      final String url = "http://192.168.49.11:4001/chat/init-discussion?serviceId=$serviceId&userToken=$token";
 
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 200) {

@@ -303,6 +303,85 @@ class _BodyState extends State<Body> {
                   style: TextStyle(color: Colors.red)),
             ),
           ),
+          SizedBox(
+            height: 105,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 35, right: 35, top: 15, bottom: 15),
+              child: RoundedButton(
+                sizeButton: 17,
+                text: 'Reserver le service',
+                press: () {
+                  ProfileService.getServiceById(widget.id).then(
+                    (valS) {
+                      ProfileService.getUserInfo().then(
+                        (valU) {
+                          if (valS!['user']['id'] != valU!['id']) {
+                            ChatService.initDiscussion(widget.id).then((val) {
+                              print(val);
+                              if (val == '409') {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      Future.delayed(Duration(seconds: 3), () {
+                                        Navigator.of(context).pop(true);
+                                      });
+                                      return const AlertDialog(
+                                        title: Text(
+                                            'Erreur lors de la réservation du service'),
+                                      );
+                                    });
+                              } else {
+                                serviceDetails.validateService(
+                                  widget.id,valS['user']['id'])
+                                    .then(
+                                  (val2) {
+                                    if (val2) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            Future.delayed(Duration(seconds: 3),
+                                                () {
+                                              Navigator.of(context).pop(true);
+                                            });
+                                            return const AlertDialog(
+                                              title: Text(
+                                                  'Le service à bien été réservé'),
+                                            );
+                                          });
+                                    }
+                                    else{
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            Future.delayed(const Duration(seconds: 3), () {
+                                              Navigator.of(context).pop(true);
+                                            });
+                                            return const AlertDialog(
+                                              title: Text(
+                                                  'Erreur lors de la réservation du service'),
+                                            );
+                                          });
+                                    }
+                                  },
+                                );
+                              }
+                            });
+                          } else {
+                            setState(
+                              () {
+                                incorrect = true;
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
