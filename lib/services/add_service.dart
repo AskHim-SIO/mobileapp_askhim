@@ -251,4 +251,15 @@ class AddService extends BaseService {
       return false;
     }
   }
+
+  static Future<bool> isValidCoins(int coins) async {
+    final String url = BaseService.baseUri + '/service/negative-askcoins?askcoins=$coins';
+    http.Response res = await http.put(Uri.parse(url));
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      print(res.body);
+      return false;
+    }
+  }
 }

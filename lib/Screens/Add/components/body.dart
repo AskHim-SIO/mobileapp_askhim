@@ -146,6 +146,8 @@ class _BodyState extends State<Body> {
           sizeButton: 12,
           press: () {
             if (_formKey.currentState!.validate()) {
+              AddService.isValidCoins(int.parse(priceController.text)).then((val) {
+                val ?
               AddService.insertTransport(
                       dateStartController.text,
                       dateEndController.text,
@@ -185,7 +187,18 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 );
+              }) : showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return const AlertDialog(
+                        title: Text('Les askcoins ne peuvent pas être négatif'),
+                      );
+                    });
               });
+
             }
           },
         );
