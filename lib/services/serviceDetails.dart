@@ -22,7 +22,7 @@ class serviceDetails extends BaseService {
 
   static Future<bool> validateService(int serviceId, int userId) async {
 
-    final String url = 'http://192.168.49.11:4001/service/validate-service?serviceId=$serviceId&userId=$userId';
+    final String url = BaseService.baseUri + '/service/validate-service?serviceId=$serviceId&userId=$userId';
     //final String url =
     //     'https://api.askhim.ctrempe.fr/service/validate-service?serviceId=$serviceId&userId=$userId';
     http.Response res = await http.put(Uri.parse(url));

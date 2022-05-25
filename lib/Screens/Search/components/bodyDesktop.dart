@@ -6,6 +6,8 @@ import 'package:ap4_askhim/models/homeCategorieService.dart';
 import 'package:ap4_askhim/services/home_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../../services/base_service.dart';
+
 class BodyDesktop extends StatefulWidget {
   @override
   State<BodyDesktop> createState() => _BodyDesktopState();
@@ -66,7 +68,7 @@ class _BodyDesktopState extends State<BodyDesktop> {
                               ),
                               Spacer(),
                               Image.network(
-                                  'http://192.168.49.11/Horloge.png'),
+                                  BaseService.baseUri + '/Horloge.png'),
 
                             ],
                           ),

@@ -234,9 +234,7 @@ class AddService extends BaseService {
   }
 
   static Future<bool> postImage(int serviceId, String image) async {
-    //final String url =
-    //    'https://api.askhim.ctrempe.fr/photo/save-photo-to-service?serviceId=$serviceId';
-    final String url = 'http://192.168.49.11:4001/photo/save-photo-to-service?serviceId=$serviceId';
+    final String url = BaseService.baseUri + '/photo/save-photo-to-service?serviceId=$serviceId';
     http.Response res = await http.post(
       Uri.parse(url),
       headers: <String, String>{
