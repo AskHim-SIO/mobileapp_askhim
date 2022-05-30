@@ -313,9 +313,9 @@ class _BodyState extends State<Body> {
                 text: 'Reserver le service',
                 press: () {
                   ProfileService.getServiceById(widget.id).then(
-                    (valS) {
+                        (valS) {
                       ProfileService.getUserInfo().then(
-                        (valU) {
+                            (valU) {
                           if (valS!['user']['id'] != valU!['id']) {
                             ChatService.initDiscussion(widget.id).then((val) {
                               print(val);
@@ -333,17 +333,17 @@ class _BodyState extends State<Body> {
                                     });
                               } else {
                                 serviceDetails.validateService(
-                                  widget.id,valS['user']['id'])
+                                    widget.id,valS['user']['id'])
                                     .then(
-                                  (val2) {
+                                      (val2) {
                                     if (val2) {
                                       showDialog(
                                           context: context,
                                           builder: (context) {
                                             Future.delayed(Duration(seconds: 3),
-                                                () {
-                                              Navigator.of(context).pop(true);
-                                            });
+                                                    () {
+                                                  Navigator.of(context).pop(true);
+                                                });
                                             return const AlertDialog(
                                               title: Text(
                                                   'Le service à bien été réservé'),
@@ -369,7 +369,7 @@ class _BodyState extends State<Body> {
                             });
                           } else {
                             setState(
-                              () {
+                                  () {
                                 incorrect = true;
                               },
                             );

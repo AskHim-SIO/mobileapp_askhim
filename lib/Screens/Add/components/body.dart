@@ -83,26 +83,17 @@ class _BodyState extends State<Body> {
       input..click();
       input.onChange.listen((event) async {
         html.File file = input.files!.first;
-        //print(file.name);
-        //print(file.relativePath);
-        // print(file);
         final reader = html.FileReader();
         reader.readAsArrayBuffer(file);
         await reader.onLoad.first;
         String base64string = base64.encode(
             reader.result as Uint8List); //convert bytes to base64 string
-
-        //print(reader.result);
-
         setState(() {
           imagebytes.add(reader.result as Uint8List);
           listImage.add(base64string);
           print('ok');
           print(imagebytes.length);
         });
-        //print('image' + imagebytes.toString());
-        //print(base64string);
-        //convert to bytes
       });
     } else {
       final XFile? selected =

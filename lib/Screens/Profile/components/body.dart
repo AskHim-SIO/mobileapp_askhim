@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:hive/hive.dart';
+import '../../../components/modal.dart';
 import '../../../constants.dart';
 import '../../../models/chat/getListMessageByUserToken.dart';
 
@@ -29,6 +30,7 @@ class _BodyState extends State<Body> {
   Future<Map<String, dynamic>?>? _userInfo;
   Future<List<ServiceByUser?>?>? _servicesByUser;
   final _scrollController = ScrollController();
+  TextEditingController controllerMoney = TextEditingController();
 
   @override
   initState() {
@@ -223,10 +225,60 @@ class _BodyState extends State<Body> {
                             '${snapshot.data!['credit']} AskCoins 💰',
                             style: (const TextStyle(fontSize: 18)),
                           ),
+                          SizedBox(height: size.height * 0.02),
+                          RoundedButton(
+                            text: 'Ajouter des fonds',
+                            sizeButton: 0.7,
+                            press: () {
+                              modalBottomSheet(
+                                  context,
+                                  400,
+                                  Colors.white,
+                                  controllerMoney,
+                                  'Ajouter des fonds',
+                                  '40 AskCoins',
+                                  'Somme :',
+                                  'Valider', () {
+                                ProfileService.addMoneyToUSer(
+                                        int.parse(controllerMoney.text))
+                                    .then((value) {
+                                      print(value);
+                                  if (value) {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          Future.delayed(
+                                              const Duration(seconds: 3), () {
+                                            Navigator.of(context).pop(true);
+                                          });
+                                          return const AlertDialog(
+                                            title: Text(
+                                                "Votre compte à bien été crédité"),
+                                          );
+                                        });
+                                    Navigator.pop(context);
+                                  } else {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          Future.delayed(
+                                              const Duration(seconds: 3), () {
+                                            Navigator.of(context).pop(true);
+                                          });
+                                          return const AlertDialog(
+                                            title: Text(
+                                                "Erreur dans la créditation du compte"),
+                                          );
+                                        });
+                                  }
+                                });
+                              });
+                            },
+                          )
                         ],
                       );
                     } else {
-                      return Text('');
+                      return SizedBox.shrink();
                     }
                   },
                 ),
@@ -408,7 +460,7 @@ class _BodyState extends State<Body> {
                         ),
                       )
                     : Container(
-                      child: ListView(
+                        child: ListView(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(), // new
                           children: [
@@ -421,109 +473,110 @@ class _BodyState extends State<Body> {
                                       reverse: true,
                                       separatorBuilder:
                                           (BuildContext context, int index) =>
-                                      const Divider(
+                                              const Divider(
                                         thickness: 1,
                                         indent:
-                                        50, // empty space to the leading edge of divider.
+                                            50, // empty space to the leading edge of divider.
                                         endIndent: 30,
                                       ),
                                       physics:
-                                      const NeverScrollableScrollPhysics(), // new
+                                          const NeverScrollableScrollPhysics(), // new
 
                                       shrinkWrap: true,
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         var service = snapshot.data![index];
-                                        return
-                                          Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 15.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: size.height * 0.06,
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                          service!.service.photos
-                                                                  .isEmpty
-                                                              ? service
-                                                                  .service
-                                                                  .type
-                                                                  .defaultPhoto
-                                                              : service.service.photos[0].libelle,
-                                                        ),
+                                        return Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 15.0),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: size.height * 0.06,
+                                                child: Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        service!.service.photos
+                                                                .isEmpty
+                                                            ? service
+                                                                .service
+                                                                .type
+                                                                .defaultPhoto
+                                                            : service
+                                                                .service
+                                                                .photos[0]
+                                                                .libelle,
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.only(
-                                                                left: 8.0,
-                                                                top: 2,
-                                                                bottom: 2.0),
-                                                        child: Container(
-                                                          width:
-                                                              size.width * 0.75,
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: Text(
-                                                                      service
-                                                                          .service
-                                                                          .name,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    ),
-                                                                  ),
-                                                                  Text(
-                                                                    '${DateTime.fromMillisecondsSinceEpoch(service.service.postDate).day}'
-                                                                    ' '
-                                                                    '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.service.postDate).month))}',
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              top: 2,
+                                                              bottom: 2.0),
+                                                      child: Container(
+                                                        width:
+                                                            size.width * 0.75,
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    service
+                                                                        .service
+                                                                        .name,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                     style: const TextStyle(
                                                                         fontSize:
-                                                                            12,
-                                                                        color:
-                                                                            greyInputText),
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                              const Spacer(),
-                                                              Align(
-                                                                  alignment: Alignment
-                                                                      .centerLeft,
-                                                                  child: Text(
-                                                                      service
-                                                                          .service
-                                                                          .description,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12))),
-                                                            ],
-                                                          ),
+                                                                ),
+                                                                Text(
+                                                                  '${DateTime.fromMillisecondsSinceEpoch(service.service.postDate).day}'
+                                                                  ' '
+                                                                  '${DateFormat('MMMM').format(DateTime(DateTime.fromMillisecondsSinceEpoch(service.service.postDate).month))}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color:
+                                                                          greyInputText),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const Spacer(),
+                                                            Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Text(
+                                                                    service
+                                                                        .service
+                                                                        .description,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12))),
+                                                          ],
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
-
+                                          ),
                                         );
                                       },
                                     );
@@ -545,7 +598,7 @@ class _BodyState extends State<Body> {
                             )
                           ],
                         ),
-                    )
+                      )
               ],
             ),
           ],

@@ -85,6 +85,27 @@ class ProfileService extends BaseService {
     }
   }
 
+  static Future<bool> addMoneyToUSer(int credit) async{
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+
+    //var payload = json.encode({'token': token, 'credit': credit});
+    //print(payload);
+
+    final String url = BaseService.baseUri + '/user/add-money?token=' + token + '&credit=' + credit.toString();
+
+    http.Response res = await http.post(Uri.parse(url));
+
+    print(res.statusCode);
+    if (res.statusCode == 202) {
+     return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   static Future<Map<String, dynamic>?> getServiceById(int id) async {
     http.Response? response = await BaseService.makeRequest(
       BaseService.baseUri + '/service/get-service/' + id.toString(),
@@ -131,6 +152,31 @@ class ProfileService extends BaseService {
       method: 'GET',
     );
     if (response!.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> updateUserPic(String image) async {
+    var box = await Hive.openBox('tokenBox');
+    var u = box.get('Token');
+    var token = u.token;
+    print(token);
+    final String url = BaseService.baseUri + '/photo/save-photo-to-user?token=$token';
+    http.Response res = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      },
+      body: jsonEncode(<String, String>{
+        'fileStr': image,
+      }),
+    );
+    print(res.body);
+    print(res.statusCode);
+    if (res.statusCode == 200) {
       return true;
     } else {
       return false;

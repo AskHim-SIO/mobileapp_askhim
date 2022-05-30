@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:ap4_askhim/Screens/ModifProfile/components/input.dart';
 import 'package:ap4_askhim/Screens/Profile/profile_screen.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter/src/rendering/box.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:universal_html/html.dart' as html;
+import 'dart:io';
 
 import '../modifProfile_screen.dart';
 
@@ -49,16 +53,48 @@ class _BodyState extends State<Body> {
   @override
   initState() {
     _userInfo = ProfileService.getUserInfo();
+    listImage = [];
     super.initState();
   }
 
+  String imagepath = "";
+  List<String> listImage = [];
+  List<Uint8List> imagebytes = [];
+  late Uint8List image;
+
   void pickImage() async {
-    final XFile? selected =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-    if (selected != null && selected.path.isNotEmpty) {
-      images!.add(selected);
+    if (kIsWeb) {
+      html.FileUploadInputElement input = html.FileUploadInputElement()
+        ..accept = "image/*";
+      input..click();
+      input.onChange.listen((event) async {
+        html.File file = input.files!.first;
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(file);
+        await reader.onLoad.first;
+        String base64string = base64.encode(
+            reader.result as Uint8List); //convert bytes to base64 string
+        setState(() {
+          imagebytes.add(reader.result as Uint8List);
+          listImage.add(base64string);
+          print('ok');
+          print(imagebytes.length);
+        });
+      });
+    } else {
+      final XFile? selected =
+          await imagePicker.pickImage(source: ImageSource.gallery);
+      if (selected != null && selected.path.isNotEmpty) {
+        images!.add(selected);
+        imagepath = selected.path;
+        File imagefile = File(imagepath); //convert Path to File
+        Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+        String base64string =
+            base64.encode(imagebytes); //convert bytes to base64 string
+        listImage.add(base64string);
+        setState(() {});
+      }
     }
-    setState(() {});
   }
 
   void deleteImage(int index) async {
@@ -131,35 +167,74 @@ class _BodyState extends State<Body> {
                   Positioned(
                     top: size.height * 0.13,
                     child: Container(
-                      child: CircleAvatar(
-                        radius: !kIsWeb ? size.width * 0.21 :  size.width * 0.08 ,
-                        backgroundColor: Colors.white,
-                        child: FutureBuilder<Map<String, dynamic>?>(
-                            future: _userInfo,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                if (snapshot.data!['profilPicture'] == null) {
-                                  return CircleAvatar(
-                                    radius: kIsWeb ? size.width * 0.2 :  size.width * 0.06,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: const NetworkImage(
-                                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
-                                  );
-                                } else {
-                                  return CircleAvatar(
-                                      radius: size.width * 0.2,
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: NetworkImage(
-                                          snapshot.data!['profilPicture']));
-                                }
-                              } else {
-                                return CircularProgressIndicator();
-                              }
-                            }),
-                      ),
+                      child: listImage.isEmpty
+                          ? CircleAvatar(
+                              radius: !kIsWeb
+                                  ? size.width * 0.21
+                                  : size.width * 0.08,
+                              backgroundColor: Colors.white,
+                              child: FutureBuilder<Map<String, dynamic>?>(
+                                  future: _userInfo,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      if (snapshot.data!['profilPicture'] ==
+                                          null) {
+                                        return CircleAvatar(
+                                          radius: kIsWeb
+                                              ? size.width * 0.2
+                                              : size.width * 0.06,
+                                          backgroundColor: Colors.white,
+                                          backgroundImage: const NetworkImage(
+                                              'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'),
+                                        );
+                                      } else {
+                                        return CircleAvatar(
+                                            radius: size.width * 0.2,
+                                            backgroundColor: Colors.white,
+                                            backgroundImage: NetworkImage(
+                                                snapshot
+                                                    .data!['profilPicture']));
+                                      }
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  }),
+                            )
+                          : !kIsWeb
+                              ? Positioned(
+                                  top: size.height * 0.13,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Image.file(File(images![0].path),
+                                        fit: BoxFit.fill,
+                                        width: size.width * 0.3,
+                                        height: size.height * 0.13),
+                                  ),
+                                )
+                              : Positioned(
+                                  top: size.height * 0.13,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20))),
+                                    child: Image.memory(
+                                        imagebytes[0].buffer.asUint8List(),
+                                        fit: BoxFit.fill,
+                                        width: size.width * 0.2,
+                                        height: 600),
+                                  ),
+                                ),
                     ),
                   ),
-                  /*Positioned(
+                  Positioned(
                     bottom: 35,
                     right: 90,
                     child: RawMaterialButton(
@@ -174,13 +249,13 @@ class _BodyState extends State<Body> {
                             ),
                             color: kPrimaryColor,
                           ),
-                          child: Icon(Icons.edit, color: Colors.white))
+                          child: const Icon(Icons.edit, color: Colors.white)),
                       onPressed: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                                title: Text(
+                                title: const Text(
                                   'Choisissez une option',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -190,34 +265,14 @@ class _BodyState extends State<Body> {
                                   child: ListBody(
                                     children: [
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          pickImage();
+                                        },
                                         splashColor: kPrimaryColor,
                                         child: Row(
-                                          children: [
+                                          children: const [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons.camera,
-                                                color: kPrimaryColor,
-                                              ),
-                                            ),
-                                            Text('Camera',
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black))
-                                          ],
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {},
-                                        splashColor: kPrimaryColor,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.image,
                                                 color: kPrimaryColor,
@@ -234,10 +289,9 @@ class _BodyState extends State<Body> {
                                       InkWell(
                                         splashColor: kPrimaryColor,
                                         child: Row(
-                                          children: [
+                                          children: const [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.0),
                                               child: Icon(
                                                 Icons.remove_circle,
                                                 color: kPrimaryColor,
@@ -258,10 +312,10 @@ class _BodyState extends State<Body> {
                         );
                       },
                     ),
-                  ),*/
+                  ),
                 ],
               ),
-              kIsWeb ? SizedBox(height: size.height * 0.11): SizedBox.shrink(),
+              kIsWeb ? SizedBox(height: size.height * 0.11) : SizedBox.shrink(),
               SizedBox(height: size.height * 0.12),
               Container(
                 width: size.width * 0.8,
@@ -346,11 +400,12 @@ class _BodyState extends State<Body> {
                                             minTime: DateTime(1980, 1, 1),
                                             maxTime: DateTime(2022, 12, 31),
                                             onChanged: (date) {
+
                                           dateNaissController.text =
-                                              '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                                              '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                                         }, onConfirm: (date) {
                                           dateNaissController.text =
-                                              '${date.year}-${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}';
+                                              '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                                         },
                                             currentTime: DateTime.now(),
                                             locale: LocaleType.fr);
@@ -393,7 +448,7 @@ class _BodyState extends State<Body> {
                         )
                       ]);
                     } else {
-                      return CircularProgressIndicator();
+                      return Center(child: const CircularProgressIndicator());
                     }
                   },
                 ),
@@ -413,33 +468,92 @@ class _BodyState extends State<Body> {
                   child: RoundedButton(
                     press: () {
                       if (_formKey.currentState!.validate()) {
-                        ProfileService.updateUser(
-                                adresseController.text,
-                                admin,
-                                credit,
-                                dateNaissController.text,
-                                emailController.text,
-                                firstNameController.text,
-                                id,
-                                nameController.text,
-                                profilPicture,
-                                int.parse(telephoneController.text))
-                            .then((val) {
-                          if (val) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    Navigator.of(context).pop(true);
+                        if (listImage.isNotEmpty) {
+                          ProfileService.updateUserPic(listImage[0])
+                              .then((val) {
+                                print(val);
+                            val
+                                ? ProfileService.updateUser(
+                                        adresseController.text,
+                                        admin,
+                                        credit,
+                                        dateNaissController.text,
+                                        emailController.text,
+                                        firstNameController.text,
+                                        id,
+                                        nameController.text,
+                                        profilPicture,
+                                        int.parse(telephoneController.text))
+                                    .then((val) {
+                                    if (val) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            Future.delayed(Duration(seconds: 3),
+                                                () {
+                                              Navigator.of(context).pop(true);
+                                            });
+                                            return const AlertDialog(
+                                              title: Text(
+                                                  'Votre profile à bien été modifié'),
+                                            );
+                                          });
+                                      widget.notifyParent();
+                                    }
+                                  })
+                                : showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      Future.delayed(Duration(seconds: 3), () {
+                                        Navigator.of(context).pop(true);
+                                      });
+                                      return const AlertDialog(
+                                        title:
+                                            Text("Erreur dans la modification"),
+                                      );
+                                    });
+                          });
+                        } else {
+                          ProfileService.updateUser(
+                                  adresseController.text,
+                                  admin,
+                                  credit,
+                                  dateNaissController.text,
+                                  emailController.text,
+                                  firstNameController.text,
+                                  id,
+                                  nameController.text,
+                                  profilPicture,
+                                  int.parse(telephoneController.text))
+                              .then((val) {
+                            if (val) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(seconds: 3), () {
+                                      Navigator.of(context).pop(true);
+                                    });
+                                    return const AlertDialog(
+                                      title: Text(
+                                          'Votre profile à bien été modifié'),
+                                    );
                                   });
-                                  return const AlertDialog(
-                                    title: Text(
-                                        'Votre profile à bien été modifié'),
-                                  );
-                                });
-                            widget.notifyParent();
-                          }
-                        });
+                              widget.notifyParent();
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(Duration(seconds: 3), () {
+                                      Navigator.of(context).pop(true);
+                                    });
+                                    return const AlertDialog(
+                                      title:
+                                          Text("Erreur dans la modification"),
+                                    );
+                                  });
+                            }
+                          });
+                        }
                       }
                     },
                     sizeButton: 17,
