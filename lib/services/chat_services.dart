@@ -54,7 +54,8 @@ class ChatService extends BaseService {
 
       //final String url =
       //    'https://api.askhim.ctrempe.fr/chat/init-discussion?serviceId=$serviceId&userToken=$token';
-      final String url = "http://localhost:4001/chat/init-discussion?serviceId=$serviceId&userToken=$token";
+      final String url =
+          "http://192.168.50.11:4001/chat/init-discussion?serviceId=$serviceId&userToken=$token";
 
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -77,7 +78,8 @@ class ChatService extends BaseService {
       //final String url =
       //    'https://api.askhim.ctrempe.fr/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query';
 
-      final String url = "http://localhost:4001/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query";
+      final String url =
+          "http://192.168.50.11:4001/chat/post-message?discussionId=$discussionId&userToken=$token&message=$query";
 
       http.Response res = await http.post(Uri.parse(url));
       if (res.statusCode == 201) {
@@ -91,8 +93,8 @@ class ChatService extends BaseService {
   }
 
   static Future<bool> validateService(int serviceId, int userId) async {
-
-    final String url = 'http://localhost:4001/service/validate-service?serviceId=$serviceId&userId=$userId';
+    final String url =
+        'http://192.168.50.11:4001/service/validate-service?serviceId=$serviceId&userId=$userId';
     //final String url =
     //     'https://api.askhim.ctrempe.fr/service/validate-service?serviceId=$serviceId&userId=$userId';
     http.Response res = await http.put(Uri.parse(url));
